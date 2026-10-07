@@ -1,0 +1,53 @@
+@startuml
+hide methods
+skinparam ClassAttributeIconSize 0
+
+class Inspector{
+    Nombre
+    Apellidos
+    Zona_Asignada
+    Perfil
+}
+
+class "Centro Educativo" as CentroEducativo{
+    Identificación
+    Ubicación
+    Zona
+}
+
+class Desplazamiento{
+    Origen
+    Destino
+}
+
+class Dieta{
+    Importe
+    Almuerzo
+}
+
+class Cita{
+    Fecha
+    Procedencia: e_Procedencia
+}
+
+enum e_Procedencia {
+    Agenda
+    Llamada
+    Portal_Citas
+}
+
+Cita +-- e_Procedencia
+
+class Tutor{
+    Nombre
+}
+
+class Alumno{
+
+}
+
+class Agenda{
+    
+}
+
+@enduml
