@@ -9,6 +9,15 @@ class Inspector{
     Perfil
 }
 
+class Familia{
+
+}
+
+class Conserjería {
+
+
+}
+
 class Informe {
     
 }
