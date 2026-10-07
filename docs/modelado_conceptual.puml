@@ -9,6 +9,10 @@ class Inspector{
     Perfil
 }
 
+class Informe {
+    
+}
+
 class "Centro Educativo" as CentroEducativo{
     Identificación
     Ubicación
