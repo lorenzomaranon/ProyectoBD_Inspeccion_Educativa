@@ -1,7 +1,73 @@
 @startuml
 hide methods
 skinparam ClassAttributeIconSize 0
+'----------------------------------'
 
+title CAMBIAR TÍTULO
+
+skinparam shadowing false
+
+' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...).
+note as RN01
+  RN-01: Dietas Desplazamiento
+  El kilometraje de cada desplazamiento se calculará siempre tomando como referencia el centro de Cádiz y el centro educativo visitado, a razón de 0,24 €/km. (Este valor puede variar). Deberá calcularse acorde a la legislación vigente. ¿¿AFECTA A Inspector??
+end note
+
+note as RN02
+  RN-02: Plus Almuerzo
+  Si la hora de llegada al domicilio del inspector excede de las 15:00, el sistema añadirá 20 € adicionales en concepto de almuerzo a la dieta correspondiente.
+end note
+
+note as RN03
+  RN-03: Permisos Informe
+  El informe de visita sólo podrá ser cumplimentado por el inspector responsable de la visita.
+end note
+
+note as RN04
+ RN-04: Proceso Cita
+ Las familias no podrán contactar directamente con el inspector: toda solicitud de cita deberá presentarse por escrito a través del portal y pasar por un primer control de conserjería.
+end note
+
+note as RN05
+ RN-05: Subordinación de Tareas
+ Únicamente los inspectores jefe y los coordinadores de equipo de inspección de zona podrán crear o modificar tareas en el calendario de un inspector.
+end note
+
+note as RN06
+ RN-06: Acceso visualización Días Libres
+ Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
+end note
+
+' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
+' Añade una conexión por cada clase afectada por una regla.
+RN01 .. Desplazamiento
+RN01 .. Dieta
+RN01 .. Inspector
+
+RN02 .. Dieta
+
+RN03 .. Informe
+RN03 .. Inspector
+
+RN04 .. Cita
+RN04 .. Familia
+RN04 .. Conserjería
+
+RN05 .. Tarea
+RN05 .. InspectorJefe
+RN05 .. CoordinadorZona
+RN05 .. Agenda
+
+RN06 .. Inspector
+RN06 .. InspectorJefe
+RN06 .. DiasAsuntosPersonales
+
+
+
+
+
+
+'CLASES:'
 class Inspector{
     Nombre
     Apellidos
