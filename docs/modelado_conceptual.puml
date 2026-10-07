@@ -75,4 +75,7 @@ class Tarea {
 
 }
 
+class DiasAsuntosPersonales {
+
+}
 @enduml
