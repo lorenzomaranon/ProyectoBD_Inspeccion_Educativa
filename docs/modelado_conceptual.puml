@@ -9,6 +9,14 @@ class Inspector{
     Perfil
 }
 
+class InspectorJefe {
+
+}
+
+class CoordinadorZona {
+    
+}
+
 class Familia{
 
 }
