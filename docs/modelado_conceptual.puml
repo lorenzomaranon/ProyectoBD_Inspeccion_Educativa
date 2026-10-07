@@ -71,4 +71,8 @@ class Agenda{
     
 }
 
+class Tarea {
+    
+}
+
 @enduml
