@@ -76,45 +76,64 @@ class Inspector{
 }
 
 class InspectorJefe {
-
+    Nombre
+    Apellidos
+    Zona_Asignada
+    Perfil
 }
 
-class CoordinadorZona {
-    
-}
-
-class Familia{
-
-}
 
 class Conserjería {
 
 
 }
 
-class Informe {
-    
+class Informe { 
+    // Sale de la visita
+
+
 }
 
 class "Centro Educativo" as CentroEducativo{
     Identificación
     Ubicación
     Zona
+    Prioridad
+}
+
+class Alumno{
+    
+
 }
 
 class Desplazamiento{
     Origen
     Destino
+    HoraSalida
+    HoraLlegada
 }
 
 class Dieta{
     Importe
-    Almuerzo
+    Almuerzo: Bool
 }
 
 class Cita{
     Fecha
-    Procedencia: e_Procedencia
+    Hora
+    Titulo
+    TextoSolicitud
+    DocumentaciónAdjunta
+    Estado: e_EstadoCita
+    Procedencia: e_Procedencia // Quitable
+    // Inspector de Referencia mediante asociación
+}
+
+enum e_EstadoCita{
+
+    PendienteDeRevisión    
+    Rechazada 
+    Concertada  
 }
 
 enum e_Procedencia {
@@ -129,19 +148,26 @@ class Tutor{
     Nombre
 }
 
-class Alumno{
 
-}
-
-class Agenda{
+class Anotaciones{
+    Prioridad: Int
+    Fecha: Date
+    Titulo: Str
+    Descripcion: Str
+    // Con una asociación: CentroAsociado
     
 }
 
-class Tarea {
+class Visita {
+    Fecha 
+    Hora
 
 }
 
+
 class DiasAsuntosPersonales {
+    DiasSolicitados
+    DiasRestantes
 
 }
 @enduml
