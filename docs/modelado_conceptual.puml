@@ -2,17 +2,29 @@
 hide methods
 skinparam ClassAttributeIconSize 0
 '----------------------------------'
-
+/'
+PASOS RECOMENDADOS PARA CONSTRUIR EL MODELO CONCEPTUAL:
+  1. Analizar la información sobre el dominio del problema (glosario) y los requisitos.
+  2. Identificar posibles entidades y atributos.
+  3. Identificar posibles asociaciones.
+  4. Construir incrementalmente el modelo conceptual e identificar las multiplicidades de las asociaciones.
+  5. Identificar clasificaciones entre entidades con propiedades (atributos y/o asociaciones) comunes.
+  6. Identificar composiciones entre entidades.
+  7. Añadir las restricciones que no puedan expresarse gráficamente.
+  8. Validar con posibles escenarios mediante diagramas de objetos.
+  9. Registrar todos aquellos problemas semánticos que deban ser aclarados con clientes y usuarios.
+'/
 title CAMBIAR TÍTULO
 
 skinparam shadowing false
 
-' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...).
+' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...). 
+' -> ESTADO: DONE!
 note as RN01
   RN-01: Dietas Desplazamiento
   El kilometraje de cada desplazamiento se calculará siempre tomando como referencia el centro de Cádiz y el centro educativo visitado, a razón de 0,24 €/km. (Este valor puede variar). Deberá calcularse acorde a la legislación vigente. ¿¿AFECTA A Inspector??
 end note
-
+    
 note as RN02
   RN-02: Plus Almuerzo
   Si la hora de llegada al domicilio del inspector excede de las 15:00, el sistema añadirá 20 € adicionales en concepto de almuerzo a la dieta correspondiente.
@@ -39,7 +51,8 @@ note as RN06
 end note
 
 ' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
-' Añade una conexión por cada clase afectada por una regla.
+' Añade una conexión por cada clase afectada por una regla. 
+' -> ESTADO: DONE!
 RN01 .. Desplazamiento
 RN01 .. Dieta
 RN01 .. Inspector
@@ -61,10 +74,6 @@ RN05 .. Agenda
 RN06 .. Inspector
 RN06 .. InspectorJefe
 RN06 .. DiasAsuntosPersonales
-
-
-
-
 
 
 'CLASES:'
@@ -89,8 +98,8 @@ class Conserjería {
 }
 
 class Informe { 
-    // Sale de la visita
-
+    // Sale de la visita. RI-10
+    
 
 }
 
@@ -111,6 +120,7 @@ class Desplazamiento{
     Destino
     HoraSalida
     HoraLlegada
+    Tarifa          //Tarifa vigente por km (RC-01)
 }
 
 class Dieta{
@@ -130,7 +140,6 @@ class Cita{
 }
 
 enum e_EstadoCita{
-
     PendienteDeRevisión    
     Rechazada 
     Concertada  
@@ -166,6 +175,8 @@ class Visita {
 
 
 class DiasAsuntosPersonales {
+    //Estaria relacionado con "Inspector" e "InspectorJefe" de la siguiente forma:
+    //Inspector "1" -- "1" DiasAsuntosPersonales
     DiasSolicitados
     DiasRestantes
 
