@@ -109,7 +109,7 @@ El diagrama está en [`docs/modelado_conceptual.puml`](docs/modelado_conceptual.
 push que lo modifica lo valida y lo renderiza automáticamente (ver
 [Actions](https://github.com/lorenzomaranon/ProyectoBD_Inspeccion_Educativa/actions/workflows/plantuml.yml)).
 
-**Clases actuales:** `Inspector`, `InspectorJefe`, `CoordinadorZona`, `CentroEducativo`,
+**Clases actuales:** `Inspector`, `InspectorJefe`, `CentroEducativo`,
 `Agenda`, `Visita`, `Tarea`, `Anotaciones`, `Informe`, `Desplazamiento`, `Dieta`, `Cita`,
 `Familia`, `Conserjería`, `DiasAsuntosPersonales`, con los enumerados `e_EstadoCita` y
 `e_Procedencia`.
