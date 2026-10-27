@@ -1,0 +1,37 @@
+name: Diagramas PlantUML
+
+on:
+  push:
+    branches: [main]
+    paths: ["**.puml", ".github/workflows/plantuml.yml"]
+  pull_request:
+    paths: ["**.puml", ".github/workflows/plantuml.yml"]
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    env:
+      PLANTUML_VERSION: 1.2024.7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Instalar Graphviz y PlantUML
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q graphviz
+          curl -sSfL -o plantuml.jar "https://repo1.maven.org/maven2/net/sourceforge/plantuml/plantuml/${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar"
+      - name: Validar sintaxis
+        run: find . -name '*.puml' -not -path './.git/*' -print0 | xargs -0 java -jar plantuml.jar -checkonly -failfast2
+      - name: Renderizar diagramas
+        run: |
+          mkdir -p out
+          find . -name '*.puml' -not -path './.git/*' -print0 | xargs -0 java -jar plantuml.jar -tpng -o "$PWD/out"
+          find . -name '*.puml' -not -path './.git/*' -print0 | xargs -0 java -jar plantuml.jar -tsvg -o "$PWD/out"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: diagramas
+          path: out/
