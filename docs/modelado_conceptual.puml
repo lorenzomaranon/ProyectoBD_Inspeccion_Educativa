@@ -151,8 +151,7 @@ class Anotaciones{
     Fecha: Date
     Titulo: Str
     Descripcion: Str
-    Prioridad
-    // Con una asociación: CentroAsociado
+    Prioridad: e_Prioridad
     
 }
 
