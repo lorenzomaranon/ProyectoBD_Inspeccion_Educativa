@@ -85,11 +85,21 @@ Inspector <|-- InspectorJefe
 Persona <|-- Alumno
 Persona <|-- Profesor
 Persona <|-- Inspector
+Actividad <|-- Visita
 Alumno "*" *-- "1" CentroEducativo: pertenece a >
 Profesor "*" *-- "1" CentroEducativo: pertenece a >
 Zona "1" *-- "*" CentroEducativo
-Zona "1" *-- "*" CentroEducativo
 Inspector "*" -- "1" Zona: inspeccionan >
+Inspector "1" *-- "*" Anotaciones: redacta >
+Tutor "1" *-- "*" Alumno : tiene hijos > 
+Tutor "1" *-- "*" Cita : solicita >
+CentroEducativo "1" *-- "*" Visita: recibe >
+Inspector "1" *-- "*" Actividad: realiza y tiene asignadas >
+Visita "1" *-- "1" Informe: resulta en >
+Visita "1" *-- "1" Desplazamiento : se realiza >
+Desplazamiento "1" *-- "0..1" Dieta : requiere >
+InspectorJefe "1" -- "*" Actividad : asigna > 
+CentroEducativo "1" *-- "*" Anotaciones
 
 class InspectorJefe {
 }
