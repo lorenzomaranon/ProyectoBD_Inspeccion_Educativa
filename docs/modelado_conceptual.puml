@@ -212,20 +212,20 @@ Actividad <|-- Visita
 Actividad <|-- Tarea: {disjunta, completa}
 
 Zona *-- "*" CentroEducativo
-Inspector "*" -- "1" Zona: inspeccionan >
+Inspector "*" -- "1" Zona: trabajaEn >
 Inspector *-- "*" Anotaciones: redacta >
 Inspector *-- "*" Actividad: realiza >
-Inspector "1" -- "1" DiasAsuntosPersonales: > cuenta con
-TutorLegal *-- "*" Alumno : responsable de > 
+Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
+TutorLegal "1..*" -- "*" Alumno : responsableDe > 
 TutorLegal *-- "*" Cita : solicita >
-Visita *-- "1" Informe: resulta en >
-Visita *-- "1" Desplazamiento : se realiza >
+Visita *-- "1" Informe
+Visita *-- "1" Desplazamiento : existe >
 Desplazamiento *-- "0..1" Dieta : requiere >
 InspectorJefe "1" -- "*" Actividad : asigna > 
 CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo *-- "*" Alumno
 CentroEducativo *-- "*" Profesor
-CentroEducativo *-- "*" Anotaciones
+CentroEducativo "1" -- "*" Anotaciones: trataSobre <
 
 
 
