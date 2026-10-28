@@ -20,6 +20,7 @@ ETSII · Universidad de Sevilla · Curso 2026/2027
 
 </div>
 
+POSIBLE PREGUNTA: ¿Cómo has hecho la transformación de la herencia?
 ---
 
 ## 📑 Índice
