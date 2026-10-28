@@ -136,11 +136,11 @@ class Visita {
 
 class Informe { 
     Prioridad: e_Prioridad
-    Observacion: str
+    Observacion
     }
 
 class Tarea {
-    Descripion
+    Descripcion
 }
 
 class DiasAsuntosPersonales {
@@ -155,7 +155,7 @@ class Zona {
 
 class Persona {
     Nombre
-    Apellido
+    Apellidos
     DNI
 }
 
@@ -179,7 +179,7 @@ class Tutela {
 enum e_Parentesco {
   Padre
   Madre
-  TutorLegal
+  otroTutor
 }
 
 enum e_EstadoCita{
