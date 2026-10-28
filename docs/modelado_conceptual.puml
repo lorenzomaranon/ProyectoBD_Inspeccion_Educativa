@@ -138,6 +138,12 @@ enum e_Procedencia {
 }
 
 Cita +-- e_Procedencia
+Cita +-- e_EstadoCita
+Visita +-- e_EstadoVisita
+Cita +-- e_Prioridad
+CentroEducativo +-- e_Prioridad
+Informe +-- e_Prioridad
+Anotaciones +-- e_Prioridad
 
 
 class Anotaciones{
