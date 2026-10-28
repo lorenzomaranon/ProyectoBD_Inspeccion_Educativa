@@ -50,6 +50,11 @@ note as RN06
  Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
 end note'/
 
+note as RN07
+  RN-07: Responsable único
+Cada centro educativo tendrá exactamente un profesor responsable del centro.
+end note
+
 ' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
 ' Añade una conexión por cada clase afectada por una regla. 
 ' -> ESTADO: DONE!
@@ -73,16 +78,14 @@ RN05 .. Agenda
 
 RN06 .. Inspector
 RN06 .. InspectorJefe
-RN06 .. DiasAsuntosPersonales'/
+RN06 .. DiasAsuntosPersonales
 
+RN07 .. Profesor
+RN07 .. CentroEducativo'/
 
 'CLASES:'
 class Inspector{
-
-}
-
-
-class InspectorJefe {
+  esJefe
 }
 
 class "Centro Educativo" as CentroEducativo{
@@ -96,7 +99,6 @@ class Desplazamiento{
     Destino
     HoraSalida
     HoraLlegada
-    Tarifa          //Tarifa vigente por km (RC-01)
 }
 
 class Dieta{
@@ -128,15 +130,11 @@ class Actividad{
     HoraFin
 }
 
-'Completa disjunta'
-
 class Visita {
      Estado: e_EstadoVisita
 }
 
- 'Sale de la visita. RI-10
 class Informe { 
-    
     Prioridad: e_Prioridad
     Observacion: str
     }
@@ -146,18 +144,14 @@ class Tarea {
 }
 
 class DiasAsuntosPersonales {
-    
     DiasSolicitados
     DiasRestantes
-
 }
 
 class Zona {
     Código
     Nombre
 }
-
-
 
 class Persona {
     Nombre
@@ -171,11 +165,21 @@ class Alumno{
 
 class Profesor{
     asignaturasImparte[1..*]
-    esResponsableCentro: bool
+    esResponsableCentro
 }
 
 class TutorLegal{
     
+}
+
+class Tutela {
+  parentesco: e_Parentesco
+}
+
+enum e_Parentesco {
+  Padre
+  Madre
+  TutorLegal
 }
 
 enum e_EstadoCita{
@@ -203,7 +207,6 @@ enum e_Prioridad {
     urgente
 }
 
-Inspector <|-- InspectorJefe
 Persona <|-- Alumno
 Persona <|-- Profesor
 Persona <|-- Inspector
@@ -214,18 +217,20 @@ Actividad <|-- Tarea: {disjunta, completa}
 Zona *-- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
 Inspector *-- "*" Anotaciones: redacta >
-Inspector *-- "*" Actividad: realiza >
+Inspector "responsable" *-- "*" Actividad: realiza >
+Inspector "jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
 TutorLegal "1..*" -- "*" Alumno : responsableDe > 
+(TutorLegal, Alumno) .. Tutela
 TutorLegal *-- "*" Cita : solicita >
 Visita *-- "1" Informe
 Visita *-- "1" Desplazamiento : existe >
 Desplazamiento *-- "0..1" Dieta : requiere >
-InspectorJefe "1" -- "*" Actividad : asigna > 
 CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo *-- "*" Alumno
 CentroEducativo *-- "*" Profesor
 CentroEducativo "1" -- "*" Anotaciones: trataSobre <
+Alumno "1" -- "*" Cita: trataSobre <
 
 
 
