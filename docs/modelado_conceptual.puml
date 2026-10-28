@@ -121,8 +121,7 @@ class Cita{
     DocumentaciónAdjunta
     Estado: e_EstadoCita
     Prioridad
-    Procedencia: e_Procedencia // Quitable
-    // Inspector de Referencia mediante asociación
+    Procedencia: e_Procedencia
 }
 
 enum e_EstadoCita{
