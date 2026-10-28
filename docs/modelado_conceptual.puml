@@ -194,11 +194,10 @@ class Tarea {
 
 
 enum e_Prioridad {
-    1
-    2
-    3
-    4
-    5
+    baja
+    media
+    alta
+    urgente
 }
 
 class DiasAsuntosPersonales {
