@@ -111,9 +111,9 @@ class Cita{
     Hora
     Titulo
     TextoSolicitud
-    DocumentaciónAdjunta
+    DocumentaciónAdjunta [0..*]
     Estado: e_EstadoCita
-    Prioridad
+    Prioridad: e_Prioridad
     Procedencia: e_Procedencia
 }
 
