@@ -118,9 +118,9 @@ class Cita{
 }
 
 class Anotaciones{
-    Fecha: Date
-    Titulo: Str
-    Descripcion: Str
+    Fecha
+    Titulo
+    Descripcion
     Prioridad: e_Prioridad
 }
 
