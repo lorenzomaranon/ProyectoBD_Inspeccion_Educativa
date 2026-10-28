@@ -81,25 +81,6 @@ class Inspector{
 
 }
 
-Inspector <|-- InspectorJefe
-Persona <|-- Alumno
-Persona <|-- Profesor
-Persona <|-- Inspector
-Actividad <|-- Visita
-Alumno "*" *-- "1" CentroEducativo: pertenece a >
-Profesor "*" *-- "1" CentroEducativo: pertenece a >
-Zona "1" *-- "*" CentroEducativo
-Inspector "*" -- "1" Zona: inspeccionan >
-Inspector "1" *-- "*" Anotaciones: redacta >
-Tutor "1" *-- "*" Alumno : tiene hijos > 
-Tutor "1" *-- "*" Cita : solicita >
-CentroEducativo "1" *-- "*" Visita: recibe >
-Inspector "1" *-- "*" Actividad: realiza y tiene asignadas >
-Visita "1" *-- "1" Informe: resulta en >
-Visita "1" *-- "1" Desplazamiento : se realiza >
-Desplazamiento "1" *-- "0..1" Dieta : requiere >
-InspectorJefe "1" -- "*" Actividad : asigna > 
-CentroEducativo "1" *-- "*" Anotaciones
 
 class InspectorJefe {
 }
@@ -182,8 +163,9 @@ enum e_EstadoVisita {
     Rechazada
 }
 
+ 'Sale de la visita. RI-10
 class Informe { 
-    // Sale de la visita. RI-10
+    
     Prioridad: e_Prioridad
     Observacion: str
     }
@@ -200,9 +182,9 @@ enum e_Prioridad {
     urgente
 }
 
+
 class DiasAsuntosPersonales {
-    //Estaria relacionado con "Inspector" e "InspectorJefe" de la siguiente forma:
-    //Inspector "1" -- "1" DiasAsuntosPersonales
+    
     DiasSolicitados
     DiasRestantes
 
@@ -229,9 +211,33 @@ class Profesor{
 
 }
 
-class Tutor{
-    Nombre
-    DNI
+class TutorLegal{
+    
 }
+
+
+Inspector <|-- InspectorJefe
+Persona <|-- Alumno
+Persona <|-- Profesor
+Persona <|-- Inspector
+Persona <|-- TutorLegal
+Actividad <|-- Visita
+Actividad <|-- Tarea: {disjunta, completa}
+Alumno "*" --* CentroEducativo
+Profesor "*" --* CentroEducativo
+Zona *-- "*" CentroEducativo
+Inspector "*" -- "1" Zona: inspeccionan >
+Inspector *-- "*" Anotaciones: redacta >
+TutorLegal *-- "*" Alumno : responsable de > 
+TutorLegal *-- "*" Cita : solicita >
+CentroEducativo *-- "*" Visita: recibe >
+Inspector *-- "*" Actividad: realiza y tiene asignadas >
+Visita *-- "1" Informe: resulta en >
+Visita *-- "1" Desplazamiento : se realiza >
+Desplazamiento *-- "0..1" Dieta : requiere >
+InspectorJefe "1" -- "*" Actividad : asigna > 
+CentroEducativo *-- "*" Anotaciones
+Inspector "1" -- "1" DiasAsuntosPersonales: > cuenta con
+
 
 @enduml
