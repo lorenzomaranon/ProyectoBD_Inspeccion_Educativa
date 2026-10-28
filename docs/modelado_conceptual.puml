@@ -115,34 +115,11 @@ class Cita{
     Procedencia: e_Procedencia
 }
 
-enum e_EstadoCita{
-    PendienteDeRevisión    
-    Rechazada 
-    Concertada  
-}
-
-enum e_Procedencia {
-    Agenda
-    Llamada
-    Portal_Citas 
-}
-
-Cita +-- e_Procedencia
-Cita +-- e_EstadoCita
-Visita +-- e_EstadoVisita
-Cita +-- e_Prioridad
-CentroEducativo +-- e_Prioridad
-Informe +-- e_Prioridad
-Anotaciones +-- e_Prioridad
-
-
 class Anotaciones{
-    Prioridad: Int
     Fecha: Date
     Titulo: Str
     Descripcion: Str
     Prioridad: e_Prioridad
-    
 }
 
 class Actividad{
@@ -157,12 +134,6 @@ class Visita {
      Estado: e_EstadoVisita
 }
 
-enum e_EstadoVisita {
-    Pendiente
-    Finalizada
-    Rechazada
-}
-
  'Sale de la visita. RI-10
 class Informe { 
     
@@ -173,15 +144,6 @@ class Informe {
 class Tarea {
     Descripion
 }
-
-
-enum e_Prioridad {
-    baja
-    media
-    alta
-    urgente
-}
-
 
 class DiasAsuntosPersonales {
     
@@ -208,13 +170,38 @@ class Alumno{
 }
 
 class Profesor{
-
+    asignaturasImparte[1..*]
+    esResponsableCentro: bool
 }
 
 class TutorLegal{
     
 }
 
+enum e_EstadoCita{
+    PendienteDeRevisión    
+    Rechazada 
+    Concertada  
+}
+
+enum e_Procedencia {
+    Agenda
+    Llamada
+    Portal_Citas 
+}
+
+enum e_EstadoVisita {
+    Pendiente
+    Finalizada
+    Rechazada
+}
+
+enum e_Prioridad {
+    baja
+    media
+    alta
+    urgente
+}
 
 Inspector <|-- InspectorJefe
 Persona <|-- Alumno
@@ -223,21 +210,23 @@ Persona <|-- Inspector
 Persona <|-- TutorLegal
 Actividad <|-- Visita
 Actividad <|-- Tarea: {disjunta, completa}
-Alumno "*" --* CentroEducativo
-Profesor "*" --* CentroEducativo
+
 Zona *-- "*" CentroEducativo
 Inspector "*" -- "1" Zona: inspeccionan >
 Inspector *-- "*" Anotaciones: redacta >
+Inspector *-- "*" Actividad: realiza >
+Inspector "1" -- "1" DiasAsuntosPersonales: > cuenta con
 TutorLegal *-- "*" Alumno : responsable de > 
 TutorLegal *-- "*" Cita : solicita >
-CentroEducativo *-- "*" Visita: recibe >
-Inspector *-- "*" Actividad: realiza y tiene asignadas >
 Visita *-- "1" Informe: resulta en >
 Visita *-- "1" Desplazamiento : se realiza >
 Desplazamiento *-- "0..1" Dieta : requiere >
 InspectorJefe "1" -- "*" Actividad : asigna > 
+CentroEducativo *-- "*" Visita: recibe >
+CentroEducativo *-- "*" Alumno
+CentroEducativo *-- "*" Profesor
 CentroEducativo *-- "*" Anotaciones
-Inspector "1" -- "1" DiasAsuntosPersonales: > cuenta con
+
 
 
 @enduml
