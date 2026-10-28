@@ -20,7 +20,7 @@ skinparam shadowing false
 
 ' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...). 
 ' -> ESTADO: DONE!
-note as RN01
+/'note as RN01
   RN-01: Dietas Desplazamiento
   El kilometraje de cada desplazamiento se calculará siempre tomando como referencia el centro de Cádiz y el centro educativo visitado, a razón de 0,24 €/km. (Este valor puede variar). Deberá calcularse acorde a la legislación vigente. ¿¿AFECTA A Inspector??
 end note
@@ -48,12 +48,12 @@ end note
 note as RN06
  RN-06: Acceso visualización Días Libres
  Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
-end note
+end note'/
 
 ' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
 ' Añade una conexión por cada clase afectada por una regla. 
 ' -> ESTADO: DONE!
-RN01 .. Desplazamiento
+/'RN01 .. Desplazamiento
 RN01 .. Dieta
 RN01 .. Inspector
 
@@ -73,46 +73,31 @@ RN05 .. Agenda
 
 RN06 .. Inspector
 RN06 .. InspectorJefe
-RN06 .. DiasAsuntosPersonales
+RN06 .. DiasAsuntosPersonales'/
 
 
 'CLASES:'
 class Inspector{
-    Nombre
-    Apellidos
-    Zona_Asignada
-    Perfil
+
 }
+
+Inspector <|-- InspectorJefe
+Persona <|-- Alumno
+Persona <|-- Profesor
+Persona <|-- Inspector
+Alumno "*" *-- "1" CentroEducativo: pertenece a >
+Profesor "*" *-- "1" CentroEducativo: pertenece a >
+Zona "1" *-- "*" CentroEducativo
+Zona "1" *-- "*" CentroEducativo
+
 
 class InspectorJefe {
-    Nombre
-    Apellidos
-    Zona_Asignada
-    Perfil
-}
-
-
-class Conserjería {
-
-
-}
-
-class Informe { 
-    // Sale de la visita. RI-10
-    
-
 }
 
 class "Centro Educativo" as CentroEducativo{
     Identificación
     Ubicación
-    Zona
-    Prioridad
-}
-
-class Alumno{
-    
-
+    Prioridad: e_Prioridad
 }
 
 class Desplazamiento{
@@ -125,7 +110,7 @@ class Desplazamiento{
 
 class Dieta{
     Importe
-    Almuerzo: Bool
+    Almuerzo
 }
 
 class Cita{
@@ -135,6 +120,7 @@ class Cita{
     TextoSolicitud
     DocumentaciónAdjunta
     Estado: e_EstadoCita
+    Prioridad
     Procedencia: e_Procedencia // Quitable
     // Inspector de Referencia mediante asociación
 }
@@ -148,14 +134,10 @@ enum e_EstadoCita{
 enum e_Procedencia {
     Agenda
     Llamada
-    Portal_Citas
+    Portal_Citas 
 }
 
 Cita +-- e_Procedencia
-
-class Tutor{
-    Nombre
-}
 
 
 class Anotaciones{
@@ -163,16 +145,47 @@ class Anotaciones{
     Fecha: Date
     Titulo: Str
     Descripcion: Str
+    Prioridad
     // Con una asociación: CentroAsociado
     
 }
 
-class Visita {
-    Fecha 
-    Hora
-
+class Actividad{
+    Fecha
+    HoraInicio
+    HoraFin
 }
 
+'Completa disjunta'
+
+class Visita {
+     Estado: e_EstadoVisita
+}
+
+enum e_EstadoVisita {
+    Pendiente
+    Finalizada
+    Rechazada
+}
+
+class Informe { 
+    // Sale de la visita. RI-10
+    Prioridad: e_Prioridad
+    Observacion: str
+    }
+
+class Tarea {
+    Descripion
+}
+
+
+enum e_Prioridad {
+    1
+    2
+    3
+    4
+    5
+}
 
 class DiasAsuntosPersonales {
     //Estaria relacionado con "Inspector" e "InspectorJefe" de la siguiente forma:
@@ -181,4 +194,34 @@ class DiasAsuntosPersonales {
     DiasRestantes
 
 }
+
+class Zona {
+    Código
+    Nombre
+}
+
+class Conserjería {
+
+
+}
+
+class Persona {
+    Nombre
+    Apellido
+    DNI
+}
+
+class Alumno{
+
+}
+
+class Profesor{
+
+}
+
+class Tutor{
+    Nombre
+    DNI
+}
+
 @enduml
