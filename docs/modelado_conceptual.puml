@@ -48,12 +48,12 @@ end note
 note as RN06
  RN-06: Acceso visualización Días Libres
  Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
-end note'/
+end note
 
 note as RN07
   RN-07: Responsable único
 Cada centro educativo tendrá exactamente un profesor responsable del centro.
-end note
+end note'/
 
 ' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
 ' Añade una conexión por cada clase afectada por una regla. 
