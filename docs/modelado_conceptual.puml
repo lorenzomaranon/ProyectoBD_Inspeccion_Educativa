@@ -207,28 +207,34 @@ enum e_Prioridad {
     urgente
 }
 
+'Herencias'
+
 Persona <|-- Alumno
 Persona <|-- Profesor
 Persona <|-- Inspector
 Persona <|-- TutorLegal
 Actividad <|-- Visita
 Actividad <|-- Tarea: {disjunta, completa}
+Actividad <|-- Cita
 
-Zona *-- "*" CentroEducativo
+'Asociaciones'
+
+Zona "1" -- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
-Inspector *-- "*" Anotaciones: redacta >
+Inspector "1" -- "*" Anotaciones: redacta >
 Inspector "responsable" *-- "*" Actividad: realiza >
 Inspector "jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
+Inspector "1" -- "*" Cita : atiende >
 TutorLegal "1..*" -- "*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
-TutorLegal *-- "*" Cita : solicita >
+TutorLegal "1" -- "*" Cita : solicita >
 Visita *-- "1" Informe
 Visita *-- "1" Desplazamiento : existe >
 Desplazamiento *-- "0..1" Dieta : requiere >
 CentroEducativo *-- "*" Visita: recibe >
-CentroEducativo *-- "*" Alumno
-CentroEducativo *-- "*" Profesor
+CentroEducativo "1" -- "*" Alumno
+CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotaciones: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
 
