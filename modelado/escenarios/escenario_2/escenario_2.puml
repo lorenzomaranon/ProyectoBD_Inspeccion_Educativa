@@ -41,7 +41,7 @@ class Cita{
     Procedencia: e_Procedencia
 }
 
-class Anotaciones{
+class Anotación{
     Fecha
     Titulo
     Descripcion
@@ -144,7 +144,7 @@ Actividad <|-- Tarea: {disjunta, completa}
 
 Zona "1" -- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
-Inspector "1" -- "*" Anotaciones: redacta >
+Inspector "1" -- "*" Anotación: redacta >
 Inspector "1 responsable" -- "*" Actividad: realiza >
 Inspector "1 jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: cuentaCon >
@@ -159,7 +159,7 @@ Desplazamiento *-- "0..1" Dieta : requiere >
 CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
-CentroEducativo "1" -- "*" Anotaciones: trataSobre <
+CentroEducativo "1" -- "*" Anotación: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
 Cita "*" -- "*" Profesor: implicaA >
 

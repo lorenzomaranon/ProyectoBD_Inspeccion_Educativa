@@ -26,7 +26,7 @@ Esto no garantiza que el modelo propuesto sea perfecto. Los escenarios pueden de
 | `Informe` y `Desplazamiento` `0..1`, con R-01 | No | Sí | Sí | Estado `Pendiente` (RI-09) | Exigido por la lógica; requiere matizar RI-10 y RI-11 |
 | Roles `1 responsable` y `1 jefe`, R-02 y R-03 | No | Sí | Sí | RI-09, RN-03 y RN-05 | Exigido |
 | `Cita -- Profesor : implicaA` | No | Sí | Sí | Solo los escenarios | **Opcional**: el catálogo no lo pide |
-| `Anotaciones` | Sí | **No** | Sí | RI-08, RC-03 y RC-12 | Exigido |
+| `Anotación` | Sí | **No** | Sí | RI-08, RC-03 y RC-12 | Exigido |
 | `DiasAsuntosPersonales` | Sí | **No** | Sí | RI-13, RC-02, RC-13 y RN-06 | Exigido |
 | `realiza` como asociación simple | No | No | **Nuevo** | Una parte solo puede tener un compuesto | El problema es seguro; la solución elegida es una opción |
 | R-04: un profesor responsable por centro | No | No | **Nuevo** | RN-07 | Exigido |
