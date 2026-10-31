@@ -8,13 +8,13 @@
 
 Hugo Gil, alumno del IES Mirador de la Peña (Arcos de la Frontera), le cuenta a su madre, Marta Ruiz, que su profesor de Matemáticas, Andrés Vega, le humilla reiteradamente en clase. El lunes 5 de octubre de 2026, Marta, como tutora legal de Hugo, solicita por escrito una cita con la inspección a través del portal de citas y adjunta la documentación de la que dispone. La solicitud queda pendiente de revisión.
 
-Al día siguiente, conserjería revisa la solicitud, le asigna una prioridad alta y la concierta para el jueves 8 de octubre, trasladándola a la inspectora Carmen Soto, que es quien la atiende.
+Al día siguiente, conserjería revisa la solicitud, trasladándola a la inspectora Carmen Soto, que es quien la atiende le asigna una prioridad alta y la concierta para el jueves 8 de octubre.
 
 Tras reunirse con Marta, y como Carmen es inspectora jefe (`esJefe = true`), programa una actividad en el calendario de otro inspector de la zona del centro, Javier Mena, que será quien la realice. Toda actividad es o bien una tarea o bien una visita. En este caso hace falta una comprobación presencial, por lo que se crea una visita al centro en estado `Pendiente`. Si Carmen no fuese inspectora jefe, no podría asignarla (RN-05).
 
 El miércoles 14 de octubre, Javier se desplaza desde el centro de Cádiz hasta el instituto, realiza la visita y esta pasa a `Finalizada`. Toda visita finalizada tiene un desplazamiento, del que puede derivarse una dieta. Aquí el sistema calcula la dieta a partir del kilometraje y la tarifa vigente, y añade el plus de almuerzo porque Javier regresa a su domicilio después de las 15:00.
 
-Tras la visita, Javier, el inspector que la ha realizado, redacta el informe, asociado a la visita y a él mismo como autor. El informe tiene una prioridad (baja, media, alta o urgente) que sirve de referencia para revisar la prioridad del centro educativo. Como es `alta`, Javier actualiza la prioridad del centro de `media` a `alta`, y el sistema avisa a la inspectora jefe y a los inspectores de la zona (RC-04).
+Durante la visita, Javier, el inspector que la ha realizado, redacta el informe, asociado a la visita y a él mismo como autor. El informe tiene una prioridad (baja, media, alta o urgente) que sirve de referencia para revisar la prioridad del centro educativo. Como es `alta`, se actualiza la prioridad del centro de `media` a `alta`, y el sistema avisa a la inspectora jefe y a los inspectores de la zona (RC-04).
 
 ## 2. Datos del escenario
 
