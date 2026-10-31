@@ -1,0 +1,212 @@
+@startuml modelado_conceptual_caso_2
+hide methods
+skinparam ClassAttributeIconSize 0
+skinparam shadowing false
+
+title INSPECCIÓN EDUCATIVA CÁDIZ
+
+'CLASES:'
+class Inspector{
+  esJefe
+}
+
+class "Centro Educativo" as CentroEducativo{
+    Identificación
+    Ubicación
+    Prioridad: e_Prioridad
+}
+
+class Desplazamiento{
+    Origen
+    Destino
+    HoraSalida
+    HoraLlegadaDomicilio
+    Kilometros
+    TarifaKm
+}
+
+class Dieta{
+    Importe
+    Almuerzo
+}
+
+class Cita{
+    Fecha [0..1]
+    Hora [0..1]
+    Titulo
+    TextoSolicitud
+    DocumentaciónAdjunta [0..*]
+    Estado: e_EstadoCita
+    Prioridad: e_Prioridad [0..1]
+    Procedencia: e_Procedencia
+}
+
+class Anotaciones{
+    Fecha
+    Titulo
+    Descripcion
+    Prioridad: e_Prioridad
+}
+
+class Actividad{
+    Fecha
+    HoraInicio
+    HoraFin
+}
+
+class Visita {
+     Estado: e_EstadoVisita
+}
+
+class Informe {
+    Prioridad: e_Prioridad
+    Observacion
+    }
+
+class Tarea {
+    Descripcion
+}
+
+class DiasAsuntosPersonales {
+    DiasSolicitados
+    DiasRestantes
+}
+
+class Zona {
+    Código
+    Nombre
+}
+
+class Persona {
+    Nombre
+    Apellidos
+    DNI
+}
+
+class Alumno{
+
+}
+
+class Profesor{
+    asignaturasImparte[1..*]
+    esResponsableCentro
+}
+
+class TutorLegal{
+
+}
+
+class Tutela {
+  parentesco: e_Parentesco
+}
+
+enum e_Parentesco {
+  Padre
+  Madre
+  otroTutor
+}
+
+enum e_EstadoCita{
+    PendienteDeRevisión
+    Rechazada
+    Concertada
+}
+
+enum e_Procedencia {
+    Agenda
+    Llamada
+    Portal_Citas
+}
+
+enum e_EstadoVisita {
+    Pendiente
+    Finalizada
+    Rechazada
+}
+
+enum e_Prioridad {
+    baja
+    media
+    alta
+    urgente
+}
+
+'Herencias'
+
+Persona <|-- Alumno
+Persona <|-- Profesor
+Persona <|-- Inspector
+Persona <|-- TutorLegal
+Actividad <|-- Visita
+Actividad <|-- Tarea: {disjunta, completa}
+
+'Asociaciones'
+
+Zona "1" -- "*" CentroEducativo
+Inspector "*" -- "1" Zona: trabajaEn >
+Inspector "1" -- "*" Anotaciones: redacta >
+Inspector "1 responsable" -- "*" Actividad: realiza >
+Inspector "1 jefe" -- "*" Actividad: asigna >
+Inspector "1" -- "1" DiasAsuntosPersonales: cuentaCon >
+Inspector "0..1" -- "*" Cita : atiende >
+Inspector "1" -- "*" Informe : redacta >
+TutorLegal "1..*" -- "*" Alumno : responsableDe >
+(TutorLegal, Alumno) .. Tutela
+TutorLegal "1" -- "*" Cita : solicita >
+Visita *-- "0..1" Informe
+Visita *-- "0..1" Desplazamiento : existe >
+Desplazamiento *-- "0..1" Dieta : requiere >
+CentroEducativo *-- "*" Visita: recibe >
+CentroEducativo "1" -- "*" Alumno
+CentroEducativo "1" -- "*" Profesor
+CentroEducativo "1" -- "*" Anotaciones: trataSobre <
+Alumno "1" -- "*" Cita: trataSobre <
+Cita "*" -- "*" Profesor: implicaA >
+
+'Restricciones'
+
+note as R01
+  R-01: Una visita tiene informe y desplazamiento
+  si y solo si su Estado es Finalizada.
+end note
+
+note as R02
+  R-02: El inspector que asigna una actividad
+  tiene esJefe = true (RN-05).
+end note
+
+note as R03
+  R-03: El inspector que redacta el informe es
+  el responsable de la visita asociada (RN-03).
+end note
+
+note as R04
+  R-04: Cada centro tiene exactamente un profesor
+  con esResponsableCentro = true (RN-07).
+end note
+
+note as R05
+  R-05: Una cita tiene Fecha, Hora, Prioridad e
+  inspector que la atiende si su Estado es Concertada.
+  Una cita Rechazada no tiene inspector.
+end note
+
+note as R06
+  R-06: El inspector responsable de una visita
+  trabaja en la zona del centro que la recibe.
+end note
+
+note as R07
+  R-07: El tutor que solicita una cita es tutor
+  legal del alumno sobre el que trata.
+end note
+
+R01 .. Visita
+R02 .. Actividad
+R03 .. Informe
+R04 .. CentroEducativo
+R05 .. Cita
+R06 .. Visita
+R07 .. Cita
+
+@enduml

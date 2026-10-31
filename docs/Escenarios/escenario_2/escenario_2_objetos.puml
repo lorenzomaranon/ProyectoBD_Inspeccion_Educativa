@@ -1,0 +1,166 @@
+@startuml caso_2_objetos
+skinparam shadowing false
+skinparam ObjectAttributeIconSize 0
+skinparam linetype ortho
+skinparam nodesep 70
+skinparam ranksep 80
+
+title ESCENARIO 2 - Diagrama de objetos (estado final, 11/11/2026)
+
+'PERSONAS'
+object "pablo : TutorLegal" as pablo {
+  Nombre = Pablo
+  Apellidos = Nieto Barral
+  DNI = 00000011B
+}
+object "irene : TutorLegal" as irene {
+  Nombre = Irene
+  Apellidos = Vidal Soler
+  DNI = 00000012N
+}
+object "lucia : Alumno" as lucia {
+  Nombre = Lucía
+  Apellidos = Nieto Vidal
+  DNI = 00000013J
+}
+object "rosa : Profesor" as rosa {
+  Nombre = Rosa
+  Apellidos = Pérez Gálvez
+  DNI = 00000014Z
+  asignaturasImparte = [Pedagogía Terapéutica]
+  esResponsableCentro = false
+}
+object "mateo : Profesor" as mateo {
+  Nombre = Mateo
+  Apellidos = Cruz Lozano
+  DNI = 00000015S
+  asignaturasImparte = [Matemáticas, Lengua]
+  esResponsableCentro = true
+}
+object "luis : Inspector" as luis {
+  Nombre = Luis
+  Apellidos = Barea Mora
+  DNI = 00000016Q
+  esJefe = true
+}
+object "nuria : Inspector" as nuria {
+  Nombre = Nuria
+  Apellidos = Campos Ríos
+  DNI = 00000017V
+  esJefe = false
+}
+
+'TUTELAS'
+object "tutelaPablo : Tutela" as tutelaPablo {
+  parentesco = Padre
+}
+object "tutelaIrene : Tutela" as tutelaIrene {
+  parentesco = Madre
+}
+
+'ZONA Y CENTRO'
+object "z02 : Zona" as z02 {
+  Código = Z-02
+  Nombre = Bahía de Cádiz
+}
+object "ceipBahia : CentroEducativo" as ceipBahia {
+  Identificación = 11999002 – CEIP Bahía Azul
+  Ubicación = Avenida Ficticia 7, Puerto Real (Cádiz)
+  Prioridad = media
+}
+
+'CITA'
+object "c2 : Cita" as c2 {
+  Fecha = 05/11/2026
+  Hora = 12:00
+  Titulo = Falta de refuerzo educativo para mi hija
+  TextoSolicitud = «Mi hija Lucía tiene un informe de necesidades
+    de apoyo desde el curso pasado y todavía no recibe las
+    sesiones de refuerzo que le corresponden. La profesora de
+    apoyo, Rosa Pérez, dice que no depende de ella.
+    Solicito una cita con la inspección.»
+  DocumentaciónAdjunta = [informe_psicopedagogico.pdf]
+  Estado = Concertada
+  Prioridad = media
+  Procedencia = Portal_Citas
+}
+
+'ACTIVIDADES'
+object "t1 : Tarea" as t1 {
+  Fecha = 09/11/2026
+  HoraInicio = 09:00
+  HoraFin = 11:00
+  Descripcion = Preparar el guion de entrevistas y reunir
+    el plan de atención a la diversidad del CEIP Bahía Azul
+}
+object "v2 : Visita" as v2 {
+  Fecha = 11/11/2026
+  HoraInicio = 09:30
+  HoraFin = 13:00
+  Estado = Finalizada
+}
+object "d2 : Desplazamiento" as d2 {
+  Origen = Centro de Cádiz
+  Destino = CEIP Bahía Azul, Puerto Real
+  HoraSalida = 08:30
+  HoraLlegadaDomicilio = 14:20
+  Kilometros = 22
+  TarifaKm = 0,24 €/km
+}
+object "dt2 : Dieta" as dt2 {
+  Importe = 5,28 €
+  Almuerzo = false
+}
+object "i2 : Informe" as i2 {
+  Prioridad = baja
+  Observacion = El centro reconoce el retraso en el refuerzo
+    por falta de horas de apoyo y presenta un calendario de
+    sesiones desde la semana siguiente. No se aprecian indicios
+    de desatención voluntaria. Se recomienda comprobar el
+    cumplimiento del calendario en dos meses.
+}
+
+'ENLACES: FAMILIA'
+pablo -- tutelaPablo : responsableDe
+tutelaPablo -- lucia
+irene -- tutelaIrene : responsableDe
+tutelaIrene -- lucia
+
+'ENLACES: CITA'
+pablo --> c2 : solicita
+c2 --> lucia : trataSobre
+c2 --> rosa : implicaA
+luis --> c2 : atiende
+
+'ENLACES: ACTIVIDADES'
+luis --> t1 : asigna
+luis --> v2 : asigna
+nuria --> t1 : realiza
+nuria --> v2 : realiza
+nuria --> i2 : redacta
+ceipBahia *-- v2 : recibe
+v2 *-- i2
+v2 *-- d2 : existe
+d2 *-- dt2 : requiere
+
+'ENLACES: CENTRO Y ZONA'
+ceipBahia -- lucia
+ceipBahia -- rosa
+ceipBahia -- mateo
+z02 -- ceipBahia
+luis --> z02 : trabajaEn
+nuria --> z02 : trabajaEn
+
+note right of dt2
+  22 km × 0,24 €/km = 5,28 €
+  14:20 no excede las 15:00:
+  sin plus de almuerzo (RN-02)
+end note
+
+note top of ceipBahia
+  El informe es de prioridad baja y el centro
+  sigue en media: no pasa a alta o urgente,
+  así que no hay aviso (RC-03, RC-04)
+end note
+
+@enduml
