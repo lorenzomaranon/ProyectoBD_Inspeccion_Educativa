@@ -8,9 +8,9 @@
 
 Lucía Nieto, alumna del CEIP Bahía Azul (Puerto Real), tiene dificultades de aprendizaje y su familia lleva meses esperando el refuerzo educativo que el centro le debía prestar. El lunes 2 de noviembre de 2026, su padre, Pablo Nieto, solicita por escrito una cita con la inspección a través del portal de citas. Pablo es uno de los dos tutores legales de Lucía; el otro es su madre, Irene Vidal, que no interviene en el trámite. La solicitud menciona a la profesora de apoyo, Rosa Pérez.
 
-Al día siguiente, conserjería revisa la solicitud, le asigna una prioridad media y la concierta para el jueves 5 de noviembre, trasladándola al inspector jefe Luis Barea, que es quien la atiende.
+Al día siguiente, conserjería revisa la solicitud y la concierta para el jueves 5 de noviembre, trasladándola al inspector jefe Luis Barea, que es quien la atiende.
 
-Tras reunirse con Pablo, Luis, que es inspector jefe (`esJefe = true`), programa dos actividades en el calendario de una inspectora de la zona del centro, Nuria Campos:
+Tras reunirse con Pablo, Luis le asigna a la cita una prioridad media y, como es inspector jefe (`esJefe = true`), programa dos actividades en el calendario de una inspectora de la zona del centro, Nuria Campos:
 
 - Una **tarea** (no hace falta salir de la oficina): preparar el guion de entrevistas y reunir el plan de atención a la diversidad del centro.
 - Una **visita** al centro, en estado `Pendiente`.
@@ -71,7 +71,7 @@ Este escenario es el complementario del primero: allí todo cambia (prioridad, p
 | TextoSolicitud | «Mi hija Lucía tiene un informe de necesidades de apoyo desde el curso pasado y todavía no recibe las sesiones de refuerzo que le corresponden. La profesora de apoyo, Rosa Pérez, dice que no depende de ella. Solicito una cita con la inspección.» |
 | DocumentaciónAdjunta | [informe_psicopedagogico.pdf] |
 | Estado | PendienteDeRevisión → **Concertada** |
-| Prioridad | media |
+| Prioridad | media (la asigna `luis`) |
 | Procedencia | Portal_Citas |
 
 ### Tarea `t1`
@@ -130,8 +130,8 @@ Cálculo (RC-01, RN-01 y RN-02):
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 02/11 | Pablo | Registra la solicitud en el portal | Crea `c2`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `pablo` solicita `c2`; `c2` trataSobre `lucia` | RI-07, RC-06, RN-04 |
-| 2 | 03/11 | Conserjería | Revisa y concierta la solicitud | `c2`: Estado = Concertada, Prioridad = media, Fecha y Hora | `luis` atiende `c2`; `c2` implicaA `rosa` | RC-03, RC-07 |
-| 3 | 05/11 | Luis | Atiende a Pablo y comprueba que es jefe | Lee `luis.esJefe = true` | — | RN-05 |
+| 2 | 03/11 | Conserjería | Revisa y concierta la solicitud | `c2`: Estado = Concertada, Fecha y Hora | `luis` atiende `c2`; `c2` implicaA `rosa` | RC-07 |
+| 3 | 05/11 | Luis | Atiende a Pablo, asigna la prioridad de la cita y comprueba que es jefe | `c2`: Prioridad = media; lee `luis.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 05/11 | Luis | Programa una tarea en el calendario de un inspector de la zona | Crea `t1` con fecha y horas | `luis` asigna `t1`; `nuria` realiza `t1` | RI-09, RN-05 |
 | 5 | 05/11 | Luis | Asigna la visita al mismo inspector | Crea `v2`: Estado = Pendiente, con fecha y horas | `luis` asigna `v2`; `nuria` realiza `v2`; `ceipBahia` recibe `v2` | RI-09, RC-09 |
 | 6 | 11/11 | Nuria | Se desplaza y realiza la visita | `v2`: Estado = Finalizada; crea `d2` | `v2` existe `d2` | RI-11 |
