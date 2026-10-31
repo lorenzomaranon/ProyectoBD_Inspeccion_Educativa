@@ -221,8 +221,8 @@ Actividad <|-- Tarea: {disjunta, completa}
 Zona "1" -- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
 Inspector "1" -- "*" Anotación: redacta >
-Inspector "responsable" *-- "*" Actividad: realiza >
-Inspector "jefe" -- "*" Actividad: asigna >
+Inspector "* responsable" -- "*" Actividad: realiza >
+Inspector "* jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
 Inspector "1" -- "*" Cita : atiende >
 Inspector "1" -- "*" Informe : redacta >
