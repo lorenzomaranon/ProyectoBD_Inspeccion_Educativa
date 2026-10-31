@@ -1,0 +1,252 @@
+@startuml modelado_conceptual
+hide methods
+skinparam ClassAttributeIconSize 0
+'----------------------------------'
+/'
+PASOS RECOMENDADOS PARA CONSTRUIR EL MODELO CONCEPTUAL:
+  1. Analizar la información sobre el dominio del problema (glosario) y los requisitos.
+  2. Identificar posibles entidades y atributos.
+  3. Identificar posibles asociaciones.
+  4. Construir incrementalmente el modelo conceptual e identificar las multiplicidades de las asociaciones.
+  5. Identificar clasificaciones entre entidades con propiedades (atributos y/o asociaciones) comunes.
+  6. Identificar composiciones entre entidades.
+  7. Añadir las restricciones que no puedan expresarse gráficamente.
+  8. Validar con posibles escenarios mediante diagramas de objetos.
+  9. Registrar todos aquellos problemas semánticos que deban ser aclarados con clientes y usuarios.
+'/
+title INSPECCIÓN EDUCATIVA CÁDIZ
+
+skinparam shadowing false
+
+' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...). 
+' -> ESTADO: DONE!
+/'note as RN01
+  RN-01: Dietas Desplazamiento
+  El kilometraje de cada desplazamiento se calculará siempre tomando como referencia el centro de Cádiz y el centro educativo visitado, a razón de 0,24 €/km. (Este valor puede variar). Deberá calcularse acorde a la legislación vigente. ¿¿AFECTA A Inspector??
+end note
+    
+note as RN02
+  RN-02: Plus Almuerzo
+  Si la hora de llegada al domicilio del inspector excede de las 15:00, el sistema añadirá 20 € adicionales en concepto de almuerzo a la dieta correspondiente.
+end note
+
+note as RN03
+  RN-03: Permisos Informe
+  El informe de visita sólo podrá ser cumplimentado por el inspector responsable de la visita.
+end note
+
+note as RN04
+ RN-04: Proceso Cita
+ Las familias no podrán contactar directamente con el inspector: toda solicitud de cita deberá presentarse por escrito a través del portal y pasar por un primer control de conserjería.
+end note
+
+note as RN05
+ RN-05: Subordinación de Tareas
+ Únicamente los inspectores jefe y los coordinadores de equipo de inspección de zona podrán crear o modificar tareas en el calendario de un inspector.
+end note
+
+note as RN06
+ RN-06: Acceso visualización Días Libres
+ Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
+end note
+
+note as RN07
+  RN-07: Responsable único
+Cada centro educativo tendrá exactamente un profesor responsable del centro.
+end note'/
+
+' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
+' Añade una conexión por cada clase afectada por una regla. 
+' -> ESTADO: DONE!
+/'RN01 .. Desplazamiento
+RN01 .. Dieta
+RN01 .. Inspector
+
+RN02 .. Dieta
+
+RN03 .. Informe
+RN03 .. Inspector
+
+RN04 .. Cita
+RN04 .. Familia
+RN04 .. Conserjería
+
+RN05 .. Tarea
+RN05 .. InspectorJefe
+RN05 .. CoordinadorZona
+RN05 .. Agenda
+
+RN06 .. Inspector
+RN06 .. InspectorJefe
+RN06 .. DiasAsuntosPersonales
+
+RN07 .. Profesor
+RN07 .. CentroEducativo'/
+
+'CLASES:'
+class Inspector{
+  esJefe
+}
+
+class "Centro Educativo" as CentroEducativo{
+    Identificación
+    Ubicación
+    Prioridad: e_Prioridad
+}
+
+class Desplazamiento{
+    Origen
+    Destino
+    HoraSalida
+    HoraLlegadaDomicilio
+    Kilometros
+    TarifaKm
+}
+
+class Dieta{
+    Importe
+    Almuerzo
+}
+
+class Cita{
+    Fecha
+    Hora
+    Titulo
+    TextoSolicitud
+    DocumentaciónAdjunta [0..*]
+    Estado: e_EstadoCita
+    Prioridad: e_Prioridad
+    Procedencia: e_Procedencia
+}
+
+class Actividad{
+    Fecha
+    HoraInicio
+    HoraFin
+}
+
+class Visita {
+     Estado: e_EstadoVisita
+}
+
+class Informe { 
+    Prioridad: e_Prioridad
+    Observacion
+    }
+
+class Tarea {
+    Descripcion
+}
+
+class Zona {
+    Código
+    Nombre
+}
+
+class Persona {
+    Nombre
+    Apellidos
+    DNI
+}
+
+class Alumno{
+
+}
+
+class Profesor{
+    asignaturasImparte[1..*]
+    esResponsableCentro
+}
+
+class TutorLegal{
+    
+}
+
+class Tutela {
+  parentesco: e_Parentesco
+}
+
+enum e_Parentesco {
+  Padre
+  Madre
+  otroTutor
+}
+
+enum e_EstadoCita{
+    PendienteDeRevisión    
+    Rechazada 
+    Concertada  
+}
+
+enum e_Procedencia {
+    Agenda
+    Llamada
+    Portal_Citas 
+}
+
+enum e_EstadoVisita {
+    Pendiente
+    Finalizada
+    Rechazada
+}
+
+enum e_Prioridad {
+    baja
+    media
+    alta
+    urgente
+}
+
+'Herencias'
+
+Persona <|-- Alumno
+Persona <|-- Profesor
+Persona <|-- Inspector
+Persona <|-- TutorLegal
+Actividad <|-- Visita
+Actividad <|-- Tarea: {disjunta, completa}
+
+'Asociaciones'
+
+Zona "1" -- "*" CentroEducativo
+Inspector "*" -- "1" Zona: trabajaEn >
+Inspector "1 responsable" *-- "*" Actividad: realiza >
+Inspector "1 jefe" -- "*" Actividad: asigna >
+Inspector "1" -- "*" Cita : atiende >
+Inspector "1" -- "*" Informe : redacta >
+TutorLegal "1..*" -- "*" Alumno : responsableDe > 
+(TutorLegal, Alumno) .. Tutela
+TutorLegal "1" -- "*" Cita : solicita >
+Visita *-- "0..1" Informe
+Visita *-- "0..1" Desplazamiento : existe >
+Desplazamiento *-- "0..1" Dieta : requiere >
+CentroEducativo *-- "*" Visita: recibe >
+CentroEducativo "1" -- "*" Alumno
+CentroEducativo "1" -- "*" Profesor
+Alumno "1" -- "*" Cita: trataSobre <
+Cita "*" -- "*" Profesor: implicaA >
+
+'Restricciones'
+
+note as R01
+  R-01: Una visita tiene informe y desplazamiento
+  si y solo si su Estado es Finalizada.
+end note
+
+note as R02
+  R-02: El inspector que asigna una actividad
+  tiene esJefe = true (RN-05).
+end note
+
+note as R03
+  R-03: El inspector que redacta el informe es
+  el responsable de la visita asociada (RN-03).
+end note
+
+R01 .. Visita
+R02 .. Actividad
+R03 .. Informe
+
+
+
+@enduml
