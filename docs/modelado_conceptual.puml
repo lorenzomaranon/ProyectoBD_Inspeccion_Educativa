@@ -239,8 +239,6 @@ CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotaciones: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
-Cita "*" -- "*" Profesor: implicaA >
-
 'Restricciones'
 
 note as R01

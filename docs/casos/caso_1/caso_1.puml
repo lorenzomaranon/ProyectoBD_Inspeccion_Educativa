@@ -224,8 +224,6 @@ CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 Alumno "1" -- "*" Cita: trataSobre <
-Cita "*" -- "*" Profesor: implicaA >
-
 'Restricciones'
 
 note as R01
