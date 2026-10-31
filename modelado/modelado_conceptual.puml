@@ -89,7 +89,7 @@ class Inspector{
 }
 
 class "Centro Educativo" as CentroEducativo{
-    Identificación
+    Identificación {unique}
     Ubicación
     Prioridad: e_Prioridad
 }
@@ -156,7 +156,7 @@ class Zona {
 class Persona {
     Nombre
     Apellidos
-    DNI
+    DNI {unique}
 }
 
 class Alumno{
