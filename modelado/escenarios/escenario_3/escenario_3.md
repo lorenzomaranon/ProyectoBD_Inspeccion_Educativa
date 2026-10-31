@@ -126,13 +126,13 @@ Como en los escenarios 1 y 2, el kilometraje cuenta solo el trayecto de ida (pro
 
 ### Días de asuntos personales
 
-Se supone, para el escenario, un total de 4 días en el curso. El valor real depende de la legislación vigente (RC-02).
+Se supone, para el escenario, un total de 4 días en el curso. El valor real depende de la legislación vigente (RC-02). `DiasRestantes` es derivado: `DiasTotales - DiasSolicitados` (R-10).
 
-| Objeto | Inspector | DiasSolicitados | DiasRestantes |
-| --- | --- | --- | --- |
-| `diasSergio` | `sergio` | 1 → **3** | 3 → **1** |
-| `diasPaula` | `paula` | 0 | 4 |
-| `diasGloria` | `gloria` | 2 | 2 |
+| Objeto | Inspector | Curso | DiasTotales | DiasSolicitados | /DiasRestantes |
+| --- | --- | --- | --- | --- | --- |
+| `diasSergio` | `sergio` | 2026/2027 | 4 | 1 → **3** | 3 → **1** |
+| `diasPaula` | `paula` | 2026/2027 | 4 | 0 | 4 |
+| `diasGloria` | `gloria` | 2026/2027 | 4 | 2 | 2 |
 
 ## 3. Seguimiento de los datos
 
@@ -198,11 +198,11 @@ Asociaciones que existen desde antes del escenario:
 
 Este escenario deja a la vista varios huecos del modelo:
 
-1. **`HoraLlegadaDomicilio` es obligatoria en todo desplazamiento.** `d3` no termina en el domicilio, así que su valor no tiene sentido. Habría que poner `[0..1]` o decidir qué se guarda en los desplazamientos intermedios.
-2. **RN-01, RI-11 y el glosario dicen que el kilometraje es «siempre» desde Cádiz.** `d4` sale de un centro. Hay que reescribirlos para admitir trayectos entre centros.
+1. **Resuelto.** `HoraLlegadaDomicilio` pasa a `[0..1]` y R-08 limita su valor al último desplazamiento del día. `d3` la deja vacía.
+2. **Resuelto.** RN-01, RI-11, RC-01 y el glosario del catálogo admiten trayectos que parten de otro centro, como `d4`.
 3. **RN-02 no dice qué pasa con dos desplazamientos el mismo día.** Aquí se ha aplicado el plus de 20 € solo al último. Podría entenderse que se aplica a cada dieta o una sola vez al día.
-4. **El modelo no impide que dos actividades del mismo inspector se solapen.** Aquí no ocurre, pero ninguna restricción lo prohíbe.
-5. **`DiasAsuntosPersonales` solo guarda contadores.** No registra las fechas ni quién aprueba los días solicitados, y RC-02 pide calcularlos según la legislación.
+4. **Resuelto.** R-09 impide que dos actividades del mismo inspector se solapen.
+5. **Resuelto en parte.** `DiasTotales` y `Curso` permiten calcular `DiasRestantes` (R-10). Siguen sin registrarse las fechas ni quién aprueba los días solicitados, porque el catálogo no lo pide.
 6. **RN-06 es una regla de acceso.** No se puede comprobar con un diagrama de objetos y hay que describirla en texto.
 7. **No hay regla de conflicto de intereses.** Nada impide asignar a un inspector una visita a un centro donde trabaje un familiar.
 8. **Persona solapada.** El modelo permite ahora que una persona sea `Profesor` y `TutorLegal`, pero la herencia de `Persona` también permite otras combinaciones (por ejemplo `Inspector` y `Profesor`). Convendría decidir si todas son válidas.
