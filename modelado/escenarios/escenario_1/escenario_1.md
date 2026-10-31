@@ -8,9 +8,9 @@
 
 Hugo Gil, alumno del IES Mirador de la Peña (Arcos de la Frontera), le cuenta a su madre, Marta Ruiz, que su profesor de Matemáticas, Andrés Vega, le humilla reiteradamente en clase. El lunes 5 de octubre de 2026, Marta, como tutora legal de Hugo, solicita por escrito una cita con la inspección a través del portal de citas y adjunta la documentación de la que dispone. La solicitud queda pendiente de revisión.
 
-Al día siguiente, conserjería revisa la solicitud, le asigna una prioridad alta y la concierta para el jueves 8 de octubre, trasladándola a la inspectora Carmen Soto, que es quien la atiende.
+Al día siguiente, conserjería revisa la solicitud y la concierta para el jueves 8 de octubre, trasladándola a la inspectora Carmen Soto, que es quien la atiende.
 
-Tras reunirse con Marta, y como Carmen es inspectora jefe (`esJefe = true`), programa una actividad en el calendario de otro inspector de la zona del centro, Javier Mena, que será quien la realice. Toda actividad es o bien una tarea o bien una visita. En este caso hace falta una comprobación presencial, por lo que se crea una visita al centro en estado `Pendiente`. Si Carmen no fuese inspectora jefe, no podría asignarla (RN-05).
+Tras reunirse con Marta, Carmen le asigna a la cita una prioridad alta y, como es inspectora jefe (`esJefe = true`), programa una actividad en el calendario de otro inspector de la zona del centro, Javier Mena, que será quien la realice. Toda actividad es o bien una tarea o bien una visita. En este caso hace falta una comprobación presencial, por lo que se crea una visita al centro en estado `Pendiente`. Si Carmen no fuese inspectora jefe, no podría asignarla (RN-05).
 
 El miércoles 14 de octubre, Javier se desplaza desde el centro de Cádiz hasta el instituto, realiza la visita y esta pasa a `Finalizada`. Toda visita finalizada tiene un desplazamiento, del que puede derivarse una dieta. Aquí el sistema calcula la dieta a partir del kilometraje y la tarifa vigente, y añade el plus de almuerzo porque Javier regresa a su domicilio después de las 15:00.
 
@@ -62,7 +62,7 @@ Durante la visita, Javier, el inspector que la ha realizado, redacta el informe,
 | TextoSolicitud | «Mi hijo Hugo, de 3.º de ESO, me ha contado que su profesor de Matemáticas, Andrés Vega, le humilla en clase delante de sus compañeros desde hace semanas. Solicito una cita con la inspección.» |
 | DocumentaciónAdjunta | [relato_de_los_hechos.pdf, correos_con_tutoria.pdf] |
 | Estado | PendienteDeRevisión → **Concertada** |
-| Prioridad | alta |
+| Prioridad | alta (la asigna `carmen`) |
 | Procedencia | Portal_Citas |
 
 ### Visita `v1`
@@ -112,8 +112,8 @@ Cálculo (RC-01, RN-01 y RN-02):
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 05/10 | Marta | Registra la solicitud en el portal | Crea `c1`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `marta` solicita `c1`; `c1` trataSobre `hugo` | RI-07, RC-06, RN-04 |
-| 2 | 06/10 | Conserjería | Revisa y concierta la solicitud | `c1`: Estado = Concertada, Prioridad = alta, Fecha y Hora | `carmen` atiende `c1`; `c1` implicaA `andres` | RC-03, RC-07 |
-| 3 | 08/10 | Carmen | Atiende a Marta y comprueba que es jefa | Lee `carmen.esJefe = true` | — | RN-05 |
+| 2 | 06/10 | Conserjería | Revisa y concierta la solicitud | `c1`: Estado = Concertada, Fecha y Hora | `carmen` atiende `c1`; `c1` implicaA `andres` | RC-07 |
+| 3 | 08/10 | Carmen | Atiende a Marta, asigna la prioridad de la cita y comprueba que es jefa | `c1`: Prioridad = alta; lee `carmen.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 08/10 | Carmen | Asigna la visita a un inspector de la zona del centro | Crea `v1`: Estado = Pendiente, con fecha y horas | `carmen` asigna `v1`; `javier` realiza `v1`; `iesMirador` recibe `v1` | RI-09, RC-09 |
 | 5 | 14/10 | Javier | Se desplaza y realiza la visita | `v1`: Estado = Finalizada; crea `d1` | `v1` existe `d1` | RI-11 |
 | 6 | 14/10 | Sistema | Calcula la dieta | Crea `dt1`: Importe = 36,32 €, Almuerzo = true | `d1` requiere `dt1` | RI-12, RC-01, RN-01, RN-02 |
