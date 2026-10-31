@@ -215,7 +215,6 @@ Persona <|-- Inspector
 Persona <|-- TutorLegal
 Actividad <|-- Visita
 Actividad <|-- Tarea: {disjunta, completa}
-Actividad <|-- Cita
 
 'Asociaciones'
 
