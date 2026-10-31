@@ -209,7 +209,7 @@ enum e_Prioridad {
 
 'Herencias'
 
-Persona <|-- Alumno
+Persona <|-- Alumno: {solapada}
 Persona <|-- Profesor
 Persona <|-- Inspector
 Persona <|-- TutorLegal
