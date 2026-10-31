@@ -98,7 +98,9 @@ class Desplazamiento{
     Origen
     Destino
     HoraSalida
-    HoraLlegada
+    HoraLlegadaDomicilio
+    Kilometros
+    TarifaKm
 }
 
 class Dieta{
@@ -215,29 +217,50 @@ Persona <|-- Inspector
 Persona <|-- TutorLegal
 Actividad <|-- Visita
 Actividad <|-- Tarea: {disjunta, completa}
-Actividad <|-- Cita
 
 'Asociaciones'
 
 Zona "1" -- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
 Inspector "1" -- "*" Anotaciones: redacta >
-Inspector "responsable" *-- "*" Actividad: realiza >
-Inspector "jefe" -- "*" Actividad: asigna >
+Inspector "1 responsable" *-- "*" Actividad: realiza >
+Inspector "1 jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
 Inspector "1" -- "*" Cita : atiende >
 Inspector "1" -- "*" Informe : redacta >
 TutorLegal "1..*" -- "*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
 TutorLegal "1" -- "*" Cita : solicita >
-Visita *-- "1" Informe
-Visita *-- "1" Desplazamiento : existe >
+Visita *-- "0..1" Informe
+Visita *-- "0..1" Desplazamiento : existe >
 Desplazamiento *-- "0..1" Dieta : requiere >
 CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotaciones: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
+Cita "*" -- "*" Profesor: implicaA >
+
+'Restricciones'
+
+note as R01
+  R-01: Una visita tiene informe y desplazamiento
+  si y solo si su Estado es Finalizada.
+end note
+
+note as R02
+  R-02: El inspector que asigna una actividad
+  tiene esJefe = true (RN-05).
+end note
+
+note as R03
+  R-03: El inspector que redacta el informe es
+  el responsable de la visita asociada (RN-03).
+end note
+
+R01 .. Visita
+R02 .. Actividad
+R03 .. Informe
 
 
 
