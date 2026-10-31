@@ -31,7 +31,7 @@ Esto no garantiza que el modelo propuesto sea perfecto. Los escenarios pueden de
 | `realiza` como asociación simple | No | No | **Nuevo** | Una parte solo puede tener un compuesto | El problema es seguro; la solución elegida es una opción |
 | R-04: un profesor responsable por centro | No | No | **Nuevo** | RN-07 | Exigido |
 | `atiende` con `0..1` | No | No (pendiente, problema 10) | **Nuevo** | RC-07: una cita rechazada no llega al inspector | Exigido por la lógica |
-| `Fecha`, `Hora` y `Prioridad` de `Cita` con `[0..1]`, y R-05 | No | No | **Nuevo** | RC-06, RC-07 y pasos 1 y 2 de los casos | Interpretación: «fecha» es la de la cita, no la de la solicitud |
+| `Fecha`, `Hora` y `Prioridad` de `Cita` con `[0..1]`, y R-05 | No | No | **Nuevo** | RC-06, RC-07 y pasos 1 a 3 de los escenarios | Interpretación: «fecha» es la de la cita, no la de la solicitud |
 | R-06: inspector de la zona del centro | No | No | **Nuevo** | RI-02 y RC-05 | Interpretación: el catálogo solo lo dice para centros prioritarios |
 | R-07: el solicitante es tutor del alumno | No | No | **Nuevo** | Glosario, «Cita», y RI-06 | Exigido por la lógica |
 
@@ -40,7 +40,7 @@ Las mejoras que `escenario_1.puml` no incluye son las seis marcadas como **Nuevo
 ## 3. Rectificaciones de la versión anterior de este documento
 
 - **R-01 no necesita cambiar.** Antes se presentaba como un problema del modelo, pero la restricción se aplica al estado final de la operación. Lo incorrecto es el orden de los pasos de los casos (sección 5).
-- **`Prioridad` de `Cita` también es opcional.** Se asigna en el paso 2, igual que `Fecha` y `Hora`, y antes no se había detectado.
+- **`Prioridad` de `Cita` también es opcional.** La asigna el inspector que atiende la cita (paso 3), después de que conserjería la concierte y fije `Fecha` y `Hora` (paso 2). Antes no se había detectado.
 - **Profesor implicado del centro del alumno.** Se retira como restricción: el catálogo no la pide y `implicaA` ya es opcional.
 - **Notas comentadas del MC.** Actualizarlas es limpieza y no mejora el modelo. `escenario_2.puml` no las incluye; siguen en el MC.
 

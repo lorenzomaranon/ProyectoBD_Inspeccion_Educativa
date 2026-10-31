@@ -188,9 +188,10 @@ note as R04
 end note
 
 note as R05
-  R-05: Una cita tiene Fecha, Hora, Prioridad e
-  inspector que la atiende si su Estado es Concertada.
-  Una cita Rechazada no tiene inspector.
+  R-05: Una cita tiene Fecha, Hora e inspector que
+  la atiende si su Estado es Concertada. Su Prioridad
+  la asigna ese inspector. Una cita Rechazada no
+  tiene inspector.
 end note
 
 note as R06
