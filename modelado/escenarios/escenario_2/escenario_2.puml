@@ -20,7 +20,7 @@ class Desplazamiento{
     Origen
     Destino
     HoraSalida
-    HoraLlegadaDomicilio
+    HoraLlegadaDomicilio [0..1]
     Kilometros
     TarifaKm
 }
@@ -68,8 +68,10 @@ class Tarea {
 }
 
 class DiasAsuntosPersonales {
+    Curso
+    DiasTotales
     DiasSolicitados
-    DiasRestantes
+    /DiasRestantes
 }
 
 class Zona {
@@ -201,6 +203,24 @@ note as R07
   legal del alumno sobre el que trata.
 end note
 
+note as R08
+  R-08: HoraLlegadaDomicilio solo tiene valor en el
+  último desplazamiento del día de un inspector (RN-02).
+end note
+
+note as R09
+  R-09: Dos actividades distintas del mismo inspector
+  responsable y con la misma Fecha no se solapan:
+  a1.HoraFin <= a2.HoraInicio o a2.HoraFin <= a1.HoraInicio.
+  En toda actividad, HoraInicio < HoraFin.
+end note
+
+note as R10
+  R-10: DiasRestantes = DiasTotales - DiasSolicitados.
+  DiasTotales se fija según la legislación vigente
+  en el Curso (RC-02).
+end note
+
 R01 .. Visita
 R02 .. Actividad
 R03 .. Informe
@@ -208,5 +228,8 @@ R04 .. CentroEducativo
 R05 .. Cita
 R06 .. Visita
 R07 .. Cita
+R08 .. Desplazamiento
+R09 .. Actividad
+R10 .. DiasAsuntosPersonales
 
 @enduml
