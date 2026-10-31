@@ -226,6 +226,7 @@ Inspector "responsable" *-- "*" Actividad: realiza >
 Inspector "jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
 Inspector "1" -- "*" Cita : atiende >
+Inspector "1" -- "*" Informe : redacta >
 TutorLegal "1..*" -- "*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
 TutorLegal "1" -- "*" Cita : solicita >
