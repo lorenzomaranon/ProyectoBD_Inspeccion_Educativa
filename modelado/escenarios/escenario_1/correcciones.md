@@ -11,7 +11,7 @@
 
 ## 5. Problemas detectados en el modelo
 
-### Corregidos en `modelado_conceptual.puml` y `caso_1.puml`
+### Corregidos en `modelado_conceptual.puml` y `escenario_1.puml`
 
 1. **`Actividad <|-- Cita` contradecía la RI-09**, que dice que toda actividad es o visita o tarea. Se elimina la herencia.
 2. **A `Desplazamiento` le faltaban datos para calcular la dieta.** Se añaden `Kilometros` y `TarifaKm`.

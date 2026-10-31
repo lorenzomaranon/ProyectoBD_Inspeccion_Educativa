@@ -1,4 +1,4 @@
-@startuml modelado_conceptual_caso_2
+@startuml escenario_2
 hide methods
 skinparam ClassAttributeIconSize 0
 skinparam shadowing false

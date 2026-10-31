@@ -176,6 +176,6 @@ Estas variaciones del escenario no deben ser posibles. Sirven para comprobar que
 
 ### Limitaciones conocidas
 
-- El paso 2 sigue sin registrar qué persona de conserjería revisó la cita (problema 8 de [correcciones_modelo.md](../caso_1/correcciones_modelo.md)).
+- El paso 2 sigue sin registrar qué persona de conserjería revisó la cita (problema 8 de [correcciones.md](../escenario_1/correcciones.md)).
 - La asociación `Inspector "1" -- "*" Cita : atiende` obliga a que `c2` tenga inspector, y en el paso 1 todavía no lo tiene (problema 10 del mismo archivo).
 - La RN-05 también permite asignar tareas a los coordinadores de equipo de zona, un perfil que el modelo actual no recoge; este escenario no lo necesita.

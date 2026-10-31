@@ -87,26 +87,29 @@ flowchart LR
 ProyectoBD_Inspeccion_Educativa/
 ├── .github/workflows/
 │   └── plantuml.yml          # Valida y renderiza los .puml en cada push / PR
-├── docs/
+├── docs/                     # Documentos Word y PDF
 │   ├── BD-MarañónMartínMartínPortillo .pdf                         # Propuesta del grupo (entrega 0)
-│   ├── Gestión_de_Inspección_Educativa.pdf                        # Presentación del caso
-│   ├── CATALOGO_REQUISITOS.pages                                  # Catálogo de requisitos (fuente, Pages)
-│   ├── Especificaciones_Diseno_Software_..._Modelo_ER_Global.docx # Especificación de referencia del dominio
-│   └── modelado_conceptual.puml                                   # Diagrama de clases UML (PlantUML)
+│   ├── CATALOGO_REQUISITOS.docx                                   # Catálogo de requisitos
+│   └── Especificaciones_Diseno_Software_..._Modelo_ER_Global.docx # Especificación de referencia del dominio
+├── modelado/                 # Diagramas y su validación
+│   ├── modelado_conceptual.puml                                   # Diagrama de clases UML (PlantUML)
+│   └── escenarios/                                                # Escenarios de prueba del modelo
+│       ├── escenario_1/
+│       └── escenario_2/
 └── README.md
 ```
 
 | Documento | Para qué sirve |
 | --- | --- |
 | [Propuesta del grupo](docs/) | Presentación del equipo y de la organización: funciones y atribuciones de la inspección. |
-| [Presentación del caso](docs/Gestión_de_Inspección_Educativa.pdf) | Descripción del caso de la inspección educativa en Cádiz. |
-| [Catálogo de requisitos](docs/CATALOGO_REQUISITOS.pages) | Fuente del catálogo (se abre con Pages; para leerlo desde otro sistema conviene exportarlo a PDF). |
+| [Catálogo de requisitos](docs/CATALOGO_REQUISITOS.docx) | Catálogo de requisitos del sistema. |
 | [Especificaciones de diseño](docs/Especificaciones_Diseno_Software_Inspeccion_Educativa_Modelo_ER_Global.docx) | Visión amplia del dominio en 13 módulos (centros, actuaciones, planificación, visitas, informes, expedientes, organización, cuadro de mando, seguridad e indemnizaciones). Sirve de referencia; el alcance del proyecto es el del catálogo. |
-| [Modelo conceptual](docs/modelado_conceptual.puml) | Diagrama de clases con las reglas de negocio enlazadas a las clases que afectan. |
+| [Modelo conceptual](modelado/modelado_conceptual.puml) | Diagrama de clases con las reglas de negocio enlazadas a las clases que afectan. |
+| [Escenarios de prueba](modelado/escenarios/) | Escenarios que validan el modelo, con sus diagramas y correcciones. |
 
 ## 🧠 Modelo conceptual
 
-El diagrama está en [`docs/modelado_conceptual.puml`](docs/modelado_conceptual.puml). Cada
+El diagrama está en [`modelado/modelado_conceptual.puml`](modelado/modelado_conceptual.puml). Cada
 push que lo modifica lo valida y lo renderiza automáticamente (ver
 [Actions](https://github.com/lorenzomaranon/ProyectoBD_Inspeccion_Educativa/actions/workflows/plantuml.yml)).
 
@@ -143,9 +146,9 @@ sudo apt install default-jre graphviz plantuml
 **Desde la terminal:**
 
 ```bash
-plantuml -checkonly docs/*.puml   # solo comprueba la sintaxis
-plantuml -tpng docs/*.puml        # genera el PNG junto al .puml
-plantuml -tsvg docs/*.puml        # o SVG, que escala sin perder calidad
+plantuml -checkonly modelado/*.puml   # solo comprueba la sintaxis
+plantuml -tpng modelado/*.puml        # genera el PNG junto al .puml
+plantuml -tsvg modelado/*.puml        # o SVG, que escala sin perder calidad
 ```
 
 **En GitHub:** cada push o PR que toque un `.puml` lanza el workflow

@@ -1,4 +1,4 @@
-@startuml modelado_conceptual
+@startuml escenario_1
 hide methods
 skinparam ClassAttributeIconSize 0
 '----------------------------------'

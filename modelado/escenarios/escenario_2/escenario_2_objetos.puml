@@ -1,4 +1,4 @@
-@startuml caso_2_objetos
+@startuml escenario_2_objetos
 skinparam shadowing false
 skinparam ObjectAttributeIconSize 0
 skinparam linetype ortho
