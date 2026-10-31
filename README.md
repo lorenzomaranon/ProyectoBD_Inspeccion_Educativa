@@ -113,10 +113,10 @@ El diagrama está en [`modelado/modelado_conceptual.puml`](modelado/modelado_con
 push que lo modifica lo valida y lo renderiza automáticamente (ver
 [Actions](https://github.com/lorenzomaranon/ProyectoBD_Inspeccion_Educativa/actions/workflows/plantuml.yml)).
 
-**Clases actuales:** `Inspector`, `InspectorJefe`, `CentroEducativo`,
-`Agenda`, `Visita`, `Tarea`, `Anotación`, `Informe`, `Desplazamiento`, `Dieta`, `Cita`,
-`Familia`, `Conserjería`, `DiasAsuntosPersonales`, con los enumerados `e_EstadoCita` y
-`e_Procedencia`.
+**Clases actuales:** `Persona`, `Inspector`, `Alumno`, `Profesor`, `TutorLegal`, `Tutela`,
+`Zona`, `CentroEducativo`, `Actividad`, `Visita`, `Tarea`, `Anotación`, `Informe`,
+`Desplazamiento`, `Dieta`, `Cita`, `DiasAsuntosPersonales`, con los enumerados `e_EstadoCita`,
+`e_EstadoVisita`, `e_Procedencia`, `e_Prioridad` y `e_Parentesco`.
 
 ### Reglas de negocio
 
