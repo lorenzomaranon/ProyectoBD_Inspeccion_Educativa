@@ -1,9 +1,8 @@
 @startuml escenario_2_objetos
 skinparam shadowing false
 skinparam ObjectAttributeIconSize 0
-skinparam linetype ortho
-skinparam nodesep 70
-skinparam ranksep 80
+skinparam nodesep 60
+skinparam ranksep 70
 
 title ESCENARIO 2 - Diagrama de objetos (estado final, 11/11/2026)
 
@@ -121,35 +120,35 @@ object "i2 : Informe" as i2 {
 }
 
 'ENLACES: FAMILIA'
-pablo -- tutelaPablo : responsableDe
-tutelaPablo -- lucia
-irene -- tutelaIrene : responsableDe
-tutelaIrene -- lucia
+pablo "1..*" -- "1..*" lucia : responsableDe >
+irene "1..*" -- "1..*" lucia : responsableDe >
+(pablo, lucia) .. tutelaPablo
+(irene, lucia) .. tutelaIrene
 
 'ENLACES: CITA'
-pablo --> c2 : solicita
-c2 --> lucia : trataSobre
-c2 --> rosa : implicaA
-luis --> c2 : atiende
+pablo "1" -- "*" c2 : solicita >
+lucia "1" -- "*" c2 : trataSobre >
+c2 "*" -- "*" rosa : implicaA >
+luis "0..1" -- "*" c2 : atiende >
 
 'ENLACES: ACTIVIDADES'
-luis --> t1 : asigna
-luis --> v2 : asigna
-nuria --> t1 : realiza
-nuria --> v2 : realiza
-nuria --> i2 : redacta
-ceipBahia *-- v2 : recibe
-v2 *-- i2
-v2 *-- d2 : existe
-d2 *-- dt2 : requiere
+luis "1 jefe" -- "*" t1 : asigna >
+luis "1 jefe" -- "*" v2 : asigna >
+nuria "1 responsable" -- "*" t1 : realiza >
+nuria "1 responsable" -- "*" v2 : realiza >
+nuria "1" -- "*" i2 : redacta >
+ceipBahia "1" -- "*" v2 : recibe >
+v2 *-- "0..1" i2
+v2 *-- "0..1" d2 : existe >
+d2 *-- "0..1" dt2 : requiere >
 
 'ENLACES: CENTRO Y ZONA'
-ceipBahia -- lucia
-ceipBahia -- rosa
-ceipBahia -- mateo
-z02 -- ceipBahia
-luis --> z02 : trabajaEn
-nuria --> z02 : trabajaEn
+ceipBahia "1" -- "*" lucia
+ceipBahia "1" -- "*" rosa
+ceipBahia "1" -- "*" mateo
+z02 "1" -- "*" ceipBahia
+luis "*" -- "1" z02 : trabajaEn >
+nuria "*" -- "1" z02 : trabajaEn >
 
 note right of dt2
   22 km × 0,24 €/km = 5,28 €

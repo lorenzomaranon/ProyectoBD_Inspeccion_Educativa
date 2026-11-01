@@ -11,7 +11,7 @@ class Inspector{
 }
 
 class "Centro Educativo" as CentroEducativo{
-    Identificación
+    Identificación {unique}
     Ubicación
     Prioridad: e_Prioridad
 }
@@ -82,7 +82,7 @@ class Zona {
 class Persona {
     Nombre
     Apellidos
-    DNI
+    DNI {unique}
 }
 
 class Alumno{
@@ -135,7 +135,7 @@ enum e_Prioridad {
 
 'Herencias'
 
-Persona <|-- Alumno
+Persona <|-- Alumno: {solapada}
 Persona <|-- Profesor
 Persona <|-- Inspector
 Persona <|-- TutorLegal
@@ -152,13 +152,13 @@ Inspector "1 jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: cuentaCon >
 Inspector "0..1" -- "*" Cita : atiende >
 Inspector "1" -- "*" Informe : redacta >
-TutorLegal "1..*" -- "*" Alumno : responsableDe >
+TutorLegal "1..*" -- "1..*" Alumno : responsableDe >
 (TutorLegal, Alumno) .. Tutela
 TutorLegal "1" -- "*" Cita : solicita >
 Visita *-- "0..1" Informe
 Visita *-- "0..1" Desplazamiento : existe >
 Desplazamiento *-- "0..1" Dieta : requiere >
-CentroEducativo *-- "*" Visita: recibe >
+CentroEducativo "1" -- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotación: trataSobre <
