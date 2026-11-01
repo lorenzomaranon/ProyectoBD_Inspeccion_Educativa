@@ -99,6 +99,8 @@ class Desplazamiento{
     Destino
     HoraSalida
     HoraLlegada
+    Kilometros
+    TarifaKm
 }
 
 class Dieta{
