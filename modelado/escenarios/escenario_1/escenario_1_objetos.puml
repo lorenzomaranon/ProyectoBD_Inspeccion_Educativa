@@ -1,0 +1,144 @@
+@startuml escenario_1_objetos
+skinparam shadowing false
+skinparam ObjectAttributeIconSize 0
+skinparam nodesep 60
+skinparam ranksep 70
+
+title ESCENARIO 1 - Diagrama de objetos (estado final, 14/10/2026)
+
+'PERSONAS'
+object "marta : TutorLegal" as marta {
+  Nombre = Marta
+  Apellidos = Ruiz Domínguez
+  DNI = 00000001R
+}
+object "hugo : Alumno" as hugo {
+  Nombre = Hugo
+  Apellidos = Gil Ruiz
+  DNI = 00000002W
+}
+object "andres : Profesor" as andres {
+  Nombre = Andrés
+  Apellidos = Vega Romero
+  DNI = 00000003A
+  asignaturasImparte = [Matemáticas]
+  esResponsableCentro = false
+}
+object "elena : Profesor" as elena {
+  Nombre = Elena
+  Apellidos = Cano Ortega
+  DNI = 00000004G
+  asignaturasImparte = [Lengua]
+  esResponsableCentro = true
+}
+object "carmen : Inspector" as carmen {
+  Nombre = Carmen
+  Apellidos = Soto Lara
+  DNI = 00000005M
+  esJefe = true
+}
+object "javier : Inspector" as javier {
+  Nombre = Javier
+  Apellidos = Mena Prieto
+  DNI = 00000006Y
+  esJefe = false
+}
+
+'TUTELA'
+object "tutelaMarta : Tutela" as tutelaMarta {
+  parentesco = Madre
+}
+
+'ZONA Y CENTRO'
+object "z04 : Zona" as z04 {
+  Código = Z-04
+  Nombre = Sierra de Cádiz
+}
+object "iesMirador : CentroEducativo" as iesMirador {
+  Identificación = 11999001 – IES Mirador de la Peña
+  Ubicación = Calle Ficticia 12, Arcos de la Frontera (Cádiz)
+  Prioridad = alta
+}
+
+'CITA'
+object "c1 : Cita" as c1 {
+  Fecha = 08/10/2026
+  Hora = 10:30
+  Titulo = Posible acoso de un profesor a mi hijo
+  TextoSolicitud = «Mi hijo Hugo, de 3.º de ESO, me ha contado que
+    su profesor de Matemáticas, Andrés Vega, le humilla en clase
+    delante de sus compañeros desde hace semanas. Solicito una
+    cita con la inspección.»
+  DocumentaciónAdjunta = [relato_de_los_hechos.pdf,
+    correos_con_tutoria.pdf]
+  Estado = Concertada
+  Prioridad = alta
+  Procedencia = Portal_Citas
+}
+
+'VISITA'
+object "v1 : Visita" as v1 {
+  Fecha = 14/10/2026
+  HoraInicio = 10:00
+  HoraFin = 14:30
+  Estado = Finalizada
+}
+object "d1 : Desplazamiento" as d1 {
+  Origen = Centro de Cádiz
+  Destino = IES Mirador de la Peña, Arcos de la Frontera
+  HoraSalida = 08:45
+  HoraLlegadaDomicilio = 15:40
+  Kilometros = 68
+  TarifaKm = 0,24 €/km
+}
+object "dt1 : Dieta" as dt1 {
+  Importe = 36,32 €
+  Almuerzo = true
+}
+object "i1 : Informe" as i1 {
+  Prioridad = alta
+  Observacion = Las entrevistas con el alumno, el profesor y la
+    dirección aportan indicios de trato inadecuado reiterado en
+    el aula. Se propone activar el protocolo del centro y hacer
+    seguimiento en un mes.
+}
+
+'ENLACES: FAMILIA'
+marta "1..*" -- "1..*" hugo : responsableDe >
+(marta, hugo) .. tutelaMarta
+
+'ENLACES: CITA'
+marta "1" -- "*" c1 : solicita >
+hugo "1" -- "*" c1 : trataSobre >
+carmen "0..1" -- "*" c1 : atiende >
+
+'ENLACES: ACTIVIDADES'
+carmen "1 jefe" -- "*" v1 : asigna >
+javier "1 responsable" -- "*" v1 : realiza >
+javier "1" -- "*" i1 : redacta >
+iesMirador "1" -- "*" v1 : recibe >
+v1 *-- "0..1" i1
+v1 *-- "0..1" d1 : existe >
+d1 *-- "0..1" dt1 : requiere >
+
+'ENLACES: CENTRO Y ZONA'
+iesMirador "1" -- "*" hugo
+iesMirador "1" -- "*" andres
+iesMirador "1" -- "*" elena
+z04 "1" -- "*" iesMirador
+carmen "*" -- "1" z04 : trabajaEn >
+javier "*" -- "1" z04 : trabajaEn >
+
+note right of dt1
+  68 km × 0,24 €/km = 16,32 €
+  15:40 excede las 15:00: +20 € de almuerzo
+  Total: 36,32 € (RN-01, RN-02)
+end note
+
+note top of iesMirador
+  El informe es de prioridad alta y el centro pasa
+  de media a alta: se avisa a carmen y a javier,
+  inspectores de la zona z04 (RC-03, RC-04)
+end note
+
+@enduml
