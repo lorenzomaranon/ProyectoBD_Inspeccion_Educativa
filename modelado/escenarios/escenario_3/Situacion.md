@@ -4,8 +4,6 @@
 
 > Todas las personas, centros y datos de este escenario son inventados.
 
-> Este escenario se valida contra el modelo de [escenario_2.puml](../escenario_2/escenario_2.puml) (restricciones R-01 a R-07), no contra el `modelado_conceptual.puml` actual.
-
 ## 1. Situación
 
 Antonio Ríos es profesor de Lengua en el IES Marismas del Guadalete (El Puerto de Santa María) y, a la vez, padre y único tutor legal de Daniel Ríos, alumno de 4.º de Primaria en el CEIP Los Albarizones (Jerez de la Frontera). Antonio es una sola persona con dos perfiles: profesor en un centro y tutor legal de un alumno de otro.
