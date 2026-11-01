@@ -130,8 +130,10 @@ class Tarea {
 }
 
 class DiasAsuntosPersonales {
+    Curso
+    DiasTotales
     DiasSolicitados
-    DiasRestantes
+    /DiasRestantes
 }
 
 class Zona {
