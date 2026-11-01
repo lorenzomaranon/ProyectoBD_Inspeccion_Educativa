@@ -122,12 +122,15 @@ push que lo modifica lo valida y lo renderiza automáticamente (ver
 
 | Regla | Descripción | Clases afectadas |
 | --- | --- | --- |
-| **RN-01** Dietas de desplazamiento | Kilometraje calculado desde el centro de Cádiz hasta el centro visitado, con la tarifa por km vigente (0,24 €/km hoy). | Desplazamiento, Dieta, Inspector |
-| **RN-02** Plus de almuerzo | Si la llegada al domicilio es posterior a las 15:00 se añaden 20 € a la dieta. | Dieta |
-| **RN-03** Permisos del informe | Solo el inspector responsable de la visita cumplimenta su informe. | Informe, Inspector |
-| **RN-04** Proceso de cita | Las familias no contactan directamente con el inspector: la solicitud va por el portal y pasa por conserjería. | Cita, Familia, Conserjería |
-| **RN-05** Subordinación de tareas | Solo el inspector jefe y los coordinadores de zona crean o modifican tareas en la agenda de un inspector. | Tarea, InspectorJefe, CoordinadorZona, Agenda |
-| **RN-06** Días de asuntos personales | Cada inspector consulta solo los suyos; el inspector jefe consulta los de todos. | Inspector, InspectorJefe, DiasAsuntosPersonales |
+| **RN-01** Dietas de desplazamiento | El kilometraje se calcula entre el origen y el destino de cada desplazamiento. El primero del día parte del centro de Cádiz; los siguientes pueden partir del centro de la visita anterior. Se aplica la tarifa vigente (0,24 €/km como referencia, sujeta a cambios). | Desplazamiento, Dieta |
+| **RN-02** Plus de almuerzo | Si la llegada al domicilio es posterior a las 15:00, se añaden 20 € a la dieta correspondiente. | Desplazamiento, Dieta |
+| **RN-03** Permisos del informe | Solo el inspector que realiza la visita cumplimenta el informe correspondiente. | Visita, Informe, Inspector |
+| **RN-04** Proceso de cita | Los tutores legales solicitan la cita por escrito a través del portal; conserjería realiza un primer control antes de trasladarla al inspector. | Cita, TutorLegal |
+| **RN-05** Asignación de actividades | Únicamente los inspectores jefe pueden asignar, crear o modificar actividades (visitas y tareas) en el calendario de un inspector. | Actividad, Inspector, Visita, Tarea |
+| **RN-06** Días de asuntos personales | Cada inspector consulta solo los suyos; el inspector jefe puede consultar los de todos. | Inspector, DiasAsuntosPersonales |
+| **RN-07** Profesor responsable | Cada centro educativo tiene exactamente un profesor responsable. | CentroEducativo, Profesor |
+
+La columna indica las clases del modelo relacionadas con cada regla. Conserjería y las familias son perfiles de usuario, no clases del diagrama actual.
 
 ## 🛠️ Cómo trabajar con los diagramas
 
