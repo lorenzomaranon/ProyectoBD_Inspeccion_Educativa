@@ -93,13 +93,13 @@ class Dieta{
 }
 
 class Cita{
-    Fecha
-    Hora
+    Fecha [0..1]
+    Hora [0..1]
     Titulo
     TextoSolicitud
     DocumentaciónAdjunta [0..*]
     Estado: e_EstadoCita
-    Prioridad: e_Prioridad
+    Prioridad: e_Prioridad [0..1]
     Procedencia: e_Procedencia
 }
 
@@ -210,7 +210,7 @@ Inspector "1" -- "*" Anotación: redacta >
 Inspector "* responsable" -- "*" Actividad: realiza >
 Inspector "* jefe" -- "*" Actividad: asigna >
 Inspector "1" -- "1" DiasAsuntosPersonales: > cuentaCon
-Inspector "1" -- "*" Cita : atiende >
+Inspector "0..1" -- "*" Cita : atiende >
 Inspector "1" -- "*" Informe : redacta >
 TutorLegal "1..*" -- "1..*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
