@@ -1,0 +1,203 @@
+@startuml escenario_2_correcciones
+' Una página por lado de cada fila de correcciones.md: 1a, 1b, 2a, 2b...
+' a = modelo del escenario 1; b = corrección
+' Las líneas son enlaces UML (sin flechas); los números de los extremos son las multiplicidades del modelo.
+skinparam shadowing false
+skinparam backgroundColor transparent
+skinparam dpi 120
+skinparam ObjectAttributeIconSize 0
+skinparam nodesep 40
+skinparam ranksep 40
+skinparam ObjectBackgroundColor #FFFFFF
+skinparam ObjectBorderColor #555555
+
+' 1a
+object "c2 : Cita" as c {
+  Estado = PendienteDeRevisión
+}
+object "¿? : Inspector" as i #F8C9C4
+i "1" -- "*" c : atiende >
+note bottom of i #F8C9C4
+  atiende "1": la cita debe tener
+  inspector, pero aún no existe
+end note
+
+newpage
+' 1b
+object "c2 (paso 1) : Cita" as c1 {
+  Estado = PendienteDeRevisión
+}
+object "luis : Inspector" as i
+object "c2 (paso 2) : Cita" as c2 {
+  Estado = Concertada
+}
+i "0..1" -- "*" c2 : atiende >
+c1 -[hidden]right- i
+note bottom of c1 #C8E6C9
+  atiende "0..1": al registrarse
+  no tiene inspector
+end note
+note bottom of c2 #C8E6C9
+  R-05: al estar Concertada,
+  sí lo tiene
+end note
+
+newpage
+' 2a
+object "c2 : Cita" as c #F8C9C4 {
+  Estado = PendienteDeRevisión
+  Fecha = ¿?
+  Hora = ¿?
+  Prioridad = ¿?
+}
+note bottom of c #F8C9C4
+  Fecha, Hora y Prioridad: 1
+  (obligatorias), pero aún no
+  tienen valor
+end note
+
+newpage
+' 2b
+object "c2 (paso 1) : Cita" as a {
+  Estado = PendienteDeRevisión
+}
+object "c2 (paso 2) : Cita" as b {
+  Estado = Concertada
+  Fecha = 05/11/2026
+  Hora = 12:00
+}
+object "c2 (paso 3) : Cita" as d {
+  Estado = Concertada
+  Fecha = 05/11/2026
+  Hora = 12:00
+  Prioridad = media
+}
+a -[hidden]down- b
+b -[hidden]down- d
+note right of b #C8E6C9
+  Fecha [0..1], Hora [0..1]
+  y Prioridad [0..1], con R-05
+end note
+
+newpage
+' 3a
+object "nuria : Inspector" as n
+object "ceipBahia : CentroEducativo" as c
+object "v2 : Visita" as v #F8C9C4
+n "1 responsable" *-- "*" v : realiza >
+c "1" *-- "*" v : recibe >
+note bottom of v #F8C9C4
+  v2 tiene dos compuestos, y una
+  parte solo puede tener uno
+end note
+
+newpage
+' 3b
+object "nuria : Inspector" as n
+object "ceipBahia : CentroEducativo" as c
+object "v2 : Visita" as v
+n "1 responsable" -- "*" v : realiza >
+c "1" -- "*" v : recibe >
+note bottom of v #C8E6C9
+  realiza y recibe pasan a asociaciones
+  simples: v2 no es parte de nadie
+end note
+
+newpage
+' 4a
+object "ceipBahia : CentroEducativo" as c
+object "mateo : Profesor" as m {
+  esResponsableCentro = true
+}
+object "rosa : Profesor" as r #F8C9C4 {
+  esResponsableCentro = true
+}
+c "1" -- "*" m
+c "1" -- "*" r
+note bottom of r #F8C9C4
+  Dos responsables: incumple RN-07,
+  pero el modelo lo admite
+end note
+
+newpage
+' 4b
+object "ceipBahia : CentroEducativo" as c
+object "mateo : Profesor" as m {
+  esResponsableCentro = true
+}
+object "rosa : Profesor" as r #F8C9C4 {
+  esResponsableCentro = true
+}
+c "1" -- "*" m
+c "1" -- "*" r
+note top of c #C8E6C9
+  R-04: cada centro tiene exactamente
+  un profesor con esResponsableCentro = true
+end note
+note bottom of r #F8C9C4
+  Mismo estado: R-04 lo rechaza
+end note
+
+newpage
+' 5a
+object "z02 : Zona" as z
+object "z03 : Zona" as y
+object "ceipBahia : CentroEducativo" as c
+object "v2 : Visita" as v
+object "otro : Inspector" as i #F8C9C4
+z "1" -- "*" c
+c "1" *-- "*" v : recibe >
+i "1 responsable" *-- "*" v : realiza >
+i "*" -- "1" y : trabajaEn >
+note bottom of i #F8C9C4
+  Hipotético: inspector de otra
+  zona, y el modelo lo admite
+end note
+
+newpage
+' 5b
+object "z02 : Zona" as z
+object "ceipBahia : CentroEducativo" as c
+object "v2 : Visita" as v
+object "otro : Inspector" as i #F8C9C4
+object "z03 : Zona" as y
+z "1" -- "*" c
+c "1" -- "*" v : recibe >
+i "1 responsable" -- "*" v : realiza >
+i "*" -- "1" y : trabajaEn >
+note top of c #C8E6C9
+  R-06: el inspector responsable de una
+  visita trabaja en la zona del centro
+end note
+note bottom of i #F8C9C4
+  Mismo estado: R-06 lo rechaza
+end note
+
+newpage
+' 6a
+object "pablo : TutorLegal" as p
+object "c2 : Cita" as c
+object "otro : Alumno" as o #F8C9C4
+p "1" -- "*" c : solicita >
+o "1" -- "*" c : trataSobre >
+note bottom of o #F8C9C4
+  Hipotético: Pablo no es su
+  tutor, y el modelo lo admite
+end note
+
+newpage
+' 6b
+object "pablo : TutorLegal" as p
+object "c2 : Cita" as c
+object "otro : Alumno" as o #F8C9C4
+p "1" -- "*" c : solicita >
+o "1" -- "*" c : trataSobre >
+note top of c #C8E6C9
+  R-07: el tutor que solicita una cita es tutor
+  legal del alumno sobre el que trata
+end note
+note bottom of o #F8C9C4
+  Mismo estado: R-07 lo rechaza
+end note
+
+@enduml
