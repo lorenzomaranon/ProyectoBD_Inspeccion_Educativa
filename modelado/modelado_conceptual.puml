@@ -18,70 +18,54 @@ title INSPECCIÓN EDUCATIVA CÁDIZ
 
 skinparam shadowing false
 
-' REGLAS DE NEGOCIO: rellena cada nota y usa un alias único (RN01, RN02...). 
-' -> ESTADO: DONE!
-/'note as RN01
-  RN-01: Dietas Desplazamiento
-  El kilometraje de cada desplazamiento se calculará siempre tomando como referencia el centro de Cádiz y el centro educativo visitado, a razón de 0,24 €/km. (Este valor puede variar). Deberá calcularse acorde a la legislación vigente. ¿¿AFECTA A Inspector??
+' REGLAS DE NEGOCIO: una nota por regla, con un alias único (RN01, RN02...).
+note as RN01
+  RN-01: Dietas de desplazamiento
+  El kilometraje de cada desplazamiento se calcula entre su
+  origen y su destino. El primero del día parte del centro de
+  Cádiz y los siguientes pueden partir del centro de la visita
+  anterior. Se aplica la tarifa vigente (0,24 €/km, sujeta a
+  cambios), acorde a la legislación vigente.
 end note
-    
+
 note as RN02
-  RN-02: Plus Almuerzo
-  Si la hora de llegada al domicilio del inspector excede de las 15:00, el sistema añadirá 20 € adicionales en concepto de almuerzo a la dieta correspondiente.
+  RN-02: Plus de almuerzo
+  Si la hora de llegada al domicilio del inspector excede de
+  las 15:00, el sistema añade 20 € adicionales en concepto de
+  almuerzo a la dieta correspondiente.
 end note
 
 note as RN03
-  RN-03: Permisos Informe
-  El informe de visita sólo podrá ser cumplimentado por el inspector responsable de la visita.
+  RN-03: Permisos del informe
+  El informe de visita solo puede ser cumplimentado por el
+  inspector que realiza la visita.
 end note
 
 note as RN04
- RN-04: Proceso Cita
- Las familias no podrán contactar directamente con el inspector: toda solicitud de cita deberá presentarse por escrito a través del portal y pasar por un primer control de conserjería.
+  RN-04: Proceso de cita
+  Los tutores legales no contactan directamente con el
+  inspector: toda solicitud de cita se presenta por escrito a
+  través del portal y pasa por un primer control de conserjería.
 end note
 
 note as RN05
- RN-05: Subordinación de Tareas
- Únicamente los inspectores jefe y los coordinadores de equipo de inspección de zona podrán crear o modificar tareas en el calendario de un inspector.
+  RN-05: Asignación de actividades
+  Únicamente los inspectores jefe pueden asignar, crear o
+  modificar actividades (visitas y tareas) en el calendario
+  de un inspector.
 end note
 
 note as RN06
- RN-06: Acceso visualización Días Libres
- Cada inspector solo podrá consultar sus propios días de asuntos personales disponibles; el inspector jefe podrá consultar los de todos los inspectores.
+  RN-06: Acceso a los días de asuntos personales
+  Cada inspector solo puede consultar sus propios días; el
+  inspector jefe puede consultar los de todos los inspectores.
 end note
 
 note as RN07
   RN-07: Responsable único
-Cada centro educativo tendrá exactamente un profesor responsable del centro.
-end note'/
-
-' CONEXIONES RN - CLASES: .. dibuja una línea discontinua sin flecha.
-' Añade una conexión por cada clase afectada por una regla. 
-' -> ESTADO: DONE!
-/'RN01 .. Desplazamiento
-RN01 .. Dieta
-RN01 .. Inspector
-
-RN02 .. Dieta
-
-RN03 .. Informe
-RN03 .. Inspector
-
-RN04 .. Cita
-RN04 .. Familia
-RN04 .. Conserjería
-
-RN05 .. Tarea
-RN05 .. InspectorJefe
-RN05 .. CoordinadorZona
-RN05 .. Agenda
-
-RN06 .. Inspector
-RN06 .. InspectorJefe
-RN06 .. DiasAsuntosPersonales
-
-RN07 .. Profesor
-RN07 .. CentroEducativo'/
+  Cada centro educativo tiene exactamente un profesor
+  responsable del centro.
+end note
 
 'CLASES:'
 class Inspector{
@@ -238,6 +222,30 @@ CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotación: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
 
+'Reglas de negocio (.. dibuja una línea discontinua sin flecha hacia cada clase afectada)
 
+RN01 .. Desplazamiento
+RN01 .. Dieta
+
+RN02 .. Desplazamiento
+RN02 .. Dieta
+
+RN03 .. Visita
+RN03 .. Informe
+RN03 .. Inspector
+
+RN04 .. Cita
+RN04 .. TutorLegal
+
+RN05 .. Actividad
+RN05 .. Inspector
+RN05 .. Visita
+RN05 .. Tarea
+
+RN06 .. Inspector
+RN06 .. DiasAsuntosPersonales
+
+RN07 .. CentroEducativo
+RN07 .. Profesor
 
 @enduml
