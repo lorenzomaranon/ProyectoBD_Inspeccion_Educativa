@@ -98,7 +98,7 @@ class Desplazamiento{
     Origen
     Destino
     HoraSalida
-    HoraLlegadaDomicilio
+    HoraLlegada
     Kilometros
     TarifaKm
 }
@@ -224,7 +224,6 @@ CentroEducativo *-- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 Alumno "1" -- "*" Cita: trataSobre <
-Cita "*" -- "*" Profesor: implicaA >
 
 'Restricciones'
 
