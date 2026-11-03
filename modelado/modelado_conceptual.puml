@@ -225,7 +225,6 @@ CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor
 CentroEducativo "1" -- "*" Anotación: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
-Cita "*" -- "*" Profesor: implicaA >
 
 'Restricciones'
 
