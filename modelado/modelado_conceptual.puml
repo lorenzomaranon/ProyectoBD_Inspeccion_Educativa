@@ -153,7 +153,7 @@ class Alumno{
 
 class Profesor{
     asignaturasImparte[1..*]
-    esResponsableCentro
+    
 }
 
 class TutorLegal{
