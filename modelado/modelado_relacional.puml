@@ -1,0 +1,69 @@
+@startuml modelado_conceptual
+hide methods
+skinparam ClassAttributeIconSize 0
+
+entity inspector {
+
+}
+
+entity "Centro Educativo" as CentroEducativo {
+
+}
+
+entity Dieta {
+
+}
+
+entity Cita {
+
+}
+
+entity Anotación {
+
+}
+
+entity Actividad {
+
+}
+
+entity Visita {
+
+}
+
+entity Informe {
+
+}
+
+entity Tarea {
+
+}
+
+entity DiasAsuntosPersonales {
+
+}
+
+entity Zona {
+
+}
+
+entity Persona {
+
+}
+
+entity Alumno {
+
+}
+
+entity Profesor {
+
+}
+
+entity TutorLegal {
+
+}
+
+entity Tutela {
+
+}
+
+
