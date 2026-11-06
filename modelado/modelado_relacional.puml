@@ -3,10 +3,19 @@ hide methods
 skinparam ClassAttributeIconSize 0
 
 entity inspector {
-
+    IdInspector: int <<PK>>
+    --
+    esJefe
 }
 
 entity "Centro Educativo" as CentroEducativo {
+    IdCentro: int <<PK>>
+    --
+    Ubicacion
+    Prioridad
+}
+
+entity Desplazamiento {
 
 }
 
@@ -35,7 +44,7 @@ entity Informe {
 }
 
 entity Tarea {
-
+    Descripcion
 }
 
 entity DiasAsuntosPersonales {
@@ -43,11 +52,16 @@ entity DiasAsuntosPersonales {
 }
 
 entity Zona {
-
+    Codigo: int <<PK>>
+    --
+    Nombre
 }
 
 entity Persona {
-
+    DNI: <<PK>>
+    --
+    Nombre
+    Apellidos
 }
 
 entity Alumno {
