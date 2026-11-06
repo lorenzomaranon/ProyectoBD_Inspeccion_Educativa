@@ -66,4 +66,11 @@ entity Tutela {
 
 }
 
+@enduml
 
+/'
+JERARQUÍAS
+OP1 : Meter todo en una sola tabla con la superclase y la subclase
+OP2 : Sacar la cantidad de tabla según la cantidad de hijos que herenda, y luego en cada tabla la del padre y del propio hijo
+OP3 : Una tabla por clase y unir las foreing key de las subclases con la clase padre.
+'/
