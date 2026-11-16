@@ -224,7 +224,7 @@ CentroEducativo "1" -- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor: < trabajaEn
 CentroEducativo "1" -- "1" Profesor: esResponsable <
-CentroEducativo "1" -- "*" Anotación: trataSobre <
+CentroEducativo "1" -- "*" Anotacion: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
 
 'Restricciones'
