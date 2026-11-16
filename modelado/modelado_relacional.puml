@@ -115,7 +115,7 @@ entity Profesores {
 }
 
 entity AsignaturasProfesor {
-    oid_Persona: <<PK>> <<FK>> -> Personas
+    oid_Persona: <<PK>> <<FK>> -> Profesores
     Asignatura: <<PK>>
     --
 }
