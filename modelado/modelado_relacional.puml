@@ -125,14 +125,11 @@ entity TutoresLegales {
     --
 }
 
-entity ResponsablesDe {
-    oid_RD: <<PK>>
-    --
-    oid_Persona: <<FK>> -> TutoresLegales, Alumnos
-}
-
 entity Tutelas {
-
+    tutor: int <<PK>> <<FK>> -> TutoresLegales
+    alumno: int <<PK>> <<FK>> -> Alumnos
+    --
+    parentesco: e_Parentesco
 }
 
 Inspectores ||--o{ Visitas : realiza (Responsable)
