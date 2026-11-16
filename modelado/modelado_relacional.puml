@@ -167,7 +167,7 @@ Dietas |o--||Desplazamientos
 entity DiasAsuntosPersonales {
     oid_DAP: int <<PK>>
     --
-    inspector: int <<FK>> <<AK1>> -> Inspectores
+    Inspector: int <<FK>> <<AK1>> -> Inspectores
     Curso: int <<AK1>>
     DiasSolicitados
     
