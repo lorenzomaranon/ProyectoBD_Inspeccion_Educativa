@@ -97,25 +97,25 @@ entity Personas {
 }
 
 entity Inspectores {
-    oid_Persona: <<FK>> <<PK>>
+    oid_Persona: <<PK>> <<FK>> -> Personas
     --
     esJefe
     Codigo: <<FK>> -> Zonas
 }
 entity Alumnos {
-    oid_Persona: <<FK>> <<PK>> -> Persona
+    oid_Persona: <<FK>> <<PK>> -> Personas
     --
     Identificacion: <<FK>> -> CentrosEducativos
 }
 
 entity Profesores {
-    oid_Persona: <<PK>> <<FK>> -> Persona
+    oid_Persona: <<PK>> <<FK>> -> Personas
     --
     Identificacion: <<FK>> -> CentrosEducativos
 }
 
 entity AsignaturasProfesor {
-    oid_Persona: <<FK>> <<PK>>
+    oid_Persona: <<PK>> <<FK>> -> Personas
     Asignatura: <<PK>>
     --
 }
