@@ -57,7 +57,7 @@ entity Visita {
     *EstadoVisita : e_EstadoVisita
     *Responsable : int <<FK>> -> Inspectores
     *Jefe : int <<FK>> -> Inspectores
-    *IdCentro : int <<FK>> -> CentrosEducativos
+    *Centro : int <<FK>> -> CentrosEducativos
 }
 
 entity Informes {
