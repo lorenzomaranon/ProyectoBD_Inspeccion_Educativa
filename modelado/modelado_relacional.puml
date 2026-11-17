@@ -53,7 +53,7 @@ entity Visitas {
     Fecha : date
     HoraInicio : time
     HoraFin : time
-    EstadoVisita : e_EstadoVisita
+    Estado : e_EstadoVisita
     Responsable : int <<FK>> -> Inspectores
     Jefe : int <<FK>> -> Inspectores
     Centro : int <<FK>> -> CentrosEducativos
