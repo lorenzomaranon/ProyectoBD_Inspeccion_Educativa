@@ -164,7 +164,7 @@ entity Cursos {
     DiasTotales: int
     '¿Cada inspector puede contar con DAP distintos? porque sino esta FK no tiene sentido'
     TarifaKm: real
-    PlusAlmuerzo: int
+    PlusAlmuerzo: real
 
 }
 
