@@ -9,6 +9,7 @@ entity "Centros Educativos" as CentrosEducativos {
     Ubicacion
     Prioridad
     Zona: int <<FK>> -> Zonas
+    KmDesdeCadiz: real
 }
 
 entity DocumentosCita {
