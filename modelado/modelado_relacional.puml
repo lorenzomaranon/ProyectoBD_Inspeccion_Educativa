@@ -143,7 +143,6 @@ entity Desplazamientos {
 entity Dietas {
     oid_Visita: int <<PK>> <<FK>> -> Desplazamientos
     --
-    Importe: real
     Almuerzo: bool
 }
 
@@ -165,6 +164,7 @@ entity Cursos {
     DiasTotales: int
     '¿Cada inspector puede contar con DAP distintos? porque sino esta FK no tiene sentido'
     TarifaKm: real
+    PlusAlmuerzo: int
 
 }
 
