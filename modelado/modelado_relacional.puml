@@ -153,7 +153,7 @@ entity DiasAsuntosPersonales {
     oid_DAP: int <<PK>>
     --
     Inspector: int <<FK>> <<AK1>> -> Inspectores
-    Curso: string <<AK1>>
+    Curso: string <<FK>> <<AK1>> -> Cursos
     DiasSolicitados: int
 }
 
