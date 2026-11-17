@@ -87,11 +87,11 @@ entity Zonas {
 }
 
 entity Personas {
-    oid_Persona: <<PK>>
+    oid_Persona: int <<PK>>
     --
-    DNI: <<AK>>
-    Nombre
-    Apellidos
+    DNI: string <<AK>>
+    Nombre: string
+    Apellidos: string
 }
 
 entity Inspectores {
