@@ -160,9 +160,7 @@ entity DiasAsuntosPersonales {
 entity Cursos {
     curso: string <<PK>>
     --
-    inspector: int <<FK>> -> Inspectores
     DiasTotales: int
-    '¿Cada inspector puede contar con DAP distintos? porque sino esta FK no tiene sentido'
     TarifaKm: real
     PlusAlmuerzo: real
 
