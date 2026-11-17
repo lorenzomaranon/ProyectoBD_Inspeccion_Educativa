@@ -61,11 +61,10 @@ entity Visitas {
 }
 
 entity Informes {
-    oid_Informe : int <<PK>>
+    oid_Visita : int <<PK>> <<FK>> -> Visitas
     --
-    Prioridad : e_Prioridad
+    Prioridad : e_Priorida
     Observacion : text
-    oid_Visita : int <<FK>> <<AK>> -> Visitas
 }
 
 entity Tareas {
@@ -155,7 +154,7 @@ entity Desplazamientos {
 entity Dietas {
     oid_Visita: int <<PK>> <<FK>> -> Desplazamientos
     --
-    Importe: int
+    Importe: float
     Almuerzo: bool
 }
 
