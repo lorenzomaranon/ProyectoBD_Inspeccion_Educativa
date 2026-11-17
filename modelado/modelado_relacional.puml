@@ -9,7 +9,6 @@ entity "Centros Educativos" as CentrosEducativos {
     Ubicacion
     Prioridad
     Zona: int <<FK>> -> Zonas
-    ProfesorResponsable: int <<FK>> <<AK>> [0..1] -> Profesores
 }
 
 
