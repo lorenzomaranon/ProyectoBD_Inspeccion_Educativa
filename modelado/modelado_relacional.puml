@@ -135,12 +135,9 @@ Visitas ||--o| Informes : contiene
 entity Desplazamientos {
     oid_Visita: int <<PK>> <<FK>> -> Visitas
     --
-    Origen: string
-    Destino: string
-    HoraSalida
-    HoraLlegadaDomicilio [0..1]
-    Kilometros: real
-    TarifaKm: real
+    HoraSalida: time
+    HoraLlegadaDomicilio: time [0..1]
+    KmVuelta: real
 }
 
 entity Dietas {
@@ -166,6 +163,8 @@ entity Cursos {
     --
     inspector: int <<FK>> -> Inspectores
     DiasTotales: int
+    '¿Cada inspector puede contar con DAP distintos? porque sino esta FK no tiene sentido'
+    TarifaKm: real
 
 }
 
