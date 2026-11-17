@@ -95,13 +95,13 @@ entity Personas {
 }
 
 entity Inspectores {
-    oid_Persona: <<PK>> <<FK>> -> Personas
+    oid_Persona: int <<PK>> <<FK>> -> Personas
     --
-    esJefe
+    esJefe: bool
     Zona: int <<FK>> -> Zonas
 }
 entity Alumnos {
-    oid_Persona: <<FK>> <<PK>> -> Personas
+    oid_Persona: int <<PK>> <<FK>> -> Personas
     --
     Centro: int <<FK>> -> CentrosEducativos
 }
