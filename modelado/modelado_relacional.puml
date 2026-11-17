@@ -139,14 +139,14 @@ entity Desplazamientos {
     Destino: string
     HoraSalida
     HoraLlegadaDomicilio [0..1]
-    Kilometros: int
-    TarifaKm: float
+    Kilometros: real
+    TarifaKm: real
 }
 
 entity Dietas {
     oid_Visita: int <<PK>> <<FK>> -> Desplazamientos
     --
-    Importe: float
+    Importe: real
     Almuerzo: bool
 }
 
@@ -157,15 +157,15 @@ entity DiasAsuntosPersonales {
     oid_DAP: int <<PK>>
     --
     Inspector: int <<FK>> <<AK1>> -> Inspectores
-    Curso: int <<AK1>>
-    DiasSolicitados
+    Curso: string <<AK1>>
+    DiasSolicitados: int
 }
 
 entity Cursos {
     curso: string <<PK>>
     --
     inspector: int <<FK>> -> Inspectores
-    DiasTotales
+    DiasTotales: int
 
 }
 
