@@ -147,7 +147,7 @@ entity Desplazamientos {
     HoraSalida
     HoraLlegadaDomicilio [0..1]
     Kilometros: int
-    TarifaK: float
+    TarifaKm: float
 }
 
 
