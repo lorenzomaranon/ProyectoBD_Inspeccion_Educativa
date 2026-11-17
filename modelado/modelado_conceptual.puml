@@ -97,7 +97,7 @@ class Cita{
     Hora [0..1]
     Titulo
     TextoSolicitud
-    Num_solicitud
+    Num_solicitud {unique}
     DocumentaciónAdjunta [0..*]
     Estado: e_EstadoCita
     Prioridad: e_Prioridad [0..1]
@@ -138,7 +138,7 @@ class DiasAsuntosPersonales {
 }
 
 class Zona {
-    Codigo
+    Codigo {unique}
     Nombre
 }
 
