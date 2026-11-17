@@ -11,13 +11,12 @@ entity "Centros Educativos" as CentrosEducativos {
     Zona: int <<FK>> -> Zonas
 }
 
-
 entity DocumentosCita {
     Num_solicitud: int <<PK>> <<FK>> -> Citas
     DocumentacionAdjunta : string <<PK>>
-    --
-     
+    --   
 }
+
 entity Citas {
     Num_solicitud: int <<PK>> 
     --
@@ -31,7 +30,6 @@ entity Citas {
     Tutor: int <<FK>> -> TutoresLegales
     Alumno: int <<FK>> -> Alumnos
     Inspector: int <<FK>> [0..1] -> Inspectores
-
 }
 
 entity Anotaciones {
@@ -44,8 +42,6 @@ entity Anotaciones {
     Inspector: int <<FK>> -> Inspectores
     Centro: int <<FK>> -> CentrosEducativos
 }
-
-
 
 entity Visitas {
     oid_Visita: int <<PK>>
@@ -77,13 +73,10 @@ entity Tareas {
     Jefe : int <<FK>> -> Inspectores
 }
 
-
-
 entity Zonas {
     Codigo: int <<PK>>
     --
     Nombre: string <<AK>>
-    
 }
 
 entity Personas {
@@ -100,6 +93,7 @@ entity Inspectores {
     esJefe: bool
     Zona: int <<FK>> -> Zonas
 }
+
 entity Alumnos {
     oid_Persona: int <<PK>> <<FK>> -> Personas
     --
@@ -107,15 +101,15 @@ entity Alumnos {
 }
 
 entity Profesores {
-    oid_Persona: <<PK>> <<FK>> -> Personas
+    oid_Persona: int <<PK>> <<FK>> -> Personas
     --
     Centro: int <<FK>> -> CentrosEducativos
     CentroResponsable: int <<FK>> <<AK>> [0..1] -> CentrosEducativos
 }
 
 entity AsignaturasProfesor {
-    oid_Persona: <<PK>> <<FK>> -> Profesores
-    Asignatura: <<PK>>
+    oid_Persona: int <<PK>> <<FK>> -> Profesores
+    Asignatura: string <<PK>>
     --
 }
 
@@ -138,7 +132,6 @@ Inspectores ||--o{ Tareas : asigna (Jefe)
 CentrosEducativos ||--o{ Visitas : recibe
 Visitas ||--o| Informes : contiene
 
-
 entity Desplazamientos {
     oid_Visita: int <<PK>> <<FK>> -> Visitas
     --
@@ -150,7 +143,6 @@ entity Desplazamientos {
     TarifaKm: float
 }
 
-
 entity Dietas {
     oid_Visita: int <<PK>> <<FK>> -> Desplazamientos
     --
@@ -158,10 +150,8 @@ entity Dietas {
     Almuerzo: bool
 }
 
-
 Desplazamientos |o--||Visitas
 Dietas |o--||Desplazamientos
-
 
 entity DiasAsuntosPersonales {
     oid_DAP: int <<PK>>
@@ -169,10 +159,7 @@ entity DiasAsuntosPersonales {
     Inspector: int <<FK>> <<AK1>> -> Inspectores
     Curso: int <<AK1>>
     DiasSolicitados
-    
-    
 }
-
 
 entity Cursos {
     curso: string <<PK>>
