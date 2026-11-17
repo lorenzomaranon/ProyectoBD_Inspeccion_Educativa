@@ -110,6 +110,7 @@ entity Profesores {
     oid_Persona: <<PK>> <<FK>> -> Personas
     --
     Centro: int <<FK>> -> CentrosEducativos
+    CentroResponsable: int <<FK>> <<AK>> [0..1] — CentrosEducativos
 }
 
 entity AsignaturasProfesor {
