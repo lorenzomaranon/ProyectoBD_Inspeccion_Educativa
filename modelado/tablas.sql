@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Alumnos;
 DROP TABLE IF EXISTS Inspectores;
 DROP TABLE IF EXISTS Personas;
 
-CREATE TABLE personas (
+CREATE TABLE Personas (
     oid_Persona INT NOT NULL AUTO_INCREMENT,
     DNI CHAR(9) NOT NULL,
     Nombre VARCHAR(50) NOT NULL,
@@ -21,7 +21,18 @@ CREATE TABLE personas (
     CONSTRAINT ak_personas_dni UNIQUE (DNI)
 );
 
-CREATE TABLE 
+CREATE TABLE Inspectores (
+    oid_Persona INT NOT NULL,
+    esJefe BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY (oid_Persona),
+    CONSTRAINT fk_inspectores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_inspectores_zona FOREIGN KEY (Zona) REFERENCES Zonas (Codigo) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+
+
+
 -- =====================================================================
 -- tablas.sql - Inspeccion Educativa (MariaDB)
 -- =====================================================================
