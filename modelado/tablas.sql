@@ -57,8 +57,12 @@ CREATE TABLE AsignaturasProfesor (
 );
 
 CREATE TABLE TutoresLegales (
+    oid_Persona INT NOT NULL,
+    PRIMARY KEY (oid_Persona),
+    CONSTRAINT fk_tutores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
 
 );
+
 
 
 -- =====================================================================
