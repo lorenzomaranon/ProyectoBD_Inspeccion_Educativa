@@ -120,10 +120,10 @@ entity TutoresLegales {
 }
 
 entity Tutelas {
-    tutor: int <<PK>> <<FK>> -> TutoresLegales
-    alumno: int <<PK>> <<FK>> -> Alumnos
+    Tutor: int <<PK>> <<FK>> -> TutoresLegales
+    Alumno: int <<PK>> <<FK>> -> Alumnos
     --
-    parentesco: e_Parentesco
+    Parentesco: e_Parentesco
 }
 
 Inspectores ||--o{ Visitas : realiza (Responsable)
