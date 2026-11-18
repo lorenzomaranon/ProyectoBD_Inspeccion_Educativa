@@ -9,6 +9,7 @@ entity "Centros Educativos" as CentrosEducativos {
     Ubicacion
     Prioridad
     Zona: int <<FK>> -> Zonas
+    KmDesdeCadiz: real
 }
 
 entity DocumentosCita {
@@ -135,18 +136,14 @@ Visitas ||--o| Informes : contiene
 entity Desplazamientos {
     oid_Visita: int <<PK>> <<FK>> -> Visitas
     --
-    Origen: string
-    Destino: string
-    HoraSalida
-    HoraLlegadaDomicilio [0..1]
-    Kilometros: int
-    TarifaKm: float
+    HoraSalida: time
+    HoraLlegadaDomicilio: time [0..1]
+    KmVuelta: real
 }
 
 entity Dietas {
     oid_Visita: int <<PK>> <<FK>> -> Desplazamientos
     --
-    Importe: float
     Almuerzo: bool
 }
 
@@ -157,15 +154,16 @@ entity DiasAsuntosPersonales {
     oid_DAP: int <<PK>>
     --
     Inspector: int <<FK>> <<AK1>> -> Inspectores
-    Curso: int <<AK1>>
-    DiasSolicitados
+    Curso: string <<FK>> <<AK1>> -> Cursos
+    DiasSolicitados: int
 }
 
 entity Cursos {
     curso: string <<PK>>
     --
-    inspector: int <<FK>> -> Inspectores
-    DiasTotales
+    DiasTotales: int
+    TarifaKm: real
+    PlusAlmuerzo: real
 
 }
 
