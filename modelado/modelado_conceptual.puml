@@ -112,7 +112,7 @@ class Anotacion{
 class Actividad{
     Fecha
     HoraInicio
-    HoraFin
+    HoraFin [0..1]
 }
 
 class Visita {
@@ -274,6 +274,8 @@ note as R09
   responsable y con la misma Fecha no se solapan:
   a1.HoraFin <= a2.HoraInicio o a2.HoraFin <= a1.HoraInicio.
   En toda actividad, HoraInicio < HoraFin.
+  Si una actividad no tiene HoraFin, se intuye que es la HoraInicio de la 
+  siguiente actividad.
 end note
 
 note as R10
