@@ -4,6 +4,15 @@ CREATE DATABASE IF NOT EXISTS inspeccion_educativa
 
 USE inspeccion_educativa;
 
+CREATE TABLE personas (
+    oid_Persona INT NOT NULL AUTO_INCREMENT,
+    DNI CHAR(9) NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellidos VARCHAR(100) NOT NULL,
+    PRIMARY KEY (oid_Persona),
+    CONSTRAINT ak_personas_dni UNIQUE (DNI)
+);
+
 -- =====================================================================
 -- tablas.sql - Inspeccion Educativa (MariaDB)
 -- =====================================================================
