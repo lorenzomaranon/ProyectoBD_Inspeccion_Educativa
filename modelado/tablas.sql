@@ -49,6 +49,16 @@ CREATE TABLE Profesores (
     CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable),
 );
 
+CREATE TABLE AsignaturasProfesor (
+    oid_Persona INT NOT NULL,
+    Asignatura VARCHAR(100) NOT NULL,
+    PRIMARY KEY (oid_Persona, Asignatura),
+    CONSTRAINT fk_asignaturas_profesor FOREIGN KEY (oid_Persona) REFERENCES Profesores (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+);
+
+CREATE TABLE TutoresLegales (
+
+);
 
 
 -- =====================================================================
