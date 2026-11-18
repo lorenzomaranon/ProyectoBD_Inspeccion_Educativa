@@ -35,7 +35,7 @@ CREATE TABLE Alumnos (
     Centro INT NOT NULL,
     PRIMARY KEY (oid_Persona),
     CONSTRAINT fk_alumnos_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_alumnos_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_alumnos_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE Profesores (
@@ -45,22 +45,21 @@ CREATE TABLE Profesores (
     PRIMARY KEY (oid_Persona),
     CONSTRAINT fk_profesores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_profesores_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_profesores_centro_responsable FOREIGN KEY (CentroResponsable) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE SET NULL
-    CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable),
+    CONSTRAINT fk_profesores_centro_responsable FOREIGN KEY (CentroResponsable) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable)
 );
 
 CREATE TABLE AsignaturasProfesor (
     oid_Persona INT NOT NULL,
     Asignatura VARCHAR(100) NOT NULL,
     PRIMARY KEY (oid_Persona, Asignatura),
-    CONSTRAINT fk_asignaturas_profesor FOREIGN KEY (oid_Persona) REFERENCES Profesores (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_asignaturas_profesor FOREIGN KEY (oid_Persona) REFERENCES Profesores (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE TutoresLegales (
     oid_Persona INT NOT NULL,
     PRIMARY KEY (oid_Persona),
-    CONSTRAINT fk_tutores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
-
+    CONSTRAINT fk_tutores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Tutelas (
@@ -69,7 +68,7 @@ CREATE TABLE Tutelas (
     Parentesco ENUM('Padre', 'Madre', 'otroTutor') NOT NULL,
     PRIMARY KEY (Tutor, Alumno),
     CONSTRAINT fk_tutelas_tutores FOREIGN KEY (Tutor) REFERENCES TutoresLegales (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_tutelas_alumnos FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_tutelas_alumnos FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
