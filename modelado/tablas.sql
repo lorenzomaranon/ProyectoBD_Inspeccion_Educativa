@@ -63,6 +63,14 @@ CREATE TABLE TutoresLegales (
 
 );
 
+CREATE TABLE Tutelas (
+    Tutor INT NOT NULL,
+    Alumno INT NOT NULL,
+    Parentesco ENUM('Padre', 'Madre', 'otroTutor') NOT NULL,
+    PRIMARY KEY (Tutor, Alumno),
+    CONSTRAINT fk_tutelas_tutores FOREIGN KEY (Tutor) REFERENCES TutoresLegales (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_tutelas_alumnos FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+);
 
 
 -- =====================================================================
