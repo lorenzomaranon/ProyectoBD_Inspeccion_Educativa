@@ -74,6 +74,7 @@ class Inspector{
 
 class "Centro Educativo" as CentroEducativo{
     Identificacion {unique}
+    Nombre {unique}
     Ubicación
     Prioridad: e_Prioridad
     KmDesdeCadiz: real
