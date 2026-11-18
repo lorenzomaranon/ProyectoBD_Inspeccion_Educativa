@@ -12,6 +12,11 @@
 -- Las versiones reales las haceis vosotros: 
 -- Tipos de datos y valores de ENUM son suposiciones.
 -- =====================================================================
+CREATE DATABASE IF NOT EXISTS inspeccion_educativa
+ CHARACTER SET utf8mb4
+ COLLATE utf8mb4_unicode_ci;
+
+
 
 CREATE TABLE Zonas (
     Codigo INT AUTO_INCREMENT PRIMARY KEY,
