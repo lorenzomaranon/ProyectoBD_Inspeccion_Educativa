@@ -76,20 +76,18 @@ class "Centro Educativo" as CentroEducativo{
     Identificacion {unique}
     Ubicación
     Prioridad: e_Prioridad
+    KmDesdeCadiz: real
 }
 
 class Desplazamiento{
-    Origen
-    Destino
-    HoraSalida
-    HoraLlegadaDomicilio [0..1]
-    Kilometros
-    TarifaKm
+    HoraSalida: time
+    HoraLlegadaDomicilio: time [0..1]
+    KmVuelta: real
 }
 
 class Dieta{
-    Importe
-    Almuerzo
+    Almuerzo: bool 
+    /Importe
 }
 
 class Cita{
@@ -131,10 +129,15 @@ class Tarea {
 }
 
 class DiasAsuntosPersonales {
-    Curso
-    DiasTotales
-    DiasSolicitados
+    DiasSolicitados: int
     /DiasRestantes
+}
+
+class Curso {
+    Nombre {unique}    
+    DiasTotales: int
+    TarifaKm: real
+    PlusAlmuerzo: real
 }
 
 class Zona {
@@ -212,7 +215,6 @@ Inspector "*" -- "1" Zona: trabajaEn >
 Inspector "1" -- "*" Anotacion: redacta >
 Inspector "1 responsable" -- "*" Actividad: realiza >
 Inspector "1 jefe" -- "*" Actividad: asigna >
-Inspector "1" -- "*" DiasAsuntosPersonales: > cuentaCon
 Inspector "0..1" -- "*" Cita : atiende >
 TutorLegal "1..*" -- "1..*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
@@ -226,7 +228,8 @@ CentroEducativo "1" -- "*" Profesor: < trabajaEn
 CentroEducativo "1" -- "1" Profesor: esResponsable <
 CentroEducativo "1" -- "*" Anotacion: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
-
+Inspector "*" -- "*" Curso
+(Inspector, Curso) .. DiasAsuntosPersonales:cuentaCon
 'Restricciones'
 
 note as R01

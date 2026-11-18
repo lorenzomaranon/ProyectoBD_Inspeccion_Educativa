@@ -159,7 +159,7 @@ entity DiasAsuntosPersonales {
 }
 
 entity Cursos {
-    curso: string <<PK>>
+    Nombre: string <<PK>>
     --
     DiasTotales: int
     TarifaKm: real
