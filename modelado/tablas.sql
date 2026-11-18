@@ -171,4 +171,3 @@ END//
 
 DELIMITER ;
 
--- ================== FIN DEL CODIGO GENERADO CON IA ===================
