@@ -193,10 +193,10 @@ enum e_EstadoVisita {
 }
 
 enum e_Prioridad {
-    baja
-    media
-    alta
-    urgente
+    Baja
+    Media
+    Alta
+    Urgente
 }
 
 'Herencias'
