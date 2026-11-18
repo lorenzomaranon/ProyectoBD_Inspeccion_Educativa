@@ -38,7 +38,16 @@ CREATE TABLE Alumnos (
     CONSTRAINT fk_alumnos_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
 );
 
-
+CREATE TABLE Profesores (
+    oid_Persona INT NOT NULL,
+    Centro INT NOT NULL,
+    CentroResponsable INT NULL,
+    PRIMARY KEY (oid_Persona),
+    CONSTRAINT fk_profesores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_profesores_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_profesores_centro_responsable FOREIGN KEY (CentroResponsable) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE SET NULL
+    CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable),
+);
 
 
 
