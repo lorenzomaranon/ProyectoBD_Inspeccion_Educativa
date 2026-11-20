@@ -4,6 +4,14 @@ CREATE DATABASE IF NOT EXISTS inspeccion_educativa
 
 USE inspeccion_educativa;
 
+-- Bloque Javi -------------
+DROP TABLE IF EXISTS Centros;
+DROP TABLE IF EXISTS DocumentosCita;
+DROP TABLE IF EXISTS Citas;
+DROP TABLE IF EXISTS Anotaciones;
+DROP TABLE IF EXISTS Zonas;
+
+-- Bloque xxx -------------
 DROP TABLE IF EXISTS Tutelas;
 DROP TABLE IF EXISTS TutoresLegales;
 DROP TABLE IF EXISTS AsignaturasProfesor;
@@ -11,6 +19,7 @@ DROP TABLE IF EXISTS Profesores;
 DROP TABLE IF EXISTS Alumnos;
 DROP TABLE IF EXISTS Inspectores;
 DROP TABLE IF EXISTS Personas;
+
 
 CREATE TABLE Personas (
     oid_Persona INT NOT NULL AUTO_INCREMENT,
