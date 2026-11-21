@@ -4,7 +4,7 @@ skinparam ClassAttributeIconSize 0
 
 
 entity "Centros Educativos" as CentrosEducativos {
-    Identificacion: int <<PK>>
+    OID_Centro: int <<PK>>
     --
     Nombre: string <<AK>>
     Zona: int <<FK>> -> Zonas

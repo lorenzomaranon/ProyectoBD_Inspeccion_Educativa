@@ -73,7 +73,7 @@ class Inspector{
 }
 
 class "Centro Educativo" as CentroEducativo{
-    Identificacion {unique}
+    OID_Centro {unique}
     Nombre {unique}
     Ubicación
     Prioridad: e_Prioridad
