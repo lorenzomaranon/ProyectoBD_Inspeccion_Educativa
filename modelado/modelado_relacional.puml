@@ -37,7 +37,7 @@ entity Citas {
 entity Anotaciones {
     oid_Anotacion: int <<PK>>
     --
-    Fecha: string
+    Fecha: date
     Titulo: string
     Descripcion: string
     Prioridad: e_Prioridad
