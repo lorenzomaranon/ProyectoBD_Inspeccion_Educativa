@@ -4,12 +4,12 @@ skinparam ClassAttributeIconSize 0
 
 
 entity "Centros Educativos" as CentrosEducativos {
-    OID_Centro: int <<PK>>
+    Identificacion: int <<PK>>
     --
     Nombre: string <<AK>>
     Zona: int <<FK>> -> Zonas
-    Ubicacion
-    Prioridad
+    Ubicacion: string
+    Prioridad: e_Prioridad
     KmDesdeCadiz: real
 }
 
@@ -24,8 +24,8 @@ entity Citas {
     --
     Fecha [0..1]
     Hora [0..1]
-    Titulo
-    TextoSolicitud
+    Titulo: string
+    TextoSolicitud: string
     Estado: e_EstadoCita
     Prioridad: e_Prioridad [0..1]
     Procedencia: e_Procedencia
@@ -37,9 +37,9 @@ entity Citas {
 entity Anotaciones {
     oid_Anotacion: int <<PK>>
     --
-    Fecha
-    Titulo
-    Descripcion
+    Fecha: string
+    Titulo: string
+    Descripcion: string
     Prioridad: e_Prioridad
     Inspector: int <<FK>> -> Inspectores
     Centro: int <<FK>> -> CentrosEducativos
