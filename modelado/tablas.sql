@@ -5,13 +5,13 @@ CREATE DATABASE IF NOT EXISTS inspeccion_educativa
 USE inspeccion_educativa;
 
 -- Bloque Javi -------------
-DROP TABLE IF EXISTS Centros;
+DROP TABLE IF EXISTS CentrosEducativos;
 DROP TABLE IF EXISTS DocumentosCita;
 DROP TABLE IF EXISTS Citas;
 DROP TABLE IF EXISTS Anotaciones;
 DROP TABLE IF EXISTS Zonas;
 
--- Bloque xxx -------------
+-- Bloque xxx --------------
 DROP TABLE IF EXISTS Tutelas;
 DROP TABLE IF EXISTS TutoresLegales;
 DROP TABLE IF EXISTS AsignaturasProfesor;
