@@ -22,8 +22,8 @@ entity DocumentosCita {
 entity Citas {
     Num_solicitud: int <<PK>> 
     --
-    Fecha [0..1]
-    Hora [0..1]
+    Fecha [0..1]: date
+    Hora [0..1]: time
     Titulo: string
     TextoSolicitud: string
     Estado: e_EstadoCita

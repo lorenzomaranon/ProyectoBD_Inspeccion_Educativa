@@ -19,6 +19,21 @@ DROP TABLE IF EXISTS Profesores;
 DROP TABLE IF EXISTS Alumnos;
 DROP TABLE IF EXISTS Inspectores;
 DROP TABLE IF EXISTS Personas;
+---------------------------------------------------
+-- Creaciones de tablas ---------------------------
+---------------------------------------------------
+
+CREATE TABLE
+
+
+
+
+
+
+
+
+
+
 
 
 CREATE TABLE Personas (
