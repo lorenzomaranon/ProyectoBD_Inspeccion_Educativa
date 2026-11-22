@@ -23,18 +23,77 @@ DROP TABLE IF EXISTS Personas;
 -- Creaciones de tablas ---------------------------
 ---------------------------------------------------
 
-CREATE TABLE
+-- ========= TABLAS JAVI =================================================================
+-- Zonas  ---------
+CREATE TABLE Zonas
+(	Codigo INT AUTO_INCREMENT, 
+	Nombre VARCHAR(50) NOT NULL, 
+	PRIMARY KEY(Codigo),
+	CONSTRAINT ak_zonas_nombre UNIQUE (Nombre));
+					
+-- Centros ---------
+CREATE TABLE CentrosEducativos 
+(	Identificacion INT AUTO_INCREMENT, 
+	Nombre VARCHAR(150) NOT NULL, 
+	Zona INT NOT NULL, 
+	Ubicacion VARCHAR(100) NOT NULL, 
+	Prioridad ENUM('baja', 'media', 'alta', 'urgente') NOT NULL, 
+	KmDesdeCadiz REAL NOT NULL,
+	PRIMARY KEY (Identificacion), 
+CONSTRAINT ak_centros_nombre UNIQUE (Nombre),
+CONSTRAINT fk_centros_zona FOREIGN KEY (Zona) REFERENCES Zonas (Codigo),
+CONSTRAINT ch_KmDesdeCadiz CHECK (KmDesdecadiz >= 0)
+);
+	
+										
+-- Citas  ---------
+CREATE TABLE Citas
+(	Num_solicitud INT AUTO_INCREMENT, 
+   Fecha DATE,
+   Hora TIME,
+   Titulo VARCHAR(50) NOT NULL,
+   TextoSolicitud TEXT NOT NULL,
+   Estado ENUM('PendienteDeRevision', 'Rechazada', 'Concertada') NOT NULL DEFAULT 'PendienteDeRevision',
+   Prioridad ENUM('baja', 'media', 'alta', 'urgente'),
+   Procedencia ENUM('Agenda', 'Llamada', 'Portal_Citas') NOT NULL,
+	Tutor INT NOT NULL,
+   Alumno INT NOT NULL,
+   Inspector INT, 
+	PRIMARY KEY (Num_solicitud), 
+CONSTRAINT fk_Citas_Tutor FOREIGN KEY (Tutor) REFERENCES TutoresLegales (oid_Persona),
+CONSTRAINT fk_Citas_Alumno FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona),
+CONSTRAINT fk_Citas_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
+-- si es concertada tiene que tener los 3 datos:
+CONSTRAINT ch_estado_cita_concertada CHECK (Estado <> 'Concertada' OR (Fecha IS NOT NULL AND Hora IS NOT NULL and Inspector IS NOT NULL)),
+-- si es rechazada no tiene inspector:
+CONSTRAINT ch_estado_cita_rechazada CHECK (Estado <> 'Rechazada' OR Inspector IS NULL),
+-- si esta PendienteDeRevision no puede tener niguno de los 3 datos:
+CONSTRAINT ch_estado_cita_pendiente CHECK (Estado <> 'PendienteDeRevision' OR (Fecha IS NULL AND Hora IS NULL and Inspector IS NULL)));
+-- falta por decidir si hace falta un trigger para la tutela -> !!!
 
 
+-- DocumentosCita  ---------
+CREATE TABLE DocumentosCita
+(	Num_solicitud INT,
+   DocumentacionAdjunta VARCHAR(50), 
+   PRIMARY KEY(Num_solicitud, DocumentacionAdjunta), 
+-- Si se borra una cita tambien se borran sus documentos -> ON DELETE CASCADE
+CONSTRAINT fk_DocumentosCita_NumSolicitud FOREIGN KEY (Num_solicitud) REFERENCES Citas (Num_solicitud) ON DELETE CASCADE);
 
+-- Anotaciones  ---------
+CREATE TABLE Anotaciones
+(	oid_Anotacion INT AUTO_INCREMENT, 
+   Fecha DATE NOT NULL,
+   Titulo VARCHAR(50) NOT NULL,
+   Descripcion VARCHAR(200) NOT NULL,
+   Prioridad ENUM('baja', 'media', 'alta', 'urgente') NOT NULL,
+   Inspector INT NOT NULL,
+   Centro INT NOT NULL,
+   PRIMARY KEY(oid_Anotacion), 
+CONSTRAINT fk_Anotaciones_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
+CONSTRAINT fk_Anotaciones_Centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion));
 
-
-
-
-
-
-
-
+-- ============= FIN TABLAS JAVI ========================================================
 
 CREATE TABLE Personas (
     oid_Persona INT NOT NULL AUTO_INCREMENT,
@@ -111,10 +170,7 @@ CREATE TABLE Tutelas (
 -- Tipos de datos y valores de ENUM son suposiciones.
 -- =====================================================================
 
-CREATE TABLE Zonas (
-    Codigo INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL UNIQUE
-);
+
 
 CREATE TABLE Personas (
     oid_Persona INT AUTO_INCREMENT PRIMARY KEY,
@@ -131,14 +187,6 @@ CREATE TABLE Inspectores (
     FOREIGN KEY (Zona) REFERENCES Zonas(Codigo)
 );
 
-CREATE TABLE CentrosEducativos (
-    Identificacion INT AUTO_INCREMENT PRIMARY KEY,
-    Ubicacion VARCHAR(200) NOT NULL,
-    Prioridad ENUM('Baja', 'Media', 'Alta') NOT NULL, -- valores supuestos
-    Zona INT NOT NULL,
-    KmDesdeCadiz REAL NOT NULL,
-    FOREIGN KEY (Zona) REFERENCES Zonas(Codigo)
-);
 
 -- ================== FIN DE LAS TABLAS GENERADAS CON IA ===============
 
