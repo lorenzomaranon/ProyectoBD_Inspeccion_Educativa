@@ -4,14 +4,35 @@ CREATE DATABASE IF NOT EXISTS inspeccion_educativa
 
 USE inspeccion_educativa;
 
--- Bloque Javi -------------
-DROP TABLE IF EXISTS CentrosEducativos;
+-- Borrado en orden inverso al de creación (primero las hijas)
+DROP TRIGGER IF EXISTS trTareasSolapamientoUpd;
+DROP TRIGGER IF EXISTS trTareasSolapamientoIns;
+DROP TRIGGER IF EXISTS trVisitasSolapamientoUpd;
+DROP TRIGGER IF EXISTS trVisitasSolapamientoIns;
+DROP PROCEDURE IF EXISTS comprobarSolapamiento;
+
+DROP TRIGGER IF EXISTS trVisitasEstadoDesplazamiento;
+DROP TRIGGER IF EXISTS trDesplazamientosIns;
+DROP TRIGGER IF EXISTS trDesplazamientosUpd;
+DROP TRIGGER IF EXISTS trDesplazamientosAlmuerzo;
+DROP TRIGGER IF EXISTS trDietasAlmuerzoIns;
+DROP TRIGGER IF EXISTS trDietasAlmuerzoUpd;
+DROP TRIGGER IF EXISTS trDAPDiasIns;
+DROP TRIGGER IF EXISTS trDAPDiasUpd;
+DROP TRIGGER IF EXISTS trCursosDiasTotales;
+DROP PROCEDURE IF EXISTS comprobarDesplazamiento;
+DROP PROCEDURE IF EXISTS comprobarDiasSolicitados;
+
+DROP TABLE IF EXISTS Dietas;
+DROP TABLE IF EXISTS Desplazamientos;
+DROP TABLE IF EXISTS DiasAsuntosPersonales;
+DROP TABLE IF EXISTS Cursos;
+DROP TABLE IF EXISTS Tareas;
+DROP TABLE IF EXISTS Informes;
+DROP TABLE IF EXISTS Visitas;
+DROP TABLE IF EXISTS Anotaciones;
 DROP TABLE IF EXISTS DocumentosCita;
 DROP TABLE IF EXISTS Citas;
-DROP TABLE IF EXISTS Anotaciones;
-DROP TABLE IF EXISTS Zonas;
-
--- Bloque xxx --------------
 DROP TABLE IF EXISTS Tutelas;
 DROP TABLE IF EXISTS TutoresLegales;
 DROP TABLE IF EXISTS AsignaturasProfesor;
@@ -19,11 +40,12 @@ DROP TABLE IF EXISTS Profesores;
 DROP TABLE IF EXISTS Alumnos;
 DROP TABLE IF EXISTS Inspectores;
 DROP TABLE IF EXISTS Personas;
----------------------------------------------------
+DROP TABLE IF EXISTS CentrosEducativos;
+DROP TABLE IF EXISTS Zonas;
+-- -------------------------------------------------
 -- Creaciones de tablas ---------------------------
----------------------------------------------------
+-- -------------------------------------------------
 
--- ========= TABLAS JAVI =================================================================
 -- Zonas  ---------
 CREATE TABLE Zonas
 (	Codigo INT AUTO_INCREMENT, 
@@ -47,51 +69,6 @@ CONSTRAINT ch_KmDesdeCadiz CHECK (KmDesdecadiz >= 0)
 	
 										
 -- Citas  ---------
-CREATE TABLE Citas
-(	Num_solicitud INT AUTO_INCREMENT, 
-   Fecha DATE,
-   Hora TIME,
-   Titulo VARCHAR(50) NOT NULL,
-   TextoSolicitud TEXT NOT NULL,
-   Estado ENUM('PendienteDeRevision', 'Rechazada', 'Concertada') NOT NULL DEFAULT 'PendienteDeRevision',
-   Prioridad ENUM('baja', 'media', 'alta', 'urgente'),
-   Procedencia ENUM('Agenda', 'Llamada', 'Portal_Citas') NOT NULL,
-	Tutor INT NOT NULL,
-   Alumno INT NOT NULL,
-   Inspector INT, 
-	PRIMARY KEY (Num_solicitud), 
-CONSTRAINT fk_Citas_Tutor FOREIGN KEY (Tutor) REFERENCES TutoresLegales (oid_Persona),
-CONSTRAINT fk_Citas_Alumno FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona),
-CONSTRAINT fk_Citas_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
--- si es concertada tiene que tener los 3 datos:
-CONSTRAINT ch_estado_cita_concertada CHECK (Estado <> 'Concertada' OR (Fecha IS NOT NULL AND Hora IS NOT NULL and Inspector IS NOT NULL)),
--- si es rechazada no tiene inspector:
-CONSTRAINT ch_estado_cita_rechazada CHECK (Estado <> 'Rechazada' OR Inspector IS NULL),
--- si esta PendienteDeRevision no puede tener niguno de los 3 datos:
-CONSTRAINT ch_estado_cita_pendiente CHECK (Estado <> 'PendienteDeRevision' OR (Fecha IS NULL AND Hora IS NULL and Inspector IS NULL)));
--- falta por decidir si hace falta un trigger para la tutela -> !!!
-
-
--- DocumentosCita  ---------
-CREATE TABLE DocumentosCita
-(	Num_solicitud INT,
-   DocumentacionAdjunta VARCHAR(50), 
-   PRIMARY KEY(Num_solicitud, DocumentacionAdjunta), 
--- Si se borra una cita tambien se borran sus documentos -> ON DELETE CASCADE
-CONSTRAINT fk_DocumentosCita_NumSolicitud FOREIGN KEY (Num_solicitud) REFERENCES Citas (Num_solicitud) ON DELETE CASCADE);
-
--- Anotaciones  ---------
-CREATE TABLE Anotaciones
-(	oid_Anotacion INT AUTO_INCREMENT, 
-   Fecha DATE NOT NULL,
-   Titulo VARCHAR(50) NOT NULL,
-   Descripcion VARCHAR(200) NOT NULL,
-   Prioridad ENUM('baja', 'media', 'alta', 'urgente') NOT NULL,
-   Inspector INT NOT NULL,
-   Centro INT NOT NULL,
-   PRIMARY KEY(oid_Anotacion), 
-CONSTRAINT fk_Anotaciones_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
-CONSTRAINT fk_Anotaciones_Centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion));
 
 -- ============= FIN TABLAS JAVI ========================================================
 
@@ -160,35 +137,51 @@ CREATE TABLE Tutelas (
 -- =====================================================================
 
 
--- =====================================================================
--- !! TABLAS GENERADAS CON IA (Claude) - NO SON LAS DEFINITIVAS !!
---
--- Las siguientes tablas las ha generado una IA unicamente para que yo (Jaime)
--- pueda crear y probar MIS tablas (Visitas, Informes y Tareas), que
--- dependen de ellas mediante claves ajenas.
--- Las versiones reales las haceis vosotros: 
--- Tipos de datos y valores de ENUM son suposiciones.
--- =====================================================================
+CREATE TABLE Citas
+(	Num_solicitud INT AUTO_INCREMENT,
+   Fecha DATE,
+   Hora TIME,
+   Titulo VARCHAR(50) NOT NULL,
+   TextoSolicitud TEXT NOT NULL,
+   Estado ENUM('PendienteDeRevision', 'Rechazada', 'Concertada') NOT NULL DEFAULT 'PendienteDeRevision',
+   Prioridad ENUM('baja', 'media', 'alta', 'urgente'),
+   Procedencia ENUM('Agenda', 'Llamada', 'Portal_Citas') NOT NULL,
+	Tutor INT NOT NULL,
+   Alumno INT NOT NULL,
+   Inspector INT,
+	PRIMARY KEY (Num_solicitud),
+CONSTRAINT fk_Citas_Tutor FOREIGN KEY (Tutor) REFERENCES TutoresLegales (oid_Persona),
+CONSTRAINT fk_Citas_Alumno FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona),
+CONSTRAINT fk_Citas_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
+-- si es concertada tiene que tener los 3 datos:
+CONSTRAINT ch_estado_cita_concertada CHECK (Estado <> 'Concertada' OR (Fecha IS NOT NULL AND Hora IS NOT NULL and Inspector IS NOT NULL)),
+-- si es rechazada no tiene inspector:
+CONSTRAINT ch_estado_cita_rechazada CHECK (Estado <> 'Rechazada' OR Inspector IS NULL),
+-- si esta PendienteDeRevision no puede tener niguno de los 3 datos:
+CONSTRAINT ch_estado_cita_pendiente CHECK (Estado <> 'PendienteDeRevision' OR (Fecha IS NULL AND Hora IS NULL and Inspector IS NULL)));
+-- falta por decidir si hace falta un trigger para la tutela -> !!!
 
 
+-- DocumentosCita  ---------
+CREATE TABLE DocumentosCita
+(	Num_solicitud INT,
+   DocumentacionAdjunta VARCHAR(50),
+   PRIMARY KEY(Num_solicitud, DocumentacionAdjunta),
+-- Si se borra una cita tambien se borran sus documentos -> ON DELETE CASCADE
+CONSTRAINT fk_DocumentosCita_NumSolicitud FOREIGN KEY (Num_solicitud) REFERENCES Citas (Num_solicitud) ON DELETE CASCADE);
 
-CREATE TABLE Personas (
-    oid_Persona INT AUTO_INCREMENT PRIMARY KEY,
-    DNI VARCHAR(9) NOT NULL UNIQUE,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellidos VARCHAR(150) NOT NULL
-);
-
-CREATE TABLE Inspectores (
-    oid_Persona INT PRIMARY KEY,
-    esJefe BOOLEAN NOT NULL,
-    Zona INT NOT NULL,
-    FOREIGN KEY (oid_Persona) REFERENCES Personas(oid_Persona),
-    FOREIGN KEY (Zona) REFERENCES Zonas(Codigo)
-);
-
-
--- ================== FIN DE LAS TABLAS GENERADAS CON IA ===============
+-- Anotaciones  ---------
+CREATE TABLE Anotaciones
+(	oid_Anotacion INT AUTO_INCREMENT,
+   Fecha DATE NOT NULL,
+   Titulo VARCHAR(50) NOT NULL,
+   Descripcion VARCHAR(200) NOT NULL,
+   Prioridad ENUM('baja', 'media', 'alta', 'urgente') NOT NULL,
+   Inspector INT NOT NULL,
+   Centro INT NOT NULL,
+   PRIMARY KEY(oid_Anotacion),
+CONSTRAINT fk_Anotaciones_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
+CONSTRAINT fk_Anotaciones_Centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion));
 
 -- =====================================================================
 -- MIS TABLAS (hechas por mi): Visitas, Informes, Tareas
@@ -234,7 +227,51 @@ CREATE TABLE Tareas (
 
     CONSTRAINT chTareasHorasInicioFin CHECK (HoraInicio < HoraFin)
 );
+CREATE TABLE Desplazamientos (
+    oid_Visita SMALLINT NOT NULL,          -- mismo tipo que Visitas.oid_Visita
+    HoraSalida TIME NOT NULL,
+    HoraLlegadaDomicilio TIME NULL,
+    KmVuelta REAL NOT NULL,
+    PRIMARY KEY (oid_Visita),
+    CONSTRAINT fk_desplazamientos_visita FOREIGN KEY (oid_Visita)
+        REFERENCES Visitas (oid_Visita) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT ch_desplazamientos_km CHECK (KmVuelta >= 0),
+    CONSTRAINT ch_desplazamientos_horas CHECK (HoraSalida < HoraLlegadaDomicilio)
+);
 
+CREATE TABLE Dietas (
+    oid_Visita SMALLINT NOT NULL,
+    Almuerzo BOOLEAN NOT NULL DEFAULT FALSE, -- lo calcula un trigger (RN-02)
+    PRIMARY KEY (oid_Visita),
+    CONSTRAINT fk_dietas_desplazamiento FOREIGN KEY (oid_Visita)
+        REFERENCES Desplazamientos (oid_Visita) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Cursos (
+    Nombre VARCHAR(7) NOT NULL,              -- formato '2026-27'
+    DiasTotales INT NOT NULL,
+    TarifaKm REAL NOT NULL,
+    PlusAlmuerzo REAL NOT NULL,
+    PRIMARY KEY (Nombre),
+    CONSTRAINT ch_cursos_formato CHECK (Nombre REGEXP '^[0-9]{4}-[0-9]{2}$'),
+    CONSTRAINT ch_cursos_dias CHECK (DiasTotales >= 0),
+    CONSTRAINT ch_cursos_tarifa CHECK (TarifaKm >= 0),
+    CONSTRAINT ch_cursos_plus CHECK (PlusAlmuerzo >= 0)
+);
+
+CREATE TABLE DiasAsuntosPersonales (
+    oid_DAP INT NOT NULL AUTO_INCREMENT,
+    Inspector INT NOT NULL,
+    Curso VARCHAR(7) NOT NULL,
+    DiasSolicitados INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (oid_DAP),
+    CONSTRAINT ak_dap_inspector_curso UNIQUE (Inspector, Curso),
+    CONSTRAINT fk_dap_inspector FOREIGN KEY (Inspector)
+        REFERENCES Inspectores (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_dap_curso FOREIGN KEY (Curso)
+        REFERENCES Cursos (Nombre) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT ch_dap_dias CHECK (DiasSolicitados >= 0)
+);
 
 -- =====================================================================
 -- Regla R-09: no se solapan las actividades (Visitas y Tareas) de un
@@ -313,6 +350,122 @@ CREATE TRIGGER trTareasSolapamientoUpd BEFORE UPDATE ON Tareas
 FOR EACH ROW
 BEGIN
     CALL comprobarSolapamiento(NEW.Responsable, NEW.Fecha, NEW.HoraInicio, NEW.HoraFin, NULL, NEW.oid_Tarea);
+END//
+
+-- R-01 (parte Desplazamiento): solo hay desplazamiento si la visita está Finalizada.
+-- R-08: HoraLlegadaDomicilio solo en el ÚLTIMO desplazamiento del día del inspector.
+CREATE PROCEDURE comprobarDesplazamiento(IN pVisita SMALLINT, IN pLlegada TIME)
+BEGIN
+    DECLARE vEstado VARCHAR(20);
+    DECLARE vResp INT;
+    DECLARE vFecha DATE;
+    DECLARE vInicio TIME;
+
+    SELECT Estado, Responsable, Fecha, HoraInicio
+      INTO vEstado, vResp, vFecha, vInicio
+      FROM Visitas WHERE oid_Visita = pVisita;
+
+    IF vEstado <> 'Finalizada' THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-01: solo una visita Finalizada puede tener desplazamiento';
+    END IF;
+
+    -- Otro desplazamiento del mismo inspector y día que choque con este:
+    --  * si este tiene llegada: no puede haber uno posterior ni otro con llegada
+    --  * aunque este no tenga llegada: no puede haber uno ANTERIOR con llegada
+    IF vResp IS NOT NULL AND vFecha IS NOT NULL AND EXISTS (
+        SELECT 1
+          FROM Desplazamientos d JOIN Visitas v ON v.oid_Visita = d.oid_Visita
+         WHERE v.Responsable = vResp AND v.Fecha = vFecha
+           AND d.oid_Visita <> pVisita
+           AND (   (pLlegada IS NOT NULL AND (v.HoraInicio > vInicio OR d.HoraLlegadaDomicilio IS NOT NULL))
+                OR (d.HoraLlegadaDomicilio IS NOT NULL AND v.HoraInicio < vInicio))
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-08: HoraLlegadaDomicilio solo en el ultimo desplazamiento del dia';
+    END IF;
+END//
+
+CREATE TRIGGER trDesplazamientosIns BEFORE INSERT ON Desplazamientos
+FOR EACH ROW
+BEGIN
+    CALL comprobarDesplazamiento(NEW.oid_Visita, NEW.HoraLlegadaDomicilio);
+END//
+
+CREATE TRIGGER trDesplazamientosUpd BEFORE UPDATE ON Desplazamientos
+FOR EACH ROW
+BEGIN
+    CALL comprobarDesplazamiento(NEW.oid_Visita, NEW.HoraLlegadaDomicilio);
+END//
+
+-- R-01 (parte Visita): una visita con desplazamiento no puede dejar de estar Finalizada.
+CREATE TRIGGER trVisitasEstadoDesplazamiento BEFORE UPDATE ON Visitas
+FOR EACH ROW
+BEGIN
+    IF NEW.Estado <> 'Finalizada'
+       AND EXISTS (SELECT 1 FROM Desplazamientos WHERE oid_Visita = OLD.oid_Visita) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-01: la visita tiene desplazamiento, debe seguir Finalizada';
+    END IF;
+END//
+
+-- RN-02: Almuerzo = la llegada al domicilio es posterior a las 15:00.
+-- Lo calcula el sistema; lo que se escriba a mano en Almuerzo se ignora.
+CREATE TRIGGER trDietasAlmuerzoIns BEFORE INSERT ON Dietas
+FOR EACH ROW
+BEGIN
+    SET NEW.Almuerzo = COALESCE(
+        (SELECT HoraLlegadaDomicilio > '15:00:00'
+           FROM Desplazamientos WHERE oid_Visita = NEW.oid_Visita), FALSE);
+END//
+
+CREATE TRIGGER trDietasAlmuerzoUpd BEFORE UPDATE ON Dietas
+FOR EACH ROW
+BEGIN
+    SET NEW.Almuerzo = COALESCE(
+        (SELECT HoraLlegadaDomicilio > '15:00:00'
+           FROM Desplazamientos WHERE oid_Visita = NEW.oid_Visita), FALSE);
+END//
+
+-- Si cambia la hora de llegada, se recalcula el almuerzo de su dieta.
+CREATE TRIGGER trDesplazamientosAlmuerzo AFTER UPDATE ON Desplazamientos
+FOR EACH ROW
+BEGIN
+    UPDATE Dietas
+       SET Almuerzo = COALESCE(NEW.HoraLlegadaDomicilio > '15:00:00', FALSE)
+     WHERE oid_Visita = NEW.oid_Visita;
+END//
+
+-- R-10: DiasRestantes = DiasTotales - DiasSolicitados >= 0
+CREATE PROCEDURE comprobarDiasSolicitados(IN pCurso VARCHAR(7), IN pDias INT)
+BEGIN
+    IF pDias > (SELECT DiasTotales FROM Cursos WHERE Nombre = pCurso) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-10: DiasSolicitados supera los DiasTotales del curso';
+    END IF;
+END//
+
+CREATE TRIGGER trDAPDiasIns BEFORE INSERT ON DiasAsuntosPersonales
+FOR EACH ROW
+BEGIN
+    CALL comprobarDiasSolicitados(NEW.Curso, NEW.DiasSolicitados);
+END//
+
+CREATE TRIGGER trDAPDiasUpd BEFORE UPDATE ON DiasAsuntosPersonales
+FOR EACH ROW
+BEGIN
+    CALL comprobarDiasSolicitados(NEW.Curso, NEW.DiasSolicitados);
+END//
+
+-- R-10 (desde Cursos): no se pueden bajar los DiasTotales por debajo de lo ya solicitado.
+CREATE TRIGGER trCursosDiasTotales BEFORE UPDATE ON Cursos
+FOR EACH ROW
+BEGIN
+    IF EXISTS (SELECT 1 FROM DiasAsuntosPersonales
+                WHERE Curso = OLD.Nombre AND DiasSolicitados > NEW.DiasTotales) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-10: hay inspectores con mas dias solicitados que los nuevos DiasTotales';
+    END IF;
 END//
 
 DELIMITER ;
