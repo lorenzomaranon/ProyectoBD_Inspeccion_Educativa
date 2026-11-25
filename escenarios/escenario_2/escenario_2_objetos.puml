@@ -27,14 +27,12 @@ object "rosa : Profesor" as rosa {
   Apellidos = Pérez Gálvez
   DNI = 00000014Z
   asignaturasImparte = [Pedagogía Terapéutica]
-  esResponsableCentro = false
 }
 object "mateo : Profesor" as mateo {
   Nombre = Mateo
   Apellidos = Cruz Lozano
   DNI = 00000015S
   asignaturasImparte = [Matemáticas, Lengua]
-  esResponsableCentro = true
 }
 object "luis : Inspector" as luis {
   Nombre = Luis
@@ -57,19 +55,28 @@ object "tutelaIrene : Tutela" as tutelaIrene {
   parentesco = Madre
 }
 
-'ZONA Y CENTRO'
+'ZONA, CENTRO Y CURSO'
 object "z02 : Zona" as z02 {
-  Código = Z-02
+  Codigo = Z-02
   Nombre = Bahía de Cádiz
 }
 object "ceipBahia : CentroEducativo" as ceipBahia {
-  Identificación = 11999002 – CEIP Bahía Azul
+  Identificacion = 11999002
+  Nombre = CEIP Bahía Azul
   Ubicación = Avenida Ficticia 7, Puerto Real (Cádiz)
   Prioridad = media
+  KmDesdeCadiz = 11
+}
+object "curso2627 : Curso" as curso2627 {
+  Nombre = 2026-27
+  DiasTotales = 4
+  TarifaKm = 0,24
+  PlusAlmuerzo = 20
 }
 
 'CITA'
 object "c2 : Cita" as c2 {
+  Num_solicitud = 2
   Fecha = 05/11/2026
   Hora = 12:00
   Titulo = Falta de refuerzo educativo para mi hija
@@ -99,16 +106,13 @@ object "v2 : Visita" as v2 {
   Estado = Finalizada
 }
 object "d2 : Desplazamiento" as d2 {
-  Origen = Centro de Cádiz
-  Destino = CEIP Bahía Azul, Puerto Real
   HoraSalida = 08:30
   HoraLlegadaDomicilio = 14:20
-  Kilometros = 22
-  TarifaKm = 0,24 €/km
+  KmVuelta = 11
 }
 object "dt2 : Dieta" as dt2 {
-  Importe = 5,28 €
   Almuerzo = false
+  /Importe = 5,28 €
 }
 object "i2 : Informe" as i2 {
   Prioridad = baja
@@ -120,39 +124,47 @@ object "i2 : Informe" as i2 {
 }
 
 'ENLACES: FAMILIA'
-pablo "1..*" -- "1..*" lucia : responsableDe >
-irene "1..*" -- "1..*" lucia : responsableDe >
+pablo -- lucia : responsableDe >
+irene -- lucia : responsableDe >
 (pablo, lucia) .. tutelaPablo
 (irene, lucia) .. tutelaIrene
 
 'ENLACES: CITA'
-pablo "1" -- "*" c2 : solicita >
-lucia "1" -- "*" c2 : trataSobre >
-luis "0..1" -- "*" c2 : atiende >
+pablo -- c2 : solicita >
+c2 -- lucia : trataSobre >
+luis -- c2 : atiende >
 
 'ENLACES: ACTIVIDADES'
-luis "1 jefe" -- "*" t1 : asigna >
-luis "1 jefe" -- "*" v2 : asigna >
-nuria "1 responsable" -- "*" t1 : realiza >
-nuria "1 responsable" -- "*" v2 : realiza >
-nuria "1" -- "*" i2 : redacta >
-ceipBahia "1" -- "*" v2 : recibe >
-v2 *-- "0..1" i2
-v2 *-- "0..1" d2 : existe >
-d2 *-- "0..1" dt2 : requiere >
+luis "jefe" -- t1 : asigna >
+luis "jefe" -- v2 : asigna >
+nuria "responsable" -- t1 : realiza >
+nuria "responsable" -- v2 : realiza >
+ceipBahia -- v2 : recibe >
+v2 *-- i2
+v2 *-- d2 : existe >
+d2 *-- dt2 : requiere >
 
 'ENLACES: CENTRO Y ZONA'
-ceipBahia "1" -- "*" lucia
-ceipBahia "1" -- "*" rosa
-ceipBahia "1" -- "*" mateo
-z02 "1" -- "*" ceipBahia
-luis "*" -- "1" z02 : trabajaEn >
-nuria "*" -- "1" z02 : trabajaEn >
+ceipBahia -- lucia
+rosa -- ceipBahia : trabajaEn >
+mateo -- ceipBahia : trabajaEn >
+mateo -- ceipBahia : esResponsable >
+z02 -- ceipBahia
+luis -- z02 : trabajaEn >
+nuria -- z02 : trabajaEn >
 
 note right of dt2
-  22 km × 0,24 €/km = 5,28 €
+  Kilometraje = KmDesdeCadiz (ceipBahia) + KmVuelta (d2)
+              = 11 + 11 = 22 km
+  22 km × 0,24 €/km (TarifaKm de curso2627) = 5,28 €
   14:20 no excede las 15:00:
-  sin plus de almuerzo (RN-02)
+  sin PlusAlmuerzo (RN-02)
+  /Importe = 5,28 €
+end note
+
+note right of i2
+  i2 lo cumplimenta nuria porque es la responsable
+  de v2 (R-03): no hay enlace propio Inspector-Informe.
 end note
 
 note top of ceipBahia

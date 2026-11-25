@@ -216,7 +216,7 @@ CREATE TABLE Visitas (
 
 CREATE TABLE Informes (
     oid_Visita SMALLINT PRIMARY KEY,
-    Prioridad ENUM('Baja', 'Media', 'Alta', 'Urgente'),
+    Prioridad ENUM('baja', 'media', 'alta', 'urgente'),
     Observacion TEXT,
 
     FOREIGN KEY (oid_Visita) REFERENCES Visitas(oid_Visita)

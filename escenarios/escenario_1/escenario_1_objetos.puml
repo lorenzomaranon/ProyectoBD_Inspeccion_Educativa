@@ -22,14 +22,12 @@ object "andres : Profesor" as andres {
   Apellidos = Vega Romero
   DNI = 00000003A
   asignaturasImparte = [Matemáticas]
-  esResponsableCentro = false
 }
 object "elena : Profesor" as elena {
   Nombre = Elena
   Apellidos = Cano Ortega
   DNI = 00000004G
   asignaturasImparte = [Lengua]
-  esResponsableCentro = true
 }
 object "carmen : Inspector" as carmen {
   Nombre = Carmen
@@ -49,19 +47,28 @@ object "tutelaMarta : Tutela" as tutelaMarta {
   parentesco = Madre
 }
 
-'ZONA Y CENTRO'
+'ZONA, CENTRO Y CURSO'
 object "z04 : Zona" as z04 {
-  Código = Z-04
+  Codigo = Z-04
   Nombre = Sierra de Cádiz
 }
 object "iesMirador : CentroEducativo" as iesMirador {
-  Identificación = 11999001 – IES Mirador de la Peña
+  Identificacion = 11999001
+  Nombre = IES Mirador de la Peña
   Ubicación = Calle Ficticia 12, Arcos de la Frontera (Cádiz)
   Prioridad = alta
+  KmDesdeCadiz = 34
+}
+object "curso2627 : Curso" as curso2627 {
+  Nombre = 2026-27
+  DiasTotales = 4
+  TarifaKm = 0,24
+  PlusAlmuerzo = 20
 }
 
 'CITA'
 object "c1 : Cita" as c1 {
+  Num_solicitud = 1
   Fecha = 08/10/2026
   Hora = 10:30
   Titulo = Posible acoso de un profesor a mi hijo
@@ -84,16 +91,13 @@ object "v1 : Visita" as v1 {
   Estado = Finalizada
 }
 object "d1 : Desplazamiento" as d1 {
-  Origen = Centro de Cádiz
-  Destino = IES Mirador de la Peña, Arcos de la Frontera
   HoraSalida = 08:45
   HoraLlegadaDomicilio = 15:40
-  Kilometros = 68
-  TarifaKm = 0,24 €/km
+  KmVuelta = 34
 }
 object "dt1 : Dieta" as dt1 {
-  Importe = 36,32 €
   Almuerzo = true
+  /Importe = 36,32 €
 }
 object "i1 : Informe" as i1 {
   Prioridad = alta
@@ -104,35 +108,42 @@ object "i1 : Informe" as i1 {
 }
 
 'ENLACES: FAMILIA'
-marta "1..*" -- "1..*" hugo : responsableDe >
+marta -- hugo : responsableDe >
 (marta, hugo) .. tutelaMarta
 
 'ENLACES: CITA'
-marta "1" -- "*" c1 : solicita >
-hugo "1" -- "*" c1 : trataSobre >
-carmen "0..1" -- "*" c1 : atiende >
+marta -- c1 : solicita >
+c1 -- hugo : trataSobre >
+carmen -- c1 : atiende >
 
 'ENLACES: ACTIVIDADES'
-carmen "1 jefe" -- "*" v1 : asigna >
-javier "1 responsable" -- "*" v1 : realiza >
-javier "1" -- "*" i1 : redacta >
-iesMirador "1" -- "*" v1 : recibe >
-v1 *-- "0..1" i1
-v1 *-- "0..1" d1 : existe >
-d1 *-- "0..1" dt1 : requiere >
+carmen "jefe" -- v1 : asigna >
+javier "responsable" -- v1 : realiza >
+iesMirador -- v1 : recibe >
+v1 *-- i1
+v1 *-- d1 : existe >
+d1 *-- dt1 : requiere >
 
 'ENLACES: CENTRO Y ZONA'
-iesMirador "1" -- "*" hugo
-iesMirador "1" -- "*" andres
-iesMirador "1" -- "*" elena
-z04 "1" -- "*" iesMirador
-carmen "*" -- "1" z04 : trabajaEn >
-javier "*" -- "1" z04 : trabajaEn >
+iesMirador -- hugo
+andres -- iesMirador : trabajaEn >
+elena -- iesMirador : trabajaEn >
+elena -- iesMirador : esResponsable >
+z04 -- iesMirador
+carmen -- z04 : trabajaEn >
+javier -- z04 : trabajaEn >
 
 note right of dt1
-  68 km × 0,24 €/km = 16,32 €
-  15:40 excede las 15:00: +20 € de almuerzo
-  Total: 36,32 € (RN-01, RN-02)
+  Kilometraje = KmDesdeCadiz (iesMirador) + KmVuelta (d1)
+              = 34 + 34 = 68 km
+  68 km × 0,24 €/km (TarifaKm de curso2627) = 16,32 €
+  15:40 excede las 15:00: + 20 € (PlusAlmuerzo de curso2627)
+  /Importe = 36,32 € (RN-01, RN-02)
+end note
+
+note right of i1
+  i1 lo cumplimenta javier porque es el responsable
+  de v1 (R-03): no hay enlace propio Inspector-Informe.
 end note
 
 note top of iesMirador

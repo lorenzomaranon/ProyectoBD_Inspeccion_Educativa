@@ -19,7 +19,7 @@ Nuria no es inspectora jefe (`esJefe = false`), así que no podría haber creado
 
 El miércoles 11 de noviembre, Nuria se desplaza desde el centro de Cádiz hasta el colegio, realiza la visita y esta pasa a `Finalizada`. El desplazamiento es corto y Nuria llega a su domicilio antes de las 15:00, así que el sistema calcula la dieta solo con el kilometraje, **sin plus de almuerzo**.
 
-Nuria, como inspectora responsable de la visita, redacta el informe. Concluye que el centro está atendiendo a la alumna y que solo hay un retraso administrativo, por lo que le da prioridad `baja`. Al revisar la prioridad del centro, que ya era `media`, no encuentra motivo para cambiarla, así que **no se modifica** y el sistema no envía ningún aviso.
+Nuria, como inspectora responsable de la visita, cumplimenta el informe (R-03). Concluye que el centro está atendiendo a la alumna y que solo hay un retraso administrativo, por lo que le da prioridad `baja`. Al revisar la prioridad del centro, que ya era `media`, no encuentra motivo para cambiarla, así que **no se modifica** y el sistema no envía ningún aviso.
 
 Este escenario es el complementario del primero: allí todo cambia (prioridad, plus de almuerzo, aviso); aquí se comprueba que el modelo también representa bien el caso en que **no** cambia nada.
 
@@ -32,12 +32,12 @@ Este escenario es el complementario del primero: allí todo cambia (prioridad, p
 | `pablo` | TutorLegal | Pablo Nieto Barral | 00000011B | — |
 | `irene` | TutorLegal | Irene Vidal Soler | 00000012N | — |
 | `lucia` | Alumno | Lucía Nieto Vidal | 00000013J | — |
-| `rosa` | Profesor | Rosa Pérez Gálvez | 00000014Z | asignaturasImparte = [Pedagogía Terapéutica]; esResponsableCentro = false |
-| `mateo` | Profesor | Mateo Cruz Lozano | 00000015S | asignaturasImparte = [Matemáticas, Lengua]; esResponsableCentro = true |
+| `rosa` | Profesor | Rosa Pérez Gálvez | 00000014Z | asignaturasImparte = [Pedagogía Terapéutica] |
+| `mateo` | Profesor | Mateo Cruz Lozano | 00000015S | asignaturasImparte = [Matemáticas, Lengua] |
 | `luis` | Inspector | Luis Barea Mora | 00000016Q | esJefe = true |
 | `nuria` | Inspector | Nuria Campos Ríos | 00000017V | esJefe = false |
 
-`mateo` aparece para cumplir la RN-07: todo centro tiene exactamente un profesor responsable.
+`rosa` y `mateo` trabajanEn `ceipBahia`, y `mateo` además esResponsable de él: todo centro tiene exactamente un profesor responsable (RN-07).
 
 ### Tutelas
 
@@ -50,21 +50,33 @@ Este escenario es el complementario del primero: allí todo cambia (prioridad, p
 
 | Atributo | Valor |
 | --- | --- |
-| Código | Z-02 |
+| Codigo | Z-02 |
 | Nombre | Bahía de Cádiz |
 
 ### Centro Educativo `ceipBahia`
 
 | Atributo | Valor |
 | --- | --- |
-| Identificación | 11999002 – CEIP Bahía Azul |
+| Identificacion | 11999002 |
+| Nombre | CEIP Bahía Azul |
 | Ubicación | Avenida Ficticia 7, Puerto Real (Cádiz) |
 | Prioridad | media (sin cambios) |
+| KmDesdeCadiz | 11 |
+
+### Curso `curso2627`
+
+| Atributo | Valor |
+| --- | --- |
+| Nombre | 2026-27 |
+| DiasTotales | 4 |
+| TarifaKm | 0,24 €/km |
+| PlusAlmuerzo | 20 € |
 
 ### Cita `c2`
 
 | Atributo | Valor |
 | --- | --- |
+| Num_solicitud | 2 |
 | Fecha | 05/11/2026 |
 | Hora | 12:00 |
 | Titulo | Falta de refuerzo educativo para mi hija |
@@ -96,25 +108,22 @@ Este escenario es el complementario del primero: allí todo cambia (prioridad, p
 
 | Atributo | Valor |
 | --- | --- |
-| Origen | Centro de Cádiz |
-| Destino | CEIP Bahía Azul, Puerto Real |
 | HoraSalida | 08:30 |
 | HoraLlegadaDomicilio | 14:20 |
-| Kilometros | 22 |
-| TarifaKm | 0,24 €/km |
+| KmVuelta | 11 |
 
 ### Dieta `dt2`
 
 | Atributo | Valor |
 | --- | --- |
-| Importe | 5,28 € |
 | Almuerzo | false |
+| /Importe (derivado) | 5,28 € |
 
 Cálculo (RC-01, RN-01 y RN-02):
 
 | Concepto | Operación | Importe |
 | --- | --- | --- |
-| Kilometraje | 22 km × 0,24 €/km | 5,28 € |
+| Kilometraje | (11 KmDesdeCadiz + 11 KmVuelta) = 22 km × 0,24 €/km (TarifaKm del curso) | 5,28 € |
 | Plus de almuerzo | 14:20 ≤ 15:00, no se aplica | 0,00 € |
 | **Total** | | **5,28 €** |
 
@@ -129,21 +138,22 @@ Cálculo (RC-01, RN-01 y RN-02):
 
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 02/11 | Pablo | Registra la solicitud en el portal | Crea `c2`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `pablo` solicita `c2`; `c2` trataSobre `lucia` | RI-07, RC-06, RN-04 |
+| 1 | 02/11 | Pablo | Registra la solicitud en el portal | Crea `c2`: Num_solicitud = 2, Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `pablo` solicita `c2`; `c2` trataSobre `lucia` | RI-07, RC-06, RN-04 |
 | 2 | 03/11 | Conserjería | Revisa y concierta la solicitud | `c2`: Estado = Concertada, Fecha y Hora | `luis` atiende `c2`; `c2` | RC-07 |
 | 3 | 05/11 | Luis | Atiende a Pablo, asigna la prioridad de la cita y comprueba que es jefe | `c2`: Prioridad = media; lee `luis.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 05/11 | Luis | Programa una tarea en el calendario de un inspector de la zona | Crea `t1` con fecha y horas | `luis` asigna `t1`; `nuria` realiza `t1` | RI-09, RN-05 |
 | 5 | 05/11 | Luis | Asigna la visita al mismo inspector | Crea `v2`: Estado = Pendiente, con fecha y horas | `luis` asigna `v2`; `nuria` realiza `v2`; `ceipBahia` recibe `v2` | RI-09, RC-09 |
 | 6 | 11/11 | Nuria | Se desplaza y realiza la visita | `v2`: Estado = Finalizada; crea `d2` | `v2` existe `d2` | RI-11 |
-| 7 | 11/11 | Sistema | Calcula la dieta sin plus de almuerzo | Crea `dt2`: Importe = 5,28 €, Almuerzo = false | `d2` requiere `dt2` | RI-12, RC-01, RN-01, RN-02 |
-| 8 | 11/11 | Nuria | Redacta el informe | Crea `i2`: Prioridad = baja | `nuria` redacta `i2`; `v2` contiene `i2` | RI-10, RC-11, RN-03 |
+| 7 | 11/11 | Sistema | Calcula la dieta sin plus de almuerzo | Crea `dt2`: Almuerzo = false (/Importe = 5,28 €, derivado) | `d2` requiere `dt2` | RI-12, RC-01, RN-01, RN-02 |
+| 8 | 11/11 | Nuria | Cumplimenta el informe | Crea `i2`: Prioridad = baja | `v2` contiene `i2` (autor: `nuria`, responsable de `v2`, R-03) | RI-10, RC-11, RN-03 |
 | 9 | 11/11 | Nuria | Revisa la prioridad del centro a partir del informe | `ceipBahia`: Prioridad = media, sin cambios | Camino `i2` → `v2` → `ceipBahia` | RC-03 |
 | 10 | 11/11 | Sistema | No avisa, porque la prioridad no ha cambiado | Sin cambios en los datos | — | RC-04 |
 
 Asociaciones que existen desde antes del escenario:
 
 - `pablo` e `irene` responsableDe `lucia`, con las tutelas `Padre` y `Madre`.
-- `lucia`, `rosa` y `mateo` pertenecen a `ceipBahia`.
+- `lucia` pertenece a `ceipBahia`; `rosa` y `mateo` trabajanEn `ceipBahia`.
+- `mateo` esResponsable de `ceipBahia`.
 - `ceipBahia` pertenece a `z02`.
 - `luis` y `nuria` trabajan en `z02`.
 
@@ -151,12 +161,12 @@ Asociaciones que existen desde antes del escenario:
 
 | Aspecto del modelo | Cómo lo refleja el escenario |
 | --- | --- |
-| `TutorLegal "1..*" -- "*" Alumno` | `lucia` tiene dos tutores y cada uno con su propia `Tutela`; solo uno solicita la cita |
+| `TutorLegal "1..*" -- "1..*" Alumno` | `lucia` tiene dos tutores y cada uno con su propia `Tutela`; solo uno solicita la cita |
 | `Actividad <|-- Tarea` (disjunta, completa) | `t1` es una tarea y `v2` una visita; ninguna es las dos cosas, y las dos comparten Fecha, HoraInicio y HoraFin |
 | `Inspector "1 jefe" -- "*" Actividad : asigna` | `luis` asigna dos actividades distintas; `nuria` las realiza y no puede asignarlas (R-02) |
 | `Dieta` opcional pero sin plus | `dt2` existe con `Almuerzo = false`; el importe es solo el kilometraje (RN-02: 14:20 no excede las 15:00) |
 | `Visita *-- "0..1" Informe` / `Desplazamiento` | Hasta el paso 6, `v2` no tiene ni desplazamiento ni informe; los tiene al estar `Finalizada` (R-01) |
-| `esResponsableCentro` (RN-07) | Hay dos profesores en el centro y solo `mateo` es responsable |
+| `esResponsable` (RN-07) | Hay dos profesores que trabajanEn el centro y solo `mateo` esResponsable de él |
 | Prioridad del informe como referencia (RC-03) | El informe es `baja` y el centro sigue en `media`: la prioridad del centro no se calcula, se decide |
 | Aviso solo si hay cambio (RC-04) | Sin cambio en `ceipBahia`, no se avisa a nadie |
 
@@ -167,14 +177,14 @@ Estas variaciones del escenario no deben ser posibles. Sirven para comprobar que
 | Variación | Restricción que la impide |
 | --- | --- |
 | `nuria` intenta asignarse a sí misma una tarea o una visita | R-02 / RN-05: quien asigna debe tener `esJefe = true` |
-| `luis` redacta `i2` en lugar de `nuria` | R-03 / RN-03: el informe lo redacta el inspector responsable de la visita |
+| `luis` cumplimenta `i2` en lugar de `nuria` | R-03 / RN-03: el informe solo lo cumplimenta el inspector responsable de la visita |
 | `v2` pasa a `Finalizada` sin crear `d2` ni `i2` | R-01: una visita finalizada tiene informe y desplazamiento |
 | Existe `d2` o `i2` mientras `v2` sigue `Pendiente` | R-01: solo las visitas finalizadas los tienen |
 | `pablo` contacta directamente con `nuria` y se crea `c2` con `Procedencia = Llamada` | RN-04: la familia solo solicita por el portal |
-| Se añade un segundo profesor con `esResponsableCentro = true` en `ceipBahia` | RN-07: exactamente un responsable por centro |
+| Se enlaza `rosa` con `ceipBahia` mediante `esResponsable`, además de `mateo` | RN-07: exactamente un responsable por centro (multiplicidad 1 del rol `responsable`) |
 
 ### Limitaciones conocidas
 
 - El paso 2 sigue sin registrar qué persona de conserjería revisó la cita (problema 8 de [correcciones.md](../escenario_1/correcciones.md)).
-- La asociación `Inspector "1" -- "*" Cita : atiende` obliga a que `c2` tenga inspector, y en el paso 1 todavía no lo tiene (problema 10 del mismo archivo).
+- **Resuelto.** `Inspector "0..1" -- "*" Cita : atiende` permite que `c2` no tenga inspector en el paso 1 (problema 10 del mismo archivo); R-05 lo exige al pasar a `Concertada`.
 - La RN-05 también permite asignar tareas a los coordinadores de equipo de zona, un perfil que el modelo actual no recoge; este escenario no lo necesita.

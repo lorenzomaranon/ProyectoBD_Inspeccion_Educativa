@@ -1,7 +1,6 @@
 @startuml escenario_3_objetos
 skinparam shadowing false
 skinparam ObjectAttributeIconSize 0
-skinparam linetype ortho
 skinparam nodesep 70
 skinparam ranksep 80
 
@@ -13,7 +12,6 @@ object "antonio : Profesor, TutorLegal" as antonio {
   Apellidos = Ríos Cabello
   DNI = 00000021K
   asignaturasImparte = [Lengua]
-  esResponsableCentro = false
 }
 object "daniel : Alumno" as daniel {
   Nombre = Daniel
@@ -25,21 +23,18 @@ object "isabel : Profesor" as isabel {
   Apellidos = Montero Gil
   DNI = 00000023T
   asignaturasImparte = [Geografía e Historia]
-  esResponsableCentro = true
 }
 object "julian : Profesor" as julian {
   Nombre = Julián
   Apellidos = Ferrer Lozano
   DNI = 00000024R
   asignaturasImparte = [Matemáticas]
-  esResponsableCentro = true
 }
 object "elisa : Profesor" as elisa {
   Nombre = Elisa
   Apellidos = Quintero Vera
   DNI = 00000025W
   asignaturasImparte = [Conocimiento del Medio]
-  esResponsableCentro = true
 }
 object "gloria : Inspector" as gloria {
   Nombre = Gloria
@@ -67,31 +62,46 @@ object "tutelaAntonio : Tutela" as tutelaAntonio {
 
 'ZONAS Y CENTROS'
 object "z02 : Zona" as z02 {
-  Código = Z-02
+  Codigo = Z-02
   Nombre = Bahía de Cádiz
 }
 object "z03 : Zona" as z03 {
-  Código = Z-03
+  Codigo = Z-03
   Nombre = Campiña de Jerez
 }
 object "iesMarismas : CentroEducativo" as iesMarismas {
-  Identificación = 11999003 – IES Marismas del Guadalete
+  Identificacion = 11999003
+  Nombre = IES Marismas del Guadalete
   Ubicación = Calle Ficticia 3, El Puerto de Santa María (Cádiz)
   Prioridad = baja
+  KmDesdeCadiz = 20
 }
 object "ceipAlbarizones : CentroEducativo" as ceipAlbarizones {
-  Identificación = 11999004 – CEIP Los Albarizones
+  Identificacion = 11999004
+  Nombre = CEIP Los Albarizones
   Ubicación = Calle Ficticia 21, Jerez de la Frontera (Cádiz)
   Prioridad = media
+  KmDesdeCadiz = 38
 }
 object "ceipFuenteClara : CentroEducativo" as ceipFuenteClara {
-  Identificación = 11999005 – CEIP Fuente Clara
+  Identificacion = 11999005
+  Nombre = CEIP Fuente Clara
   Ubicación = Plaza Ficticia 1, Espera (Cádiz)
   Prioridad = baja
+  KmDesdeCadiz = 100
+}
+
+'CURSO'
+object "curso2627 : Curso" as curso2627 {
+  Nombre = 2026-27
+  DiasTotales = 4
+  TarifaKm = 0,24
+  PlusAlmuerzo = 20
 }
 
 'CITA'
 object "c3 : Cita" as c3 {
+  Num_solicitud = 3
   Fecha = 12/11/2026
   Hora = 10:00
   Titulo = Cambio de grupo de mi hijo sin avisar a la familia
@@ -119,27 +129,21 @@ object "v4 : Visita" as v4 {
   Estado = Finalizada
 }
 object "d3 : Desplazamiento" as d3 {
-  Origen = Centro de Cádiz
-  Destino = CEIP Los Albarizones, Jerez de la Frontera
   HoraSalida = 08:45
-  Kilometros = 38
-  TarifaKm = 0,24 €/km
+  KmVuelta = 0
 }
 object "d4 : Desplazamiento" as d4 {
-  Origen = CEIP Los Albarizones, Jerez de la Frontera
-  Destino = CEIP Fuente Clara, Espera
   HoraSalida = 12:15
   HoraLlegadaDomicilio = 16:05
-  Kilometros = 41
-  TarifaKm = 0,24 €/km
+  KmVuelta = 100
 }
 object "dt3 : Dieta" as dt3 {
-  Importe = 9,12 €
   Almuerzo = false
+  /Importe = 9,12 €
 }
 object "dt4 : Dieta" as dt4 {
-  Importe = 29,84 €
   Almuerzo = true
+  /Importe = 68,00 €
 }
 object "i3 : Informe" as i3 {
   Prioridad = media
@@ -155,66 +159,64 @@ object "i4 : Informe" as i4 {
 
 'DÍAS DE ASUNTOS PERSONALES'
 object "diasSergio : DiasAsuntosPersonales" as diasSergio {
-  Curso = 2026/2027
-  DiasTotales = 4
   DiasSolicitados = 3
   /DiasRestantes = 1
 }
 object "diasPaula : DiasAsuntosPersonales" as diasPaula {
-  Curso = 2026/2027
-  DiasTotales = 4
   DiasSolicitados = 0
   /DiasRestantes = 4
 }
 object "diasGloria : DiasAsuntosPersonales" as diasGloria {
-  Curso = 2026/2027
-  DiasTotales = 4
   DiasSolicitados = 2
   /DiasRestantes = 2
 }
 
 'ENLACES: FAMILIA'
-antonio -- tutelaAntonio : responsableDe
-tutelaAntonio -- daniel
+antonio -- daniel : responsableDe >
+(antonio, daniel) .. tutelaAntonio
 
 'ENLACES: CITA'
-antonio --> c3 : solicita
-c3 --> daniel : trataSobre
-gloria --> c3 : atiende
+antonio -- c3 : solicita >
+c3 -- daniel : trataSobre >
+gloria -- c3 : atiende >
 
 'ENLACES: ACTIVIDADES'
-gloria --> v3 : asigna
-gloria --> v4 : asigna
-sergio --> v3 : realiza
-sergio --> v4 : realiza
-sergio --> i3 : redacta
-sergio --> i4 : redacta
-ceipAlbarizones *-- v3 : recibe
-ceipFuenteClara *-- v4 : recibe
+gloria "jefe" -- v3 : asigna >
+gloria "jefe" -- v4 : asigna >
+sergio "responsable" -- v3 : realiza >
+sergio "responsable" -- v4 : realiza >
+ceipAlbarizones -- v3 : recibe >
+ceipFuenteClara -- v4 : recibe >
 v3 *-- i3
-v3 *-- d3 : existe
+v3 *-- d3 : existe >
 v4 *-- i4
-v4 *-- d4 : existe
-d3 *-- dt3 : requiere
-d4 *-- dt4 : requiere
+v4 *-- d4 : existe >
+d3 *-- dt3 : requiere >
+d4 *-- dt4 : requiere >
 
 'ENLACES: CENTROS Y ZONAS'
-iesMarismas -- antonio
-iesMarismas -- isabel
+antonio -- iesMarismas : trabajaEn >
+isabel -- iesMarismas : trabajaEn >
+isabel -- iesMarismas : esResponsable >
 ceipAlbarizones -- daniel
-ceipAlbarizones -- julian
-ceipFuenteClara -- elisa
+julian -- ceipAlbarizones : trabajaEn >
+julian -- ceipAlbarizones : esResponsable >
+elisa -- ceipFuenteClara : trabajaEn >
+elisa -- ceipFuenteClara : esResponsable >
 z02 -- iesMarismas
 z03 -- ceipAlbarizones
 z03 -- ceipFuenteClara
-gloria --> z03 : trabajaEn
-sergio --> z03 : trabajaEn
-paula --> z03 : trabajaEn
+gloria -- z03 : trabajaEn >
+sergio -- z03 : trabajaEn >
+paula -- z03 : trabajaEn >
 
 'ENLACES: DÍAS DE ASUNTOS PERSONALES'
-gloria --> diasGloria : cuentaCon
-sergio --> diasSergio : cuentaCon
-paula --> diasPaula : cuentaCon
+gloria -- curso2627
+sergio -- curso2627
+paula -- curso2627
+(gloria, curso2627) .. diasGloria
+(sergio, curso2627) .. diasSergio
+(paula, curso2627) .. diasPaula
 
 note right of antonio
   Un único objeto con dos clases (Persona solapada):
@@ -223,17 +225,27 @@ note right of antonio
 end note
 
 note right of d4
-  Origen = centro educativo, no Cádiz.
-  41 km × 0,24 €/km = 9,84 €
-  16:05 excede las 15:00: +20 € de almuerzo
-  Total de dt4: 29,84 € (RN-02)
+  Kilometraje = KmDesdeCadiz (ceipFuenteClara) + KmVuelta (d4)
+              = 100 + 100 = 200 km
+  La ida se mide siempre desde Cádiz (RN-01),
+  aunque Sergio salga de Jerez.
+  200 km × 0,24 €/km (TarifaKm de curso2627) = 48,00 €
+  16:05 excede las 15:00: + 20 € (PlusAlmuerzo)
+  /Importe de dt4 = 68,00 € (RN-01, RN-02)
 end note
 
 note right of d3
+  Kilometraje = KmDesdeCadiz (ceipAlbarizones) + KmVuelta (d3)
+              = 38 + 0 = 38 km
+  KmVuelta = 0: Sergio no vuelve, sigue a Espera.
   38 km × 0,24 €/km = 9,12 €
-  Sergio no llega a su domicilio:
-  sin HoraLlegadaDomicilio ni plus de almuerzo
-  (R-08)
+  Sin HoraLlegadaDomicilio ni PlusAlmuerzo (R-08)
+end note
+
+note right of i3
+  i3 e i4 los cumplimenta sergio porque es el
+  responsable de v3 y v4 (R-03): no hay enlace
+  propio Inspector-Informe.
 end note
 
 note top of ceipAlbarizones
@@ -243,6 +255,7 @@ note top of ceipAlbarizones
 end note
 
 note bottom of diasSergio
+  DiasRestantes = curso2627.DiasTotales - DiasSolicitados (R-10).
   Solo sergio consulta diasSergio y paula diasPaula.
   gloria, como inspectora jefe, consulta los tres (RN-06).
   RN-06 es una regla de acceso: no se ve en el diagrama.
