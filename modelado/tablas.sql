@@ -93,7 +93,7 @@ CREATE TABLE Personas (
 CREATE TABLE Inspectores (
     oid_Persona INT NOT NULL,
     esJefe BOOLEAN NOT NULL DEFAULT FALSE,
-    Zona INT,
+    Zona INT NOT NULL,
     PRIMARY KEY (oid_Persona),
     CONSTRAINT fk_inspectores_persona FOREIGN KEY (oid_Persona) REFERENCES Personas (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_inspectores_zona FOREIGN KEY (Zona) REFERENCES Zonas (Codigo) ON UPDATE CASCADE ON DELETE RESTRICT
