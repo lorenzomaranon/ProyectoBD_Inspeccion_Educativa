@@ -508,6 +508,33 @@ BEGIN
     END IF;
 END//
 
+CREATE TRIGGER trVisitasJefeIns BEFORE INSERT ON Visitas
+FOR EACH ROW
+BEGIN
+    CALL comprobarJefe(NEW.Jefe);
+END//
+
+CREATE TRIGGER trVisitasJefeUpd BEFORE UPDATE ON Visitas
+FOR EACH ROW
+BEGIN
+    IF NOT (NEW.Jefe <=> OLD.Jefe) THEN
+        CALL comprobarJefe(NEW.Jefe);
+    END IF;
+END//
+
+CREATE TRIGGER trTareasJefeIns BEFORE INSERT ON Tareas
+FOR EACH ROW
+BEGIN
+    CALL comprobarJefe(NEW.Jefe);
+END//
+
+CREATE TRIGGER trTareasJefeUpd BEFORE UPDATE ON Tareas
+FOR EACH ROW
+BEGIN
+    IF NOT (NEW.Jefe <=> OLD.Jefe) THEN
+        CALL comprobarJefe(NEW.Jefe);
+    END IF;
+END//
 
 DELIMITER ;
 
