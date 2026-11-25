@@ -226,7 +226,7 @@ Desplazamiento *-- "0..1" Dieta : requiere >
 CentroEducativo "1" -- "*" Visita: recibe >
 CentroEducativo "1" -- "*" Alumno
 CentroEducativo "1" -- "*" Profesor: < trabajaEn
-CentroEducativo "1" -- "1" Profesor: esResponsable <
+CentroEducativo "0..1" -- "1" Profesor: esResponsable <
 CentroEducativo "1" -- "*" Anotacion: trataSobre <
 Alumno "1" -- "*" Cita: trataSobre <
 Inspector "*" -- "*" Curso
