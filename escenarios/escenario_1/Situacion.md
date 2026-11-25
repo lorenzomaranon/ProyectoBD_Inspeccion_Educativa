@@ -112,7 +112,7 @@ Cálculo (RC-01, RN-01 y RN-02):
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 05/10 | Marta | Registra la solicitud en el portal | Crea `c1`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `marta` solicita `c1`; `c1` trataSobre `hugo` | RI-07, RC-06, RN-04 |
-| 2 | 06/10 | Conserjería | Revisa y concierta la solicitud | `c1`: Estado = Concertada, Fecha y Hora | `carmen` atiende `c1`; `c1` implicaA `andres` | RC-07 |
+| 2 | 06/10 | Conserjería | Revisa y concierta la solicitud | `c1`: Estado = Concertada, Fecha y Hora | `carmen` atiende `c1`; `c1`  | RC-07 |
 | 3 | 08/10 | Carmen | Atiende a Marta, asigna la prioridad de la cita y comprueba que es jefa | `c1`: Prioridad = alta; lee `carmen.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 08/10 | Carmen | Asigna la visita a un inspector de la zona del centro | Crea `v1`: Estado = Pendiente, con fecha y horas | `carmen` asigna `v1`; `javier` realiza `v1`; `iesMirador` recibe `v1` | RI-09, RC-09 |
 | 5 | 14/10 | Javier | Se desplaza y realiza la visita | `v1`: Estado = Finalizada; crea `d1` | `v1` existe `d1` | RI-11 |

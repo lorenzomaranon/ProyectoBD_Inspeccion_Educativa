@@ -136,7 +136,7 @@ Se supone, para el escenario, un total de 4 días en el curso. El valor real dep
 
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 09/11 | Antonio | Registra la solicitud en el portal, como tutor legal de Daniel | Crea `c3`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `antonio` solicita `c3`; `c3` trataSobre `daniel`; `c3` implicaA `julian` | RI-07, RC-06, RN-04, R-07 |
+| 1 | 09/11 | Antonio | Registra la solicitud en el portal, como tutor legal de Daniel | Crea `c3`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `antonio` solicita `c3`; `c3` trataSobre `daniel` | RI-07, RC-06, RN-04, R-07 |
 | 2 | 10/11 | Conserjería | Revisa y concierta la solicitud | `c3`: Estado = Concertada, Fecha y Hora | `gloria` atiende `c3` | RC-07 |
 | 3 | 12/11 | Gloria | Atiende a Antonio, asigna la prioridad de la cita y comprueba que es jefa | `c3`: Prioridad = media; lee `gloria.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 12/11 | Gloria | Asigna a Sergio la visita derivada de la cita | Crea `v3`: Estado = Pendiente, con fecha y horas | `gloria` asigna `v3`; `sergio` realiza `v3`; `ceipAlbarizones` recibe `v3` | RI-09, RC-09, R-06 |

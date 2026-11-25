@@ -180,7 +180,6 @@ tutelaAntonio -- daniel
 'ENLACES: CITA'
 antonio --> c3 : solicita
 c3 --> daniel : trataSobre
-c3 --> julian : implicaA
 gloria --> c3 : atiende
 
 'ENLACES: ACTIVIDADES'

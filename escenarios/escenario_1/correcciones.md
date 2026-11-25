@@ -17,8 +17,7 @@
 2. **A `Desplazamiento` le faltaban datos para calcular la dieta.** Se añaden `Kilometros` y `TarifaKm`.
 3. **`HoraLlegada` era ambigua**, y la RN-02 necesita la llegada al domicilio. Pasa a llamarse `HoraLlegadaDomicilio`.
 4. **`Visita *-- "1" Informe` y `Visita *-- "1" Desplazamiento` no admitían el estado intermedio.** Pasan a `0..1`, y la restricción R-01 los exige si `Estado = Finalizada`.
-5. **Nada vinculaba la cita con el profesor.** Se añade `Cita "*" -- "*" Profesor : implicaA`.
-6. **Faltaban multiplicidades y restricciones.** Los roles `responsable` y `jefe` pasan a multiplicidad `1`, y se añaden las restricciones R-02 (RN-05) y R-03 (RN-03).
+5. **Faltaban multiplicidades y restricciones.** Los roles `responsable` y `jefe` pasan a multiplicidad `1`, y se añaden las restricciones R-02 (RN-05) y R-03 (RN-03).
 
 ### Pendientes de decisión
 
@@ -29,6 +28,5 @@
 
 ### Cambios que afectan al catálogo de requisitos
 
-- RI-07 debe recoger el profesor implicado en la cita, porque `implicaA` es una asociación nueva.
 - RI-10 y RI-11 dicen «uno por visita» y deben precisar que se refiere a las visitas finalizadas.
 - RI-11 debe incluir el kilometraje y aclarar que la hora de llegada es la llegada al domicilio.

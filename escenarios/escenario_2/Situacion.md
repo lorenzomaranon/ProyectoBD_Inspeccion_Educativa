@@ -130,7 +130,7 @@ Cálculo (RC-01, RN-01 y RN-02):
 | # | Fecha | Quién | Qué ocurre | Objetos creados o modificados | Asociaciones | Requisitos |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 02/11 | Pablo | Registra la solicitud en el portal | Crea `c2`: Estado = PendienteDeRevisión, Procedencia = Portal_Citas | `pablo` solicita `c2`; `c2` trataSobre `lucia` | RI-07, RC-06, RN-04 |
-| 2 | 03/11 | Conserjería | Revisa y concierta la solicitud | `c2`: Estado = Concertada, Fecha y Hora | `luis` atiende `c2`; `c2` implicaA `rosa` | RC-07 |
+| 2 | 03/11 | Conserjería | Revisa y concierta la solicitud | `c2`: Estado = Concertada, Fecha y Hora | `luis` atiende `c2`; `c2` | RC-07 |
 | 3 | 05/11 | Luis | Atiende a Pablo, asigna la prioridad de la cita y comprueba que es jefe | `c2`: Prioridad = media; lee `luis.esJefe = true` | — | RC-03, RN-05 |
 | 4 | 05/11 | Luis | Programa una tarea en el calendario de un inspector de la zona | Crea `t1` con fecha y horas | `luis` asigna `t1`; `nuria` realiza `t1` | RI-09, RN-05 |
 | 5 | 05/11 | Luis | Asigna la visita al mismo inspector | Crea `v2`: Estado = Pendiente, con fecha y horas | `luis` asigna `v2`; `nuria` realiza `v2`; `ceipBahia` recibe `v2` | RI-09, RC-09 |
@@ -156,7 +156,6 @@ Asociaciones que existen desde antes del escenario:
 | `Inspector "1 jefe" -- "*" Actividad : asigna` | `luis` asigna dos actividades distintas; `nuria` las realiza y no puede asignarlas (R-02) |
 | `Dieta` opcional pero sin plus | `dt2` existe con `Almuerzo = false`; el importe es solo el kilometraje (RN-02: 14:20 no excede las 15:00) |
 | `Visita *-- "0..1" Informe` / `Desplazamiento` | Hasta el paso 6, `v2` no tiene ni desplazamiento ni informe; los tiene al estar `Finalizada` (R-01) |
-| `Cita "*" -- "*" Profesor : implicaA` | `c2` implica a `rosa`, un profesor que no es el responsable del centro |
 | `esResponsableCentro` (RN-07) | Hay dos profesores en el centro y solo `mateo` es responsable |
 | Prioridad del informe como referencia (RC-03) | El informe es `baja` y el centro sigue en `media`: la prioridad del centro no se calcula, se decide |
 | Aviso solo si hay cambio (RC-04) | Sin cambio en `ceipBahia`, no se avisa a nadie |

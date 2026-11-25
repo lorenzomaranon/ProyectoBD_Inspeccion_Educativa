@@ -128,7 +128,6 @@ irene "1..*" -- "1..*" lucia : responsableDe >
 'ENLACES: CITA'
 pablo "1" -- "*" c2 : solicita >
 lucia "1" -- "*" c2 : trataSobre >
-c2 "*" -- "*" rosa : implicaA >
 luis "0..1" -- "*" c2 : atiende >
 
 'ENLACES: ACTIVIDADES'
