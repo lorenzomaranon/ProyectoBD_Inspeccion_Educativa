@@ -481,5 +481,17 @@ BEGIN
     END IF;
 END//
 
+CREATE TRIGGER trInspectoresUnJefeIns BEFORE INSERT ON Inspectores
+FOR EACH ROW
+BEGIN
+    CALL comprobarUnJefe(NEW.esJefe, NULL);
+END//
+
+CREATE TRIGGER trInspectoresUnJefeUpd BEFORE UPDATE ON Inspectores
+FOR EACH ROW
+BEGIN
+    CALL comprobarUnJefe(NEW.esJefe, OLD.oid_Persona);
+END//
+
 DELIMITER ;
 
