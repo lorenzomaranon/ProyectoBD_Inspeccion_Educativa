@@ -13,6 +13,8 @@ DROP PROCEDURE IF EXISTS comprobarJefe;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeIns;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeUpd;
 DROP PROCEDURE IF EXISTS comprobarUnJefe;
+DROP TRIGGER IF EXISTS trProfesoresResponsableIns;
+DROP TRIGGER IF EXISTS trProfesoresResponsableUpd;
 
 DROP TRIGGER IF EXISTS trTareasSolapamientoUpd;
 DROP TRIGGER IF EXISTS trTareasSolapamientoIns;
@@ -116,6 +118,8 @@ CREATE TABLE Profesores (
     CONSTRAINT fk_profesores_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk_profesores_centro_responsable FOREIGN KEY (CentroResponsable) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable)
+    -- R-11 (el responsable trabaja en ese centro) se comprueba con triggers al final:
+    -- MySQL no admite CHECK sobre columnas con acciones referenciales (CASCADE / SET NULL)
 );
 
 CREATE TABLE AsignaturasProfesor (
@@ -202,8 +206,8 @@ CREATE TABLE Visitas (
     HoraInicio TIME NOT NULL,
     HoraFin TIME,
     Estado ENUM('Pendiente', 'Finalizada', 'Rechazada') NOT NULL,
-    Responsable INT,
-    Jefe INT,
+    Responsable INT NOT NULL,
+    Jefe INT NOT NULL,
     Centro INT NOT NULL,
     -- En la mayoria de atributos pienso que puede ser NULL (no pongo NOT NULL), por ejemplo, la Hora cuando la Visita sigue en estado 'Pendiente'
 
@@ -228,8 +232,8 @@ CREATE TABLE Tareas (
     HoraInicio TIME NOT NULL,
     HoraFin TIME,
     Descripcion TEXT,
-    Responsable INT,
-    Jefe INT,
+    Responsable INT NOT NULL,
+    Jefe INT NOT NULL,
 
     FOREIGN KEY (Responsable) REFERENCES Inspectores(oid_Persona),
     FOREIGN KEY (Jefe) REFERENCES Inspectores(oid_Persona),
@@ -572,3 +576,26 @@ END //
 
 DELIMITER ;
 -- -----------------------------------------------------------------------------------------------------------------------
+
+-- R-11: el profesor responsable de un centro trabaja en ese mismo centro.
+DELIMITER //
+
+CREATE TRIGGER trProfesoresResponsableIns BEFORE INSERT ON Profesores
+FOR EACH ROW
+BEGIN
+    IF NEW.CentroResponsable IS NOT NULL AND NEW.CentroResponsable <> NEW.Centro THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-11: el profesor responsable debe trabajar en ese centro';
+    END IF;
+END//
+
+CREATE TRIGGER trProfesoresResponsableUpd BEFORE UPDATE ON Profesores
+FOR EACH ROW
+BEGIN
+    IF NEW.CentroResponsable IS NOT NULL AND NEW.CentroResponsable <> NEW.Centro THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-11: el profesor responsable debe trabajar en ese centro';
+    END IF;
+END//
+
+DELIMITER ;
