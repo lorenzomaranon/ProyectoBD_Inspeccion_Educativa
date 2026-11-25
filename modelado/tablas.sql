@@ -468,5 +468,18 @@ BEGIN
     END IF;
 END//
 
+-- RN: solo puede haber un jefe de inspección.
+CREATE PROCEDURE comprobarUnJefe(IN pEsJefe BOOLEAN, IN pExcluir INT)
+BEGIN
+    IF pEsJefe AND EXISTS (
+        SELECT 1 FROM Inspectores
+         WHERE esJefe = TRUE
+           AND NOT (oid_Persona <=> pExcluir)
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Ya existe un jefe de inspeccion';
+    END IF;
+END//
+
 DELIMITER ;
 
