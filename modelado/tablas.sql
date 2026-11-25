@@ -544,3 +544,31 @@ END//
 
 DELIMITER ;
 
+-- RN-10: El sistema debe evitar que un tutor pida cita sobre un alumno del que no es tutor legal.
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER trCitasTutelasIns
+BEFORE INSERT ON Citas
+FOR EACH ROW
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Tutelas WHERE Tutor = NEW.Tutor and Alumno = NEW.Alumno) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Solo tutores legales pueden solicitar una cita para ese alumno';
+    END IF;
+END //
+
+DELIMITER ;
+
+-- Otro para los UPDATEs
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER trCitasTutelasUpd
+BEFORE UPDATE ON Citas
+FOR EACH ROW
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Tutelas WHERE Tutor = NEW.Tutor and Alumno = NEW.Alumno) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Solo tutores legales pueden solicitar una cita para ese alumno';
+    END IF;
+END //
+
+DELIMITER ;
+-- -----------------------------------------------------------------------------------------------------------------------
