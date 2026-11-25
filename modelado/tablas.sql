@@ -496,5 +496,18 @@ BEGIN
     CALL comprobarUnJefe(NEW.esJefe, OLD.oid_Persona);
 END//
 
+-- RN: el inspector indicado como Jefe (quien asigna la actividad) en Visitas o Tareas debe tener esJefe = TRUE.
+CREATE PROCEDURE comprobarJefe(IN pJefe INT)
+BEGIN
+    IF pJefe IS NOT NULL AND NOT EXISTS (
+        SELECT 1 FROM Inspectores
+         WHERE oid_Persona = pJefe AND esJefe = TRUE
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'El Jefe asignado no es jefe de inspeccion';
+    END IF;
+END//
+
+
 DELIMITER ;
 
