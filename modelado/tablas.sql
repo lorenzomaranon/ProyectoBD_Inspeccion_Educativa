@@ -5,9 +5,15 @@ CREATE DATABASE IF NOT EXISTS inspeccion_educativa
 USE inspeccion_educativa;
 
 -- Borrado en orden inverso al de creación (primero las hijas)
+DROP TRIGGER IF EXISTS trVisitasJefeIns;
+DROP TRIGGER IF EXISTS trVisitasJefeUpd;
+DROP TRIGGER IF EXISTS trTareasJefeIns;
+DROP TRIGGER IF EXISTS trTareasJefeUpd;
+DROP PROCEDURE IF EXISTS comprobarJefe;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeIns;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeUpd;
 DROP PROCEDURE IF EXISTS comprobarUnJefe;
+
 DROP TRIGGER IF EXISTS trTareasSolapamientoUpd;
 DROP TRIGGER IF EXISTS trTareasSolapamientoIns;
 DROP TRIGGER IF EXISTS trVisitasSolapamientoUpd;
