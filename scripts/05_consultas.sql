@@ -1,0 +1,2 @@
+USE inspeccion_educativa;
+

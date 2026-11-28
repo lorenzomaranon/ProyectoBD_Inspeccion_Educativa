@@ -1,15 +1,11 @@
--- -------------------------------------------------
--- Creaciones de tablas ---------------------------
--- -------------------------------------------------
+USE inspeccion_educativa;
 
--- Zonas  ---------
 CREATE TABLE Zonas
 (	Codigo INT AUTO_INCREMENT, 
 	Nombre VARCHAR(50) NOT NULL, 
 	PRIMARY KEY(Codigo),
 	CONSTRAINT ak_zonas_nombre UNIQUE (Nombre));
 					
--- Centros ---------
 CREATE TABLE CentrosEducativos 
 (	Identificacion INT AUTO_INCREMENT, 
 	Nombre VARCHAR(150) NOT NULL, 
@@ -23,11 +19,6 @@ CONSTRAINT fk_centros_zona FOREIGN KEY (Zona) REFERENCES Zonas (Codigo),
 CONSTRAINT ch_KmDesdeCadiz CHECK (KmDesdecadiz >= 0)
 );
 	
-										
--- Citas  ---------
-
--- ============= FIN TABLAS JAVI ========================================================
-
 CREATE TABLE Personas (
     oid_Persona INT NOT NULL AUTO_INCREMENT,
     DNI CHAR(9) NOT NULL,
@@ -87,12 +78,6 @@ CREATE TABLE Tutelas (
     CONSTRAINT fk_tutelas_alumnos FOREIGN KEY (Alumno) REFERENCES Alumnos (oid_Persona) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
--- =====================================================================
--- tablas.sql - Inspeccion Educativa (MariaDB)
--- =====================================================================
-
-
 CREATE TABLE Citas
 (	Num_solicitud INT AUTO_INCREMENT,
    Fecha DATE,
@@ -115,10 +100,8 @@ CONSTRAINT ch_estado_cita_concertada CHECK (Estado <> 'Concertada' OR (Fecha IS 
 CONSTRAINT ch_estado_cita_rechazada CHECK (Estado <> 'Rechazada' OR Inspector IS NULL),
 -- si esta PendienteDeRevision no puede tener niguno de los 3 datos:
 CONSTRAINT ch_estado_cita_pendiente CHECK (Estado <> 'PendienteDeRevision' OR (Fecha IS NULL AND Hora IS NULL and Inspector IS NULL)));
--- falta por decidir si hace falta un trigger para la tutela -> !!!
 
 
--- DocumentosCita  ---------
 CREATE TABLE DocumentosCita
 (	Num_solicitud INT,
    DocumentacionAdjunta VARCHAR(50),
@@ -126,7 +109,7 @@ CREATE TABLE DocumentosCita
 -- Si se borra una cita tambien se borran sus documentos -> ON DELETE CASCADE
 CONSTRAINT fk_DocumentosCita_NumSolicitud FOREIGN KEY (Num_solicitud) REFERENCES Citas (Num_solicitud) ON DELETE CASCADE);
 
--- Anotaciones  ---------
+
 CREATE TABLE Anotaciones
 (	oid_Anotacion INT AUTO_INCREMENT,
    Fecha DATE NOT NULL,
@@ -139,9 +122,6 @@ CREATE TABLE Anotaciones
 CONSTRAINT fk_Anotaciones_Inspector FOREIGN KEY (Inspector) REFERENCES Inspectores (oid_Persona),
 CONSTRAINT fk_Anotaciones_Centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion));
 
--- =====================================================================
--- MIS TABLAS (hechas por mi): Visitas, Informes, Tareas
--- =====================================================================
 
 CREATE TABLE Visitas (
     oid_Visita SMALLINT PRIMARY KEY AUTO_INCREMENT,

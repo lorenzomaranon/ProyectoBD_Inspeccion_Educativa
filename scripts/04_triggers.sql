@@ -1,3 +1,5 @@
+USE inspeccion_educativa;
+
 DELIMITER //
 
 CREATE TRIGGER trVisitasSolapamientoIns BEFORE INSERT ON Visitas

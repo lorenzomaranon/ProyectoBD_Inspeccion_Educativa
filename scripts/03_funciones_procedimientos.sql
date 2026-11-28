@@ -1,3 +1,5 @@
+USE inspeccion_educativa;
+
 -- =====================================================================
 -- Regla R-09: no se solapan las actividades (Visitas y Tareas) de un
 -- mismo inspector responsable en la misma fecha.
