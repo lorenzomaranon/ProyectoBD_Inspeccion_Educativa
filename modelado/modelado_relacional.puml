@@ -139,7 +139,9 @@ entity Desplazamientos {
     --
     HoraSalida: time
     HoraLlegadaDomicilio: time [0..1]
-    KmVuelta: real
+    Origen: string [0..1]
+    Destino: string [0..1]
+    Km: real [0..1]
 }
 
 entity Dietas {

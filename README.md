@@ -122,7 +122,7 @@ push que lo modifica lo valida y lo renderiza automáticamente (ver
 
 | Regla | Descripción | Clases afectadas |
 | --- | --- | --- |
-| **RN-01** Dietas de desplazamiento | El kilometraje de un desplazamiento es `KmDesdeCadiz` del centro visitado más su `KmVuelta`, multiplicado por la `TarifaKm` del curso (0,24 €/km como referencia). | Desplazamiento, Dieta, Curso |
+| **RN-01** Dietas de desplazamiento | El primer desplazamiento del día parte de Cádiz y suma el `KmDesdeCadiz` del centro visitado. Los desplazamientos posteriores entre centros registran `Origen`, `Destino` y `Km`. Los km del día se suman y se multiplican por la `TarifaKm` del curso (0,24 €/km como referencia). | Desplazamiento, Dieta, Curso |
 | **RN-02** Plus de almuerzo | Si la llegada al domicilio es posterior a las 15:00, se añaden 20 € a la dieta correspondiente. | Desplazamiento, Dieta |
 | **RN-03** Permisos del informe | Solo el inspector que realiza la visita cumplimenta el informe correspondiente. | Visita, Informe, Inspector |
 | **RN-04** Proceso de cita | Los tutores legales solicitan la cita por escrito a través del portal; conserjería realiza un primer control antes de trasladarla al inspector. | Cita, TutorLegal |

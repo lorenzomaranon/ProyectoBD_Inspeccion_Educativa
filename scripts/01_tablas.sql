@@ -169,11 +169,15 @@ CREATE TABLE Desplazamientos (
     oid_Visita SMALLINT NOT NULL,          -- mismo tipo que Visitas.oid_Visita
     HoraSalida TIME NOT NULL,
     HoraLlegadaDomicilio TIME NULL,
-    KmVuelta REAL NOT NULL,
+    Origen VARCHAR(100) NULL,              -- NULL: primer desplazamiento, sale de Cádiz
+    Destino VARCHAR(100) NULL,
+    Km REAL NULL,                          -- km del tramo entre centros
     PRIMARY KEY (oid_Visita),
     CONSTRAINT fk_desplazamientos_visita FOREIGN KEY (oid_Visita)
         REFERENCES Visitas (oid_Visita) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT ch_desplazamientos_km CHECK (KmVuelta >= 0),
+    CONSTRAINT ch_desplazamientos_tramo CHECK (
+        (Origen IS NULL AND Destino IS NULL AND Km IS NULL) OR
+        (Origen IS NOT NULL AND Destino IS NOT NULL AND Km >= 0)),
     CONSTRAINT ch_desplazamientos_horas CHECK (HoraSalida < HoraLlegadaDomicilio)
 );
 

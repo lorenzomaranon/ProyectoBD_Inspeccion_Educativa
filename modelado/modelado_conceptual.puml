@@ -21,10 +21,11 @@ skinparam shadowing false
 ' REGLAS DE NEGOCIO: una nota por regla, con un alias único (RN01, RN02...).
 note as RN01
   RN-01: Dietas de desplazamiento
-  El kilometraje de cada desplazamiento se calcula entre su
-  origen y su destino. El primero del día parte del centro de
-  Cádiz y los siguientes pueden partir del centro de la visita
-  anterior. Se aplica la tarifa vigente (0,24 €/km, sujeta a
+  El primer desplazamiento del día parte de Cádiz y sus km son
+  los KmDesdeCadiz del centro visitado. Si después se desplaza
+  a otro centro sin volver a Cádiz, se registran el origen, el
+  destino y los km de ese tramo. Los km del día se suman y se
+  multiplican por la tarifa vigente (0,24 €/km, sujeta a
   cambios), acorde a la legislación vigente.
 end note
 
@@ -84,7 +85,9 @@ class "Centro Educativo" as CentroEducativo{
 class Desplazamiento{
     HoraSalida: time
     HoraLlegadaDomicilio: time [0..1]
-    KmVuelta: real
+    Origen: string [0..1]
+    Destino: string [0..1]
+    Km: real [0..1]
 }
 
 class Dieta{
