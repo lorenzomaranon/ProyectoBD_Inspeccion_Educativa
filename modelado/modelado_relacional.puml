@@ -176,4 +176,134 @@ DiasAsuntosPersonales }o--||Inspectores
 '------- ASOCIACIONES --------------------------------------
 DocumentosCita }o--|| Citas
 
+'------- REGLAS DE NEGOCIO ---------------------------------
+
+note as RN01
+  RN-01: El pago por kilometraje de un desplazamiento es su
+  kilometraje, es decir, los kilómetros desde el centro de
+  Cádiz hasta el centro visitado más los kilómetros de vuelta,
+  multiplicado por la tarifa por kilómetro fijada para el
+  curso en que se realiza, 0,24 €/km para el vigente.
+end note
+
+note as RN02
+  RN-02: El plus de almuerzo es una cantidad fija por la
+  comida del inspector, fijada para cada curso, 20 € para el
+  vigente, y se añade a la dieta si y solo si la hora de
+  llegada a su domicilio es posterior a las 15:00.
+end note
+
+note as RN03
+  RN-03: El nivel de prioridad de un centro es la media de los
+  niveles de prioridad de sus anotaciones, citas e informes,
+  con la escala baja = 1, media = 2, alta = 3 y urgente = 4,
+  redondeada al nivel más próximo. Solo cuentan las que tienen
+  prioridad asignada: una cita pendiente de revisión o
+  rechazada, o un informe sin prioridad, no entra en la media.
+  La prioridad de un centro no se asigna a mano.
+end note
+
+note as RN04
+  RN-04: El sistema debe evitar que una cita no finalizada y
+  con fecha asignada tenga una fecha anterior a la actual.
+end note
+
+note as RN05
+  RN-05: El sistema debe evitar que un inspector pueda tener
+  en su calendario dos actividades que coincidan en fecha y
+  hora de manera total o parcial.
+end note
+
+note as RN06
+  RN-06: El sistema debe evitar que se registre el informe o
+  el desplazamiento de una visita que no está finalizada.
+end note
+
+note as RN07
+  RN-07: El sistema debe evitar que una visita finalizada
+  vuelva a estar pendiente.
+end note
+
+note as RN08
+  RN-08: El sistema debe evitar que figure como jefe de una
+  visita o tarea un inspector que no sea inspector jefe
+  (esJefe = verdadero).
+end note
+
+note as RN09
+  RN-09: El sistema debe evitar que un tutor pida cita sobre
+  un alumno del que no es tutor legal.
+end note
+
+note as RN10
+  RN-10: El sistema debe evitar que una cita quede concertada
+  sin fecha, hora o inspector.
+end note
+
+note as RN11
+  RN-11: El sistema debe evitar que un inspector solicite más
+  días de asuntos personales de los que le corresponden.
+end note
+
+note as RN12
+  RN-12: El sistema debe evitar que se registre la hora de
+  llegada al domicilio en un desplazamiento que no sea el
+  último del día del inspector.
+end note
+
+note as RN13
+  RN-13: El sistema debe obligar a que un centro tenga
+  exactamente un profesor responsable, y que este trabaje
+  en ese centro.
+end note
+
+note as RN14
+  RN-14: El sistema debe evitar que una cita que no esté
+  concertada tenga nivel de prioridad; ésta la asigna el
+  inspector que atiende la cita.
+end note
+
+RN01 .. Desplazamientos
+RN01 .. Dietas
+RN01 .. Cursos
+
+RN02 .. Desplazamientos
+RN02 .. Dietas
+RN02 .. Cursos
+
+RN03 .. CentrosEducativos
+RN03 .. Anotaciones
+RN03 .. Citas
+RN03 .. Informes
+
+RN04 .. Citas
+
+RN05 .. Visitas
+RN05 .. Tareas
+
+RN06 .. Visitas
+RN06 .. Informes
+RN06 .. Desplazamientos
+
+RN07 .. Visitas
+
+RN08 .. Visitas
+RN08 .. Tareas
+RN08 .. Inspectores
+
+RN09 .. Citas
+RN09 .. Tutelas
+
+RN10 .. Citas
+
+RN11 .. DiasAsuntosPersonales
+RN11 .. Cursos
+
+RN12 .. Desplazamientos
+
+RN13 .. CentrosEducativos
+RN13 .. Profesores
+
+RN14 .. Citas
+
 @enduml
