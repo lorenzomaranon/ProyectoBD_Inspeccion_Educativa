@@ -54,6 +54,8 @@ CREATE TABLE Profesores (
     CONSTRAINT fk_profesores_centro FOREIGN KEY (Centro) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk_profesores_centro_responsable FOREIGN KEY (CentroResponsable) REFERENCES CentrosEducativos (Identificacion) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT ak_profesores_centroresponsable UNIQUE (CentroResponsable)
+    -- R-11 (el responsable trabaja en ese centro) se comprueba con triggers en 04_triggers.sql:
+    -- MySQL no admite CHECK sobre columnas con acciones referenciales (CASCADE / SET NULL)
 );
 
 CREATE TABLE AsignaturasProfesor (
@@ -129,8 +131,8 @@ CREATE TABLE Visitas (
     HoraInicio TIME NOT NULL,
     HoraFin TIME,
     Estado ENUM('Pendiente', 'Finalizada', 'Rechazada') NOT NULL,
-    Responsable INT,
-    Jefe INT,
+    Responsable INT NOT NULL,
+    Jefe INT NOT NULL,
     Centro INT NOT NULL,
     -- En la mayoria de atributos pienso que puede ser NULL (no pongo NOT NULL), por ejemplo, la Hora cuando la Visita sigue en estado 'Pendiente'
 
@@ -155,8 +157,8 @@ CREATE TABLE Tareas (
     HoraInicio TIME NOT NULL,
     HoraFin TIME,
     Descripcion TEXT,
-    Responsable INT,
-    Jefe INT,
+    Responsable INT NOT NULL,
+    Jefe INT NOT NULL,
 
     FOREIGN KEY (Responsable) REFERENCES Inspectores(oid_Persona),
     FOREIGN KEY (Jefe) REFERENCES Inspectores(oid_Persona),

@@ -64,12 +64,13 @@ end note
 note as RN07
   RN-07: Responsable único
   Cada centro educativo tiene exactamente un profesor
-  responsable del centro.
+  responsable, que trabaja en ese centro. Un profesor
+  es responsable como máximo de un centro.
 end note
 
 'CLASES:'
 class Inspector{
-  esJefe
+  esJefe: bool
 }
 
 class "Centro Educativo" as CentroEducativo{
@@ -214,8 +215,8 @@ Actividad <|-- Tarea: {disjunta, completa}
 Zona "1" -- "*" CentroEducativo
 Inspector "*" -- "1" Zona: trabajaEn >
 Inspector "1" -- "*" Anotacion: redacta >
-Inspector "1 responsable" -- "*" Actividad: realiza >
-Inspector "1 jefe" -- "*" Actividad: asigna >
+Inspector "1" -- "*" Actividad: realiza >
+Inspector "1" -- "*" Actividad: asigna >
 Inspector "0..1" -- "*" Cita : atiende >
 TutorLegal "1..*" -- "1..*" Alumno : responsableDe > 
 (TutorLegal, Alumno) .. Tutela
@@ -239,13 +240,18 @@ note as R01
 end note
 
 note as R02
-  R-02: El inspector que asigna una actividad
-  tiene esJefe = true (RN-05).
+  R-02: Toda actividad la asigna exactamente un
+  inspector, y este tiene esJefe = true (RN-05).
 end note
 
 note as R03
   R-03: El inspector que redacta el informe es
   el responsable de la visita asociada (RN-03).
+end note
+
+note as R11
+  R-11: El profesor responsable de un centro
+  trabaja en ese mismo centro (RN-07).
 end note
 
 note as R05
@@ -287,6 +293,7 @@ end note
 
 R01 .. Visita
 R02 .. Actividad
+R02 .. Inspector
 R03 .. Informe
 R05 .. Cita
 R06 .. Visita
@@ -294,6 +301,8 @@ R07 .. Cita
 R08 .. Desplazamiento
 R09 .. Actividad
 R10 .. DiasAsuntosPersonales
+R11 .. Profesor
+R11 .. CentroEducativo
 
 'Reglas de negocio (.. dibuja una línea discontinua sin flecha hacia cada clase afectada)
 

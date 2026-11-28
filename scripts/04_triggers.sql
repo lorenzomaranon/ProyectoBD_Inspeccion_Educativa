@@ -169,3 +169,26 @@ END //
 
 DELIMITER ;
 -- -----------------------------------------------------------------------------------------------------------------------
+
+-- R-11: el profesor responsable de un centro trabaja en ese mismo centro.
+DELIMITER //
+
+CREATE TRIGGER trProfesoresResponsableIns BEFORE INSERT ON Profesores
+FOR EACH ROW
+BEGIN
+    IF NEW.CentroResponsable IS NOT NULL AND NEW.CentroResponsable <> NEW.Centro THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-11: el profesor responsable debe trabajar en ese centro';
+    END IF;
+END//
+
+CREATE TRIGGER trProfesoresResponsableUpd BEFORE UPDATE ON Profesores
+FOR EACH ROW
+BEGIN
+    IF NEW.CentroResponsable IS NOT NULL AND NEW.CentroResponsable <> NEW.Centro THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'R-11: el profesor responsable debe trabajar en ese centro';
+    END IF;
+END//
+
+DELIMITER ;

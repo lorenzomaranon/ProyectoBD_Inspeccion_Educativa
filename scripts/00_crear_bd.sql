@@ -13,6 +13,8 @@ DROP PROCEDURE IF EXISTS comprobarJefe;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeIns;
 DROP TRIGGER IF EXISTS trInspectoresUnJefeUpd;
 DROP PROCEDURE IF EXISTS comprobarUnJefe;
+DROP TRIGGER IF EXISTS trProfesoresResponsableIns;
+DROP TRIGGER IF EXISTS trProfesoresResponsableUpd;
 
 DROP TRIGGER IF EXISTS trTareasSolapamientoUpd;
 DROP TRIGGER IF EXISTS trTareasSolapamientoIns;
